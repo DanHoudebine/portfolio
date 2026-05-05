@@ -1,507 +1,272 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dan Houdebine | Environment Artist 3D</title>
-  <meta name="description" content="Dan Houdebine - Environment Artist 3D Senior spécialisé Jeu Vidéo & VR">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<!-- ===== SKILLS ===== -->
+<section id="skills" class="section-skills">
+  <div class="container">
+    <h2 class="section-title">Mon Toolkit</h2>
 
-  <!-- NAVBAR -->
-  <nav id="navbar">
-    <div class="nav-inner">
-      <div class="nav-logo"><span class="bracket">[</span>DH<span class="bracket">]</span></div>
-      <ul class="nav-links">
-        <li><a href="#about">Profil</a></li>
-        <li><a href="#portfolio">Portfolio</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#experience">Parcours</a></li>
-        <li><a href="#contact" class="nav-btn">Contact</a></li>
-      </ul>
-      <div class="burger" id="burger">
-        <span></span><span></span><span></span>
-      </div>
+    <!-- Filtres -->
+    <div class="skills-filters">
+      <button class="filter-btn active" data-filter="all">Tous</button>
+      <button class="filter-btn" data-filter="dcc">DCC</button>
+      <button class="filter-btn" data-filter="texturing">Texturing</button>
+      <button class="filter-btn" data-filter="moteur">Moteur</button>
+      <button class="filter-btn" data-filter="terrain">Terrain</button>
+      <button class="filter-btn" data-filter="photogrammetrie">Photogrammétrie</button>
+      <button class="filter-btn" data-filter="ia">IA</button>
+      <button class="filter-btn" data-filter="pipeline">Pipeline</button>
+      <button class="filter-btn" data-filter="plugins">Plugins</button>
     </div>
-  </nav>
 
-  <!-- MENU MOBILE -->
-  <div class="mobile-menu" id="mobileMenu">
-    <ul>
-      <li><a href="#about" class="mobile-link">Profil</a></li>
-      <li><a href="#portfolio" class="mobile-link">Portfolio</a></li>
-      <li><a href="#skills" class="mobile-link">Skills</a></li>
-      <li><a href="#experience" class="mobile-link">Parcours</a></li>
-      <li><a href="#contact" class="mobile-link">Contact</a></li>
-    </ul>
+    <!-- Grid Skills -->
+    <div class="skills-grid">
+
+      <!-- DCC -->
+      <div class="skill-item" data-category="dcc">
+        <div class="skill-header">
+          <span class="skill-name">Blender</span>
+          <span class="skill-level expert">Expert</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="dcc">
+        <div class="skill-header">
+          <span class="skill-name">3ds Max</span>
+          <span class="skill-level expert">Expert</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="dcc">
+        <div class="skill-header">
+          <span class="skill-name">ZBrush</span>
+          <span class="skill-level expert">Expert</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="dcc">
+        <div class="skill-header">
+          <span class="skill-name">Cinema 4D</span>
+          <span class="skill-level expert">Expert</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="dcc">
+        <div class="skill-header">
+          <span class="skill-name">Houdini</span>
+          <span class="skill-level apprentissage">En apprentissage</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="40"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="dcc">
+        <div class="skill-header">
+          <span class="skill-name">Autodesk Maya</span>
+          <span class="skill-level decouverte">Découverte</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="20"></div></div>
+      </div>
+
+      <!-- Texturing -->
+      <div class="skill-item" data-category="texturing">
+        <div class="skill-header">
+          <span class="skill-name">Substance 3D Painter</span>
+          <span class="skill-level expert">Expert</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="texturing">
+        <div class="skill-header">
+          <span class="skill-name">Substance 3D Designer</span>
+          <span class="skill-level expert">Expert</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="texturing">
+        <div class="skill-header">
+          <span class="skill-name">Quixel Mixer</span>
+          <span class="skill-level expert">Expert</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="texturing">
+        <div class="skill-header">
+          <span class="skill-name">Photoshop</span>
+          <span class="skill-level expert">Expert</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="texturing">
+        <div class="skill-header">
+          <span class="skill-name">Substance 3D Sampler</span>
+          <span class="skill-level apprentissage">En apprentissage</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="40"></div></div>
+      </div>
+
+      <!-- Moteur -->
+      <div class="skill-item" data-category="moteur">
+        <div class="skill-header">
+          <span class="skill-name">Unreal Engine 5</span>
+          <span class="skill-level expert">Expert</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="moteur">
+        <div class="skill-header">
+          <span class="skill-name">Unity (HDRP)</span>
+          <span class="skill-level expert">Expert</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+
+      <!-- Terrain -->
+      <div class="skill-item" data-category="terrain">
+        <div class="skill-header">
+          <span class="skill-name">Gaea</span>
+          <span class="skill-level apprentissage">En apprentissage</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="40"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="terrain">
+        <div class="skill-header">
+          <span class="skill-name">World Creator</span>
+          <span class="skill-level apprentissage">En apprentissage</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="40"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="terrain">
+        <div class="skill-header">
+          <span class="skill-name">World Machine</span>
+          <span class="skill-level apprentissage">En apprentissage</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="40"></div></div>
+      </div>
+
+      <!-- Photogrammétrie -->
+      <div class="skill-item" data-category="photogrammetrie">
+        <div class="skill-header">
+          <span class="skill-name">RealityCapture</span>
+          <span class="skill-level operationnel">Opérationnel</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="70"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="photogrammetrie">
+        <div class="skill-header">
+          <span class="skill-name">Polycam</span>
+          <span class="skill-level operationnel">Opérationnel</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="70"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="photogrammetrie">
+        <div class="skill-header">
+          <span class="skill-name">Metashape</span>
+          <span class="skill-level apprentissage">En apprentissage</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="40"></div></div>
+      </div>
+
+      <!-- IA -->
+      <div class="skill-item" data-category="ia">
+        <div class="skill-header">
+          <span class="skill-name">Midjourney</span>
+          <span class="skill-level expert">Expert</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="ia">
+        <div class="skill-header">
+          <span class="skill-name">Stable Diffusion</span>
+          <span class="skill-level expert">Expert</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="ia">
+        <div class="skill-header">
+          <span class="skill-name">Meshy AI</span>
+          <span class="skill-level expert">Expert</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="ia">
+        <div class="skill-header">
+          <span class="skill-name">Adobe Firefly</span>
+          <span class="skill-level expert">Expert</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+
+      <!-- Pipeline -->
+      <div class="skill-item" data-category="pipeline">
+        <div class="skill-header">
+          <span class="skill-name">Marmoset Toolbag</span>
+          <span class="skill-level expert">Expert</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="pipeline">
+        <div class="skill-header">
+          <span class="skill-name">Perforce</span>
+          <span class="skill-level apprentissage">En apprentissage</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="40"></div></div>
+      </div>
+
+      <!-- Plugins -->
+      <div class="skill-item" data-category="plugins">
+        <div class="skill-header">
+          <span class="skill-name">Hard Ops</span>
+          <span class="skill-level expert">Expert</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="plugins">
+        <div class="skill-header">
+          <span class="skill-name">BoxCutter</span>
+          <span class="skill-level expert">Expert</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="plugins">
+        <div class="skill-header">
+          <span class="skill-name">PCG Framework</span>
+          <span class="skill-level expert">Expert</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="plugins">
+        <div class="skill-header">
+          <span class="skill-name">Botaniq</span>
+          <span class="skill-level expert">Expert</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+
+      <div class="skill-item" data-category="plugins">
+        <div class="skill-header">
+          <span class="skill-name">Houdini Engine Bridge</span>
+          <span class="skill-level apprentissage">En apprentissage</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" data-width="40"></div></div>
+      </div>
+
+    </div>
   </div>
-
-  <!-- HERO -->
-  <section id="hero">
-    <canvas id="heroCanvas"></canvas>
-    <div class="hero-content">
-      <div class="hero-tag">Environment Artist 3D · Senior</div>
-      <h1 class="hero-title">
-        Dan<br>
-        <span class="cyan">Houdebine</span>
-      </h1>
-      <p class="hero-sub">
-        Je construis des mondes immersifs pour le jeu vidéo et la réalité virtuelle.<br>
-        10 ans d'expérience · AAA &amp; Indie · Remote
-      </p>
-      <div class="hero-btns">
-        <a href="#portfolio" class="btn-primary">Voir le Portfolio</a>
-        <a href="#contact" class="btn-secondary">Me Contacter</a>
-      </div>
-      <div class="hero-scroll">
-        <div class="scroll-line"></div>
-        <span>Scroll</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-num">01</span>
-        <h2>Profil</h2>
-        <div class="section-line"></div>
-      </div>
-      <div class="about-grid">
-        <div class="about-photo">
-          <div class="photo-frame">
-            <img src="assets/img/dan.jpg" alt="Dan Houdebine" onerror="this.style.display='none'">
-            <div class="photo-placeholder">DH</div>
-          </div>
-          <div class="photo-tag">Disponible · Remote</div>
-        </div>
-        <div class="about-text">
-          <h3 class="about-title">Créateur de mondes depuis <span class="cyan">2014</span></h3>
-          <p>Environment Artist 3D Senior avec 10 ans d'expérience sur des projets AAA, AA et indépendants. Spécialisé dans la création d'environnements photoréalistes et stylisés pour le jeu vidéo et la VR.</p>
-          <p>Maîtrise complète du pipeline de production : concept, modélisation, texturing PBR, éclairage, optimisation et intégration dans Unreal Engine et Unity.</p>
-          <p>Passionné par la narration environnementale — chaque détail raconte une histoire.</p>
-          <div class="about-stats">
-            <div class="stat">
-              <span class="stat-num" data-target="10" data-suffix="+">10+</span>
-              <span class="stat-label">Ans d'XP</span>
-            </div>
-            <div class="stat">
-              <span class="stat-num" data-target="40" data-suffix="+">40+</span>
-              <span class="stat-label">Projets</span>
-            </div>
-            <div class="stat">
-              <span class="stat-num" data-target="15" data-suffix="+">15+</span>
-              <span class="stat-label">Studios</span>
-            </div>
-            <div class="stat">
-              <span class="stat-num" data-target="8" data-suffix="">8</span>
-              <span class="stat-label">Jeux publiés</span>
-            </div>
-          </div>
-          <div class="about-btns">
-            <a href="assets/CV_DanHoudebine.pdf" class="btn-primary" download>Télécharger CV</a>
-            <a href="https://www.linkedin.com/in/danhoudebine/" class="btn-ghost" target="_blank">LinkedIn</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PORTFOLIO -->
-  <section id="portfolio">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-num">02</span>
-        <h2>Portfolio</h2>
-        <div class="section-line"></div>
-      </div>
-      <div class="portfolio-filters">
-        <button class="filter-btn active" data-filter="all">Tous</button>
-        <button class="filter-btn" data-filter="game">Jeu Vidéo</button>
-        <button class="filter-btn" data-filter="vr">VR / AR</button>
-        <button class="filter-btn" data-filter="arch">Archiviz</button>
-        <button class="filter-btn" data-filter="env">Environnement</button>
-      </div>
-      <div class="portfolio-grid">
-
-<!-- PROJET 1 -->
-<div class="portfolio-item" data-category="environment">
-  <div class="portfolio-img">
-    <img src="assets/portfolio/project1.png" alt="Dark Village">
-    <div class="portfolio-overlay">
-      <span class="overlay-tag">Environment</span>
-      <h3>Dark Village</h3>
-      <p>Unreal Engine 5 · Lighting · Fog</p>
-      <div class="overlay-links">
-        <a href="#" class="overlay-btn">Voir</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- PROJET 2 -->
-<div class="portfolio-item" data-category="environment">
-  <div class="portfolio-img">
-    <img src="assets/portfolio/project2.png" alt="Cliff Fortress">
-    <div class="portfolio-overlay">
-      <span class="overlay-tag">Environment</span>
-      <h3>Cliff Fortress</h3>
-      <p>Unreal Engine 5 · World Building</p>
-      <div class="overlay-links">
-        <a href="#" class="overlay-btn">Voir</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- PROJET 3 -->
-<div class="portfolio-item" data-category="environment">
-  <div class="portfolio-img">
-    <img src="assets/portfolio/project3.png" alt="Gothic Cathedral">
-    <div class="portfolio-overlay">
-      <span class="overlay-tag">Environment</span>
-      <h3>Gothic Cathedral</h3>
-      <p>Unreal Engine 5 · Lighting · PBR</p>
-      <div class="overlay-links">
-        <a href="#" class="overlay-btn">Voir</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- PROJET 4 -->
-<div class="portfolio-item" data-category="environment">
-  <div class="portfolio-img">
-    <img src="assets/portfolio/project4.png" alt="Victorian Manor">
-    <div class="portfolio-overlay">
-      <span class="overlay-tag">Environment</span>
-      <h3>Victorian Manor</h3>
-      <p>Unreal Engine 5 · Interior · Lighting</p>
-      <div class="overlay-links">
-        <a href="#" class="overlay-btn">Voir</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- PROJET 5 -->
-<div class="portfolio-item" data-category="environment">
-  <div class="portfolio-img">
-    <img src="assets/portfolio/project5.png" alt="Manor Hallway">
-    <div class="portfolio-overlay">
-      <span class="overlay-tag">Environment</span>
-      <h3>Manor Hallway</h3>
-      <p>Unreal Engine 5 · Interior · Atmosphere</p>
-      <div class="overlay-links">
-        <a href="#" class="overlay-btn">Voir</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- PROJET 6 -->
-<div class="portfolio-item" data-category="environment">
-  <div class="portfolio-img">
-    <img src="assets/portfolio/project6.png" alt="Abandoned Subway">
-    <div class="portfolio-overlay">
-      <span class="overlay-tag">Environment</span>
-      <h3>Abandoned Subway</h3>
-      <p>Unreal Engine 5 · Sci-Fi · Horror</p>
-      <div class="overlay-links">
-        <a href="#" class="overlay-btn">Voir</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- PROJET 7 -->
-<div class="portfolio-item" data-category="environment">
-  <div class="portfolio-img">
-    <img src="assets/portfolio/project7.png" alt="Overgrown Tunnel">
-    <div class="portfolio-overlay">
-      <span class="overlay-tag">Environment</span>
-      <h3>Overgrown Tunnel</h3>
-      <p>Unreal Engine 5 · VFX · Atmosphere</p>
-      <div class="overlay-links">
-        <a href="#" class="overlay-btn">Voir</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- PROJET 8 -->
-<div class="portfolio-item" data-category="environment">
-  <div class="portfolio-img">
-    <img src="assets/portfolio/project8.png" alt="Medieval Town">
-    <div class="portfolio-overlay">
-      <span class="overlay-tag">Environment</span>
-      <h3>Medieval Town</h3>
-      <p>Unreal Engine 5 · World Building · PBR</p>
-      <div class="overlay-links">
-        <a href="#" class="overlay-btn">Voir</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-      </div>
-    </div>
-  </section>
-
-  <!-- SKILLS -->
-  <section id="skills">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-num">03</span>
-        <h2>Skills</h2>
-        <div class="section-line"></div>
-      </div>
-      <div class="skills-grid">
-
-        <div class="skill-category">
-          <h3 class="skill-cat-title"><span class="cyan">//</span> Modélisation & Sculpt</h3>
-          <div class="skill-list">
-            <div class="skill-item">
-              <div class="skill-info"><span>Maya</span><span>95%</span></div>
-              <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span>Blender</span><span>90%</span></div>
-              <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span>ZBrush</span><span>85%</span></div>
-              <div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span>3ds Max</span><span>80%</span></div>
-              <div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="skill-category">
-          <h3 class="skill-cat-title"><span class="cyan">//</span> Texturing & Shading</h3>
-          <div class="skill-list">
-            <div class="skill-item">
-              <div class="skill-info"><span>Substance Painter</span><span>98%</span></div>
-              <div class="skill-bar"><div class="skill-fill" style="width:98%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span>Substance Designer</span><span>90%</span></div>
-              <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span>Photoshop</span><span>88%</span></div>
-              <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span>Marmoset Toolbag</span><span>85%</span></div>
-              <div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="skill-category">
-          <h3 class="skill-cat-title"><span class="cyan">//</span> Game Engines</h3>
-          <div class="skill-list">
-            <div class="skill-item">
-              <div class="skill-info"><span>Unreal Engine 5</span><span>95%</span></div>
-              <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span>Unity</span><span>85%</span></div>
-              <div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span>Lumen / Nanite</span><span>90%</span></div>
-              <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span>World Partition</span><span>88%</span></div>
-              <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="skill-category">
-          <h3 class="skill-cat-title"><span class="cyan">//</span> Pipeline & Outils</h3>
-          <div class="skill-list">
-            <div class="skill-item">
-              <div class="skill-info"><span>Houdini</span><span>75%</span></div>
-              <div class="skill-bar"><div class="skill-fill" style="width:75%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span>Perforce / Git</span><span>85%</span></div>
-              <div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span>SpeedTree</span><span>80%</span></div>
-              <div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div>
-            </div>
-            <div class="skill-item">
-              <div class="skill-info"><span>World Creator</span><span>78%</span></div>
-              <div class="skill-bar"><div class="skill-fill" style="width:78%"></div></div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- EXPERIENCE -->
-  <section id="experience">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-num">04</span>
-        <h2>Parcours</h2>
-        <div class="section-line"></div>
-      </div>
-      <div class="timeline">
-
-        <div class="tl-item">
-          <div class="tl-dot"></div>
-          <div class="tl-date">2022 — Présent</div>
-          <div class="tl-card">
-            <div class="tl-header">
-              <h3>Senior Environment Artist</h3>
-              <span class="tl-company">Studio AAA · Remote</span>
-            </div>
-            <p>Lead environnement sur projet AAA non annoncé. Définition des standards visuels, pipeline de végétation procédurale avec PCG d'UE5, mentoring de 3 junior artists.</p>
-            <div class="tl-tags">
-              <span>UE5</span><span>PCG</span><span>Lumen</span><span>Lead</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="tl-item">
-          <div class="tl-dot"></div>
-          <div class="tl-date">2019 — 2022</div>
-          <div class="tl-card">
-            <div class="tl-header">
-              <h3>Environment Artist 3D</h3>
-              <span class="tl-company">Studio Indépendant · Paris</span>
-            </div>
-            <p>Création d'environnements pour 4 jeux publiés sur Steam et consoles. Spécialisation en environnements stylisés et narration par l'espace.</p>
-            <div class="tl-tags">
-              <span>Unity</span><span>UE4</span><span>Stylisé</span><span>Console</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="tl-item">
-          <div class="tl-dot"></div>
-          <div class="tl-date">2016 — 2019</div>
-          <div class="tl-card">
-            <div class="tl-header">
-              <h3>3D Artist</h3>
-              <span class="tl-company">Agence VR · Lyon</span>
-            </div>
-            <p>Production d'expériences VR pour clients corporate et culturels. Optimisation poussée pour Meta Quest et HTC Vive. Plus de 20 projets livrés.</p>
-            <div class="tl-tags">
-              <span>VR</span><span>Unity</span><span>Optimisation</span><span>B2B</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="tl-item">
-          <div class="tl-dot"></div>
-          <div class="tl-date">2014 — 2016</div>
-          <div class="tl-card">
-            <div class="tl-header">
-              <h3>Junior 3D Artist</h3>
-              <span class="tl-company">Studio Mobile · Bordeaux</span>
-            </div>
-            <p>Premiers pas en production jeu vidéo. Modélisation low-poly, texturing mobile, intégration Unity. Formation aux contraintes de production studio.</p>
-            <div class="tl-tags">
-              <span>Unity</span><span>Mobile</span><span>Low-poly</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-num">05</span>
-        <h2>Contact</h2>
-        <div class="section-line"></div>
-      </div>
-      <div class="contact-grid">
-        <div class="contact-left">
-          <h3 class="contact-title">Travaillons <span class="cyan">ensemble</span></h3>
-          <p class="contact-desc">Disponible pour missions freelance, CDI remote, et collaborations sur projets ambitieux. Réponse sous 48h.</p>
-          <div class="contact-links">
-            <a href="mailto:dan.houdebine@email.com" class="contact-link">
-              <div class="contact-icon">✉</div>
-              <div>
-                <span class="contact-link-label">Email</span>
-                <span>dan.houdebine@email.com</span>
-              </div>
-            </a>
-            <a href="https://www.linkedin.com/in/danhoudebine/" class="contact-link" target="_blank">
-              <div class="contact-icon">in</div>
-              <div>
-                <span class="contact-link-label">LinkedIn</span>
-                <span>linkedin.com/in/danhoudebine</span>
-              </div>
-            </a>
-            <a href="#" class="contact-link" target="_blank">
-              <div class="contact-icon">AS</div>
-              <div>
-                <span class="contact-link-label">ArtStation</span>
-                <span>artstation.com/danhoudebine</span>
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="contact-right">
-          <form id="contactForm" class="contact-form">
-            <div class="form-group">
-              <label for="name">Nom</label>
-              <input type="text" id="name" name="name" placeholder="Votre nom" required>
-            </div>
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" name="email" placeholder="votre@email.com" required>
-            </div>
-            <div class="form-group">
-              <label for="message">Message</label>
-              <textarea id="message" name="message" rows="5" placeholder="Votre message..." required></textarea>
-            </div>
-            <button type="submit" class="btn-primary btn-full">Envoyer le message</button>
-            <p class="form-note">* Formulaire via <a href="https://formspree.io" target="_blank">Formspree</a> (gratuit)</p>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer id="footer">
-    <div class="container">
-      <div class="footer-inner">
-        <div class="footer-logo"><span class="bracket">[</span>DH<span class="bracket">]</span></div>
-        <p class="footer-copy">© 2024 Dan Houdebine · Environment Artist 3D</p>
-        <div class="footer-links">
-          <a href="https://www.linkedin.com/in/danhoudebine/" target="_blank">LinkedIn</a>
-          <a href="#">ArtStation</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
-</body>
-</html>
+</section>
