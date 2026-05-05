@@ -43,6 +43,7 @@
       font-family: var(--font-body);
       font-size: 16px;
       overflow-x: hidden;
+      cursor: none;
     }
 
     body::before {
@@ -57,55 +58,6 @@
         radial-gradient(ellipse at 80% 20%, rgba(0, 212, 255, 0.05) 0%, transparent 60%);
       pointer-events: none;
       z-index: 0;
-    }
-
-    /* ============================================
-       LOADER
-    ============================================ */
-    #loader {
-      position: fixed;
-      inset: 0;
-      background: var(--bg-dark);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      transition: opacity 0.6s, visibility 0.6s;
-    }
-
-    #loader.hidden {
-      opacity: 0;
-      visibility: hidden;
-    }
-
-    .loader-logo {
-      font-family: var(--font-title);
-      font-size: 2rem;
-      color: var(--primary);
-      text-shadow: var(--glow-strong);
-      margin-bottom: 2rem;
-      letter-spacing: 6px;
-    }
-
-    .loader-bar {
-      width: 200px;
-      height: 2px;
-      background: rgba(0, 212, 255, 0.2);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .loader-bar-fill {
-      height: 100%;
-      width: 0;
-      background: var(--primary);
-      box-shadow: var(--glow);
-      animation: loadFill 1s ease forwards;
-    }
-
-    @keyframes loadFill {
-      to { width: 100%; }
     }
 
     /* ============================================
@@ -140,31 +92,55 @@
     }
 
     /* ============================================
-       NAVIGATION
+       SCROLLBAR
     ============================================ */
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 80px;
-      background: rgba(5, 5, 16, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 60px;
-      z-index: 100;
+    ::-webkit-scrollbar {
+      width: 4px;
     }
 
-    .nav-logo {
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 2px;
+    }
+
+    /* ============================================
+       NAVBAR
+    ============================================ */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 20px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1000;
+      background: rgba(5, 5, 16, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .navbar.scrolled {
+      padding: 12px 60px;
+      background: rgba(5, 5, 16, 0.95);
+    }
+
+    .logo-text {
       font-family: var(--font-title);
       font-size: 1.4rem;
       font-weight: 900;
-      letter-spacing: 4px;
-      color: var(--primary);
-      text-shadow: var(--glow);
+      color: var(--text-main);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .nav-links {
@@ -175,21 +151,22 @@
 
     .nav-link {
       position: relative;
-      color: var(--text-main);
+      color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.85rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
+      font-weight: 500;
       transition: color 0.3s ease;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .nav-link::after {
       content: '';
       position: absolute;
-      bottom: -4px;
+      bottom: -5px;
       left: 0;
       width: 0;
-      height: 1px;
+      height: 2px;
       background: var(--primary);
       transition: width 0.3s ease;
     }
@@ -199,13 +176,12 @@
       color: var(--primary);
     }
 
-    .nav-link:hover::after,
     .nav-link.active::after {
       width: 100%;
     }
 
     /* ============================================
-       HERO
+       HERO SECTION
     ============================================ */
     .hero {
       min-height: 100vh;
@@ -216,144 +192,496 @@
       position: relative;
       overflow: hidden;
       padding: 100px 60px 60px;
-      margin-top: 80px;
     }
 
     .hero-content {
       text-align: center;
-      margin-bottom: 3rem;
-      z-index: 1;
-      max-width: 900px;
+      z-index: 10;
+      margin-bottom: 60px;
     }
 
-    .hero-tag {
+    .hero h1 {
       font-family: var(--font-title);
-      font-size: 0.75rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--primary);
-      margin-bottom: 1rem;
-      opacity: 0;
-      animation: fadeInDown 0.8s ease 0.2s forwards;
-    }
-
-    .hero-title {
-      margin-bottom: 2rem;
-    }
-
-    .hero-title .line1,
-    .hero-title .line2,
-    .hero-title .line3 {
-      font-family: var(--font-title);
+      font-size: clamp(2.5rem, 8vw, 4rem);
       font-weight: 900;
       line-height: 1.2;
-      opacity: 0;
-      animation: fadeInDown 0.8s ease forwards;
-    }
-
-    .hero-title .line1 {
-      font-size: clamp(1.5rem, 3vw, 2.5rem);
-      color: var(--text-main);
-      animation-delay: 0.4s;
-    }
-
-    .hero-title .line2 {
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      margin-bottom: 20px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      animation-delay: 0.6s;
+      animation: fadeInDown 0.8s ease;
     }
 
-    .hero-title .line3 {
-      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    .hero p {
+      font-size: 1.1rem;
       color: var(--text-muted);
-      animation-delay: 0.8s;
-    }
-
-    .hero-subtitle {
-      font-size: 1rem;
-      color: var(--text-muted);
-      margin-bottom: 2rem;
-      opacity: 0;
-      animation: fadeInUp 0.8s ease 1s forwards;
+      margin-bottom: 40px;
       max-width: 600px;
       margin-left: auto;
       margin-right: auto;
-    }
-
-    .hero-stats {
-      display: flex;
-      gap: 60px;
-      justify-content: center;
-      margin-bottom: 2rem;
-      opacity: 0;
-      animation: fadeInUp 0.8s ease 1.2s forwards;
-    }
-
-    .stat-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .stat-number {
-      font-family: var(--font-title);
-      font-size: 2.5rem;
-      font-weight: 900;
-      color: var(--primary);
-      text-shadow: var(--glow);
-    }
-
-    .stat-label {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      letter-spacing: 2px;
-      text-transform: uppercase;
+      line-height: 1.6;
+      animation: fadeInUp 0.8s ease 0.2s both;
     }
 
     .hero-buttons {
       display: flex;
       gap: 20px;
       justify-content: center;
+      margin-bottom: 60px;
+      animation: fadeInUp 0.8s ease 0.4s both;
+    }
+
+    .btn {
+      padding: 14px 40px;
+      border: 2px solid var(--primary);
+      background: transparent;
+      color: var(--primary);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--primary);
+      z-index: -1;
+      transition: left 0.3s ease;
+    }
+
+    .btn:hover {
+      color: var(--bg-dark);
+      box-shadow: var(--glow-strong);
+    }
+
+    .btn:hover::before {
+      left: 0;
+    }
+
+    .btn-secondary {
+      border-color: var(--secondary);
+      color: var(--secondary);
+    }
+
+    .btn-secondary::before {
+      background: var(--secondary);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 80px;
+      justify-content: center;
+      margin-bottom: 80px;
+      animation: fadeInUp 0.8s ease 0.6s both;
       flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeInUp 0.8s ease 1.4s forwards;
     }
 
+    .stat {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: var(--font-title);
+      font-size: 2.5rem;
+      color: var(--primary);
+      font-weight: 900;
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Profile Image */
     .profile-image {
-      width: 320px;
-      height: 320px;
-      border-radius: 50%;
-      border: 2px solid rgba(0, 245, 255, 0.6);
-      box-shadow:
-        0 0 40px rgba(0, 245, 255, 0.5),
-        inset 0 0 40px rgba(0, 245, 255, 0.1);
+      width: 300px;
+      height: 300px;
+      border-radius: 10px;
+      border: 2px solid var(--primary);
+      overflow: hidden;
+      box-shadow: var(--glow-strong), inset 0 0 30px rgba(0, 245, 255, 0.1);
+      animation: fadeInUp 0.8s ease 0.8s both;
+      background: linear-gradient(135deg, rgba(0, 245, 255, 0.1), rgba(123, 47, 255, 0.1));
+    }
+
+    .profile-image img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      animation: subtleGlow 3s ease-in-out infinite;
-      margin-top: 2rem;
-      z-index: 1;
+      transition: transform 0.6s ease;
     }
 
-    @keyframes subtleGlow {
-      0%, 100% {
-        box-shadow:
-          0 0 40px rgba(0, 245, 255, 0.5),
-          inset 0 0 40px rgba(0, 245, 255, 0.1);
-      }
-      50% {
-        box-shadow:
-          0 0 60px rgba(0, 245, 255, 0.7),
-          inset 0 0 50px rgba(0, 245, 255, 0.2);
-      }
+    .profile-image:hover img {
+      transform: scale(1.05);
     }
 
+    /* ============================================
+       SECTIONS
+    ============================================ */
+    .section {
+      padding: 120px 60px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .section-title {
+      font-family: var(--font-title);
+      font-size: 2.5rem;
+      font-weight: 900;
+      margin-bottom: 60px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-align: center;
+      color: var(--text-main);
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 100px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      margin: 20px auto 0;
+      border-radius: 2px;
+    }
+
+    /* ============================================
+       PORTFOLIO SECTION
+    ============================================ */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 60px;
+    }
+
+    .portfolio-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      aspect-ratio: 1;
+    }
+
+    .portfolio-card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--glow-strong);
+      transform: translateY(-5px);
+    }
+
+    .portfolio-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .portfolio-card:hover .portfolio-image {
+      transform: scale(1.05);
+    }
+
+    .portfolio-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(0, 245, 255, 0.8), rgba(123, 47, 255, 0.8));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+    }
+
+    .portfolio-card:hover .portfolio-overlay {
+      opacity: 1;
+    }
+
+    .overlay-text {
+      color: white;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ============================================
+       SKILLS SECTION
+    ============================================ */
+    .skills-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+      margin-top: 60px;
+    }
+
+    .skill-card {
+      background: linear-gradient(135deg, var(--bg-card), var(--bg-card2));
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 30px;
+      transition: all 0.3s ease;
+    }
+
+    .skill-card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--glow-strong);
+      transform: translateY(-5px);
+    }
+
+    .skill-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .skill-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .skill-level {
+      font-size: 0.85rem;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .skill-bar {
+      width: 100%;
+      height: 6px;
+      background: var(--bg-dark);
+      border-radius: 3px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .skill-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 3px;
+      transition: width 0.6s ease;
+    }
+
+    .skill-category {
+      display: inline-block;
+      background: rgba(0, 245, 255, 0.1);
+      color: var(--primary);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 15px;
+      border: 1px solid var(--primary);
+    }
+
+    /* ============================================
+       CONTACT SECTION
+    ============================================ */
+    .contact-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      margin-top: 60px;
+      align-items: start;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .contact-icon {
+      width: 50px;
+      height: 50px;
+      background: rgba(0, 245, 255, 0.1);
+      border: 1px solid var(--primary);
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .contact-text h3 {
+      color: var(--text-main);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .contact-text p {
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .contact-text a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .contact-text a:hover {
+      color: var(--secondary);
+      text-decoration: underline;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      color: var(--text-main);
+      margin-bottom: 8px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.9rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 12px 15px;
+      border-radius: 5px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 10px rgba(0, 245, 255, 0.3);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 150px;
+    }
+
+    .form-submit {
+      padding: 14px 40px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border: none;
+      color: var(--bg-dark);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-submit:hover {
+      box-shadow: var(--glow-strong);
+      transform: translateY(-2px);
+    }
+
+    /* ============================================
+       FOOTER
+    ============================================ */
+    .footer {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      padding: 40px 60px;
+      text-align: center;
+    }
+
+    .footer-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .footer-text {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--primary);
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      transition: all 0.3s ease;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+
+    .social-link:hover {
+      background: var(--primary);
+      color: var(--bg-dark);
+      box-shadow: var(--glow-strong);
+    }
+
+    /* ============================================
+       ANIMATIONS
+    ============================================ */
     @keyframes fadeInDown {
       from {
         opacity: 0;
-        transform: translateY(-20px);
+        transform: translateY(-30px);
       }
       to {
         opacity: 1;
@@ -364,7 +692,7 @@
     @keyframes fadeInUp {
       from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px);
       }
       to {
         opacity: 1;
@@ -372,870 +700,261 @@
       }
     }
 
-    /* ============================================
-       BOUTONS
-    ============================================ */
-    .btn {
-      padding: 14px 36px;
-      font-family: var(--font-title);
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      display: inline-block;
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: var(--bg-dark);
-      clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
-    }
-
-    .btn-primary:hover {
-      background: #fff;
-      box-shadow: var(--glow-strong);
-      transform: translateY(-2px);
-    }
-
-    .btn-secondary {
-      background: transparent;
-      color: var(--primary);
-      border: 1px solid var(--primary);
-      clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(0, 245, 255, 0.1);
-      box-shadow: var(--glow-strong);
-      transform: translateY(-2px);
-    }
-
-    /* ============================================
-       SECTIONS
-    ============================================ */
-    section {
-      padding: 100px 60px;
-      max-width: 1400px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 60px;
-    }
-
-    .section-eyebrow {
-      font-family: var(--font-title);
-      font-size: 0.75rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--primary);
-      margin-bottom: 1rem;
-    }
-
-    .section-title {
-      font-family: var(--font-title);
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      font-weight: 900;
-      margin-bottom: 16px;
-      color: var(--text-main);
-    }
-
-    .section-line {
-      width: 60px;
-      height: 2px;
-      background: var(--primary);
-      margin: 1rem auto 0;
-    }
-
-    .section-subtitle {
-      color: var(--text-muted);
-      font-size: 1rem;
-      letter-spacing: 2px;
-    }
-
-    /* ============================================
-       PORTFOLIO
-    ============================================ */
-    #portfolio {
-      background: var(--bg-card);
-    }
-
-    .filter-bar {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-      margin-bottom: 40px;
-      flex-wrap: wrap;
-    }
-
-    .filter-btn {
-      padding: 8px 16px;
-      border: 2px solid var(--primary);
-      background: transparent;
-      color: var(--primary);
-      border-radius: 20px;
-      cursor: pointer;
-      font-family: var(--font-title);
-      text-transform: uppercase;
-      font-size: 12px;
-      transition: all 0.3s;
-      letter-spacing: 2px;
-    }
-
-    .filter-btn:hover {
-      background: rgba(0, 245, 255, 0.1);
-    }
-
-    .filter-btn.active {
-      background: var(--primary);
-      color: var(--bg-dark);
-    }
-
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-      gap: 30px;
-    }
-
-    .project-card {
-      background: var(--bg-dark);
-      border: 1px solid var(--border);
-      overflow: hidden;
-      transition: all 0.3s ease;
-      position: relative;
-      cursor: pointer;
-    }
-
-    .project-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      transform: scaleX(0);
-      transition: transform 0.3s ease;
-    }
-
-    .project-card:hover::before {
-      transform: scaleX(1);
-    }
-
-    .project-card:hover {
-      transform: translateY(-8px);
-      box-shadow: var(--glow);
-      border-color: var(--primary);
-    }
-
-    .project-img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      background: linear-gradient(135deg, #0a0a2a, #1a0a3a);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .project-info {
-      padding: 24px;
-    }
-
-    .project-title {
-      font-family: var(--font-title);
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 12px;
-    }
-
-    .project-tools {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-
-    .tool-tag {
-      display: inline-block;
-      padding: 4px 10px;
-      background: rgba(0, 245, 255, 0.1);
-      border: 1px solid rgba(0, 245, 255, 0.3);
-      border-radius: 4px;
-      font-size: 0.65rem;
-      color: var(--primary);
-      letter-spacing: 1px;
-    }
-
-    /* ============================================
-       LIGHTBOX
-    ============================================ */
-    #lightbox {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.92);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-    }
-
-    #lightbox.active {
-      display: flex;
-    }
-
-    .lightbox-content {
-      position: relative;
-      max-width: 900px;
-      width: 100%;
-      background: var(--bg-card2);
-      border: 1px solid rgba(0, 212, 255, 0.2);
-      border-radius: 8px;
-      overflow: hidden;
-      animation: slideUp 0.3s ease;
-    }
-
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
+    @keyframes glow {
+      0%, 100% {
+        box-shadow: var(--glow);
       }
-      to {
-        opacity: 1;
-        transform: translateY(0);
+      50% {
+        box-shadow: var(--glow-strong);
       }
-    }
-
-    .lightbox-close {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(0, 212, 255, 0.3);
-      border-radius: 50%;
-      color: var(--primary);
-      width: 32px;
-      height: 32px;
-      font-size: 1rem;
-      cursor: pointer;
-      z-index: 10;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .lightbox-close:hover {
-      background: rgba(0, 212, 255, 0.2);
-    }
-
-    .lightbox-img {
-      width: 100%;
-      max-height: 500px;
-      object-fit: contain;
-      background: #000;
-      display: block;
-    }
-
-    .lightbox-info {
-      padding: 1.5rem;
-    }
-
-    .lightbox-title {
-      font-family: var(--font-title);
-      font-size: 1rem;
-      color: var(--text-main);
-      margin-bottom: 0.75rem;
-    }
-
-    .lightbox-tools {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-bottom: 1rem;
-    }
-
-    .lightbox-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.6rem 1.5rem;
-      background: var(--primary);
-      color: var(--bg-dark);
-      text-decoration: none;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      transition: all 0.3s;
-    }
-
-    .lightbox-btn:hover {
-      background: #fff;
-      transform: translateY(-2px);
-    }
-
-    /* ============================================
-       SKILLS
-    ============================================ */
-    #skills {
-      background: var(--bg-card);
-    }
-
-    .category-buttons {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin-bottom: 40px;
-      flex-wrap: wrap;
-    }
-
-    .category-btn {
-      padding: 8px 16px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text-muted);
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.75rem;
-      transition: all 0.3s;
-      letter-spacing: 1px;
-    }
-
-    .category-btn:hover,
-    .category-btn.active {
-      border-color: var(--primary);
-      color: var(--primary);
-      background: rgba(0, 245, 255, 0.1);
-    }
-
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 24px;
-    }
-
-    .skill-card {
-      background: var(--bg-dark);
-      border: 1px solid var(--border);
-      padding: 24px;
-      border-radius: 4px;
-      transition: all 0.3s ease;
-    }
-
-    .skill-card:hover {
-      border-color: var(--primary);
-      box-shadow: var(--glow);
-    }
-
-    .skill-name {
-      font-family: var(--font-title);
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 8px;
-    }
-
-    .skill-level {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-
-    .skill-bar-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .skill-bar-track {
-      flex: 1;
-      height: 4px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .skill-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      border-radius: 2px;
-      transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 0 8px rgba(0, 245, 255, 0.5);
-    }
-
-    .skill-pct {
-      font-family: var(--font-title);
-      font-size: 0.7rem;
-      color: var(--primary);
-      min-width: 32px;
-      text-align: right;
-    }
-
-    .skill-badge {
-      display: inline-block;
-      padding: 4px 8px;
-      background: rgba(0, 245, 255, 0.1);
-      border: 1px solid rgba(0, 245, 255, 0.3);
-      border-radius: 3px;
-      font-size: 0.65rem;
-      color: var(--primary);
-      margin-top: 8px;
-      margin-right: 4px;
-    }
-
-    .level-operationnel { color: #64ff64; }
-    .level-operationnel .level-dot { background: #64ff64; box-shadow: 0 0 8px #64ff64; }
-
-    .level-apprentissage { color: #ffa500; }
-    .level-apprentissage .level-dot { background: #ffa500; box-shadow: 0 0 8px #ffa500; }
-
-    .level-decouverte { color: #ff6b6b; }
-    .level-decouverte .level-dot { background: #ff6b6b; box-shadow: 0 0 8px #ff6b6b; }
-
-    /* ============================================
-       CONTACT
-    ============================================ */
-    #contact {
-      background: var(--bg-card);
-      text-align: center;
-    }
-
-    .contact-info {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-bottom: 24px;
-    }
-
-    .contact-email {
-      font-family: var(--font-title);
-      font-size: 0.95rem;
-      color: var(--text-main);
-      margin-bottom: 24px;
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .contact-email:hover {
-      color: var(--primary);
-    }
-
-    .at-bracket {
-      color: var(--primary);
-      font-weight: 900;
-      font-size: 1.1em;
-    }
-
-    .at-sign {
-      color: var(--secondary);
-      font-weight: 900;
-    }
-
-    .copy-confirm {
-      text-align: center;
-      padding: 16px;
-      color: var(--primary);
-      font-family: var(--font-title);
-      font-size: 0.85rem;
-      letter-spacing: 2px;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: all 0.3s ease;
-      pointer-events: none;
-    }
-
-    .copy-confirm.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ============================================
-       FOOTER
-    ============================================ */
-    .footer {
-      background: rgba(5, 5, 16, 0.95);
-      border-top: 1px solid var(--border);
-      padding: 48px 0 32px;
-      text-align: center;
-    }
-
-    .footer-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .footer-logo {
-      font-family: var(--font-title);
-      font-size: 1.4rem;
-      font-weight: 900;
-      letter-spacing: 4px;
-      color: var(--text-main);
-    }
-
-    .footer-tagline {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      letter-spacing: 4px;
-      text-transform: uppercase;
     }
 
     /* ============================================
        RESPONSIVE
     ============================================ */
     @media (max-width: 768px) {
-      nav {
-        padding: 0 20px;
-        height: 60px;
+      .navbar {
+        padding: 16px 20px;
       }
 
       .nav-links {
-        gap: 20px;
+        display: none;
       }
 
       .hero {
-        padding: 80px 20px 40px;
+        padding: 100px 20px 60px;
       }
 
-      section {
-        padding: 60px 20px;
+      .section {
+        padding: 80px 20px;
       }
 
       .hero-stats {
         gap: 30px;
       }
 
-      .projects-grid {
-        grid-template-columns: 1fr;
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
       }
 
-      .skills-grid {
+      .contact-container {
         grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
       }
     }
   </style>
 </head>
 
 <body>
-  <!-- LOADER -->
-  <div id="loader">
-    <div class="loader-logo">H.D.</div>
-    <div class="loader-bar">
-      <div class="loader-bar-fill"></div>
-    </div>
-  </div>
+  <!-- CURSEUR CUSTOM -->
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
 
-  <!-- NAVIGATION -->
-  <nav>
-    <div class="nav-logo">H.D.</div>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo-text">Dan Houdebine</div>
     <ul class="nav-links">
-      <li><a href="#hero" class="nav-link active">Accueil</a></li>
-      <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
+      <li><a href="#portfolio" class="nav-link active">Portfolio</a></li>
       <li><a href="#skills" class="nav-link">Skills</a></li>
       <li><a href="#contact" class="nav-link">Contact</a></li>
     </ul>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero" id="hero">
+  <!-- HERO SECTION -->
+  <section class="hero" id="home">
     <div class="hero-content">
-      <div class="hero-tag">ENVIRONMENT ARTIST SENIOR</div>
-
-      <div class="hero-title">
-        <div class="line1">Bienvenue dans l'univers de</div>
-        <div class="line2">Dan Houdebine</div>
-        <div class="line3">Environment & Prop Artist</div>
-      </div>
-
-      <p class="hero-subtitle">Création d'environnements immersifs et assets haute qualité pour jeux vidéo et projets visuels</p>
-
-      <div class="hero-stats">
-        <div class="stat-item">
-          <div class="stat-number">15+</div>
-          <div class="stat-label">Projets</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">8+</div>
-          <div class="stat-label">Années</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">50+</div>
-          <div class="stat-label">Skills</div>
-        </div>
-      </div>
-
+      <h1>Environment Artist</h1>
+      <p>Spécialisé en création d'environnements photoréalistes pour jeux vidéo et films d'animation</p>
       <div class="hero-buttons">
-        <a href="#portfolio" class="btn btn-primary">VOIR PORTFOLIO</a>
-        <a href="#contact" class="btn btn-secondary">ME CONTACTER</a>
+        <button class="btn">Voir mon portfolio</button>
+        <button class="btn btn-secondary">Me contacter</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-number">500+</div>
+          <div class="stat-label">Assets Créés</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">50+</div>
+          <div class="stat-label">Projets Complétés</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">10+</div>
+          <div class="stat-label">Années Exp.</div>
+        </div>
       </div>
     </div>
-
-    <img src="assets/img/dan.jpg" alt="Dan Houdebine" class="profile-image">
+    <img src="assets/profile.jpg" alt="Profile" class="profile-image">
   </section>
 
-  <!-- PORTFOLIO -->
-  <section id="portfolio">
-    <div class="section-header">
-      <p class="section-eyebrow">// Mes Réalisations</p>
-      <h2 class="section-title">Portfolio</h2>
-      <div class="section-line"></div>
+  <!-- PORTFOLIO SECTION -->
+  <section class="section" id="portfolio">
+    <h2 class="section-title">Portfolio</h2>
+    <div class="portfolio-grid" id="portfolioGrid">
+      <!-- Cards générées par JS -->
     </div>
-
-    <div class="filter-bar">
-      <button class="filter-btn active" onclick="filterProjects('all', this)">Tous</button>
-      <button class="filter-btn" onclick="filterProjects('environment', this)">Environnements</button>
-      <button class="filter-btn" onclick="filterProjects('props', this)">Props</button>
-    </div>
-
-    <div class="projects-grid" id="projectsGrid"></div>
   </section>
 
-  <!-- SKILLS -->
-  <section id="skills">
-    <div class="section-header">
-      <p class="section-eyebrow">// Mon Arsenal</p>
-      <h2 class="section-title">Toolkit</h2>
-      <div class="section-line"></div>
+  <!-- SKILLS SECTION -->
+  <section class="section" id="skills">
+    <h2 class="section-title">Compétences</h2>
+    <div class="skills-container" id="skillsContainer">
+      <!-- Cards générées par JS -->
     </div>
+  </section>
 
-    <div class="category-buttons" id="categoryButtons"></div>
-
-    <div class="skills-grid" id="skillsGrid">
-      <div style="text-align:center;color:var(--text-muted);grid-column:1/-1;padding:3rem;">
-        Chargement des compétences...
+  <!-- CONTACT SECTION -->
+  <section class="section" id="contact">
+    <h2 class="section-title">Contact</h2>
+    <div class="contact-container">
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-icon">📧</div>
+          <div class="contact-text">
+            <h3>Email</h3>
+            <p><a href="mailto:Danhoudebine@gmail.com">Danhoudebine@gmail.com</a></p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">💼</div>
+          <div class="contact-text">
+            <h3>LinkedIn</h3>
+            <p><a href="https://www.linkedin.com/in/danhoudebine/" target="_blank">linkedin.com/in/danhoudebine</a></p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🎨</div>
+          <div class="contact-text">
+            <h3>Artstation</h3>
+            <p><a href="https://www.artstation.com/danhoudebine" target="_blank">artstation.com/danhoudebine</a></p>
+          </div>
+        </div>
       </div>
+      <form class="contact-form">
+        <div class="form-group">
+          <label for="name">Nom</label>
+          <input type="text" id="name" placeholder="Votre nom">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="votre@email.com">
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" placeholder="Votre message..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">Envoyer</button>
+      </form>
     </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="section-header">
-      <p class="section-eyebrow">// Parlons de ton projet</p>
-      <h2 class="section-title">Get In Touch</h2>
-      <div class="section-line"></div>
-    </div>
-
-    <p class="contact-info">Intéressé par une collaboration ou une question ?</p>
-
-    <div class="contact-email" onclick="copyEmail(event)">
-      <span class="contact-value">Danhoudebine[@]gmail.com</span>
-    </div>
-
-    <div class="copy-confirm" id="copyConfirm">✓ Copié !</div>
   </section>
 
   <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-content">
-      <div class="footer-logo">H.D.</div>
-      <div class="footer-tagline">Environment Artist | Unreal Engine Specialist</div>
+      <p class="footer-text">&copy; 2024 Dan Houdebine. Tous droits réservés.</p>
+      <div class="social-links">
+        <a href="https://www.linkedin.com/in/danhoudebine/" target="_blank" class="social-link">💼</a>
+        <a href="https://www.artstation.com/danhoudebine" target="_blank" class="social-link">🎨</a>
+        <a href="mailto:Danhoudebine@gmail.com" class="social-link">📧</a>
+      </div>
     </div>
   </footer>
 
-  <!-- LIGHTBOX -->
-  <div id="lightbox" onclick="closeLightbox(event)">
-    <div class="lightbox-content">
-      <button class="lightbox-close" onclick="closeLightboxBtn()">✕</button>
-      <img id="lightboxImg" class="lightbox-img" src="" alt="Project">
-      <div class="lightbox-info">
-        <h3 class="lightbox-title" id="lightboxTitle"></h3>
-        <div class="lightbox-tools" id="lightboxTools"></div>
-        <a href="#" id="lightboxLink" class="lightbox-btn">Voir sur ArtStation</a>
-      </div>
-    </div>
-  </div>
-
   <script>
     // ═══════════════════════════════════════════
-    // DONNÉES PROJETS
+    // CUSTOM CURSOR
     // ═══════════════════════════════════════════
-    const projects = [
-      { id: 1, title: "The Glimmers of Twilight", category: "environment", tools: ["Unreal Engine", "Blender", "Substance Painter"], img: "assets/portfolio/project1", artstation: "https://www.artstation.com/artwork/nJVWQr" },
-      { id: 2, title: "Sanctum of the Fallen", category: "environment", tools: ["Substance 3D Painter", "Unreal Engine", "3ds Max", "Photoshop"], img: "assets/portfolio/project2", artstation: "https://www.artstation.com/artwork/gRQALE" },
-      { id: 3, title: "The Cursed Legacy – Vue 1", category: "environment", tools: ["Unreal Engine", "Blender", "Substance 3D Painter", "ZBrush"], img: "assets/portfolio/project3", artstation: "https://www.artstation.com/artwork/K3ov1y" },
-      { id: 4, title: "The Cursed Legacy – Vue 2", category: "environment", tools: ["Unreal Engine", "Blender", "Substance 3D Painter", "ZBrush"], img: "assets/portfolio/project4", artstation: "https://www.artstation.com/artwork/K3ov1y" },
-      { id: 5, title: "Dead Line – Vue 1", category: "environment", tools: ["Unreal Engine", "Photoshop", "Substance 3D Painter"], img: "assets/portfolio/project5", artstation: "https://www.artstation.com/artwork/98aqZN" },
-      { id: 6, title: "Dead Line – Vue 2", category: "environment", tools: ["Unreal Engine", "Photoshop", "Substance 3D Painter"], img: "assets/portfolio/project6", artstation: "https://www.artstation.com/artwork/98aqZN" },
-      { id: 7, title: "Forgotten Outpost", category: "environment", tools: ["Unreal Engine", "Blender", "Substance Painter"], img: "assets/portfolio/project7", artstation: "https://www.artstation.com/artwork/example7" },
-      { id: 8, title: "Ancient Ruins", category: "environment", tools: ["Unreal Engine", "3ds Max", "Substance Painter"], img: "assets/portfolio/project8", artstation: "https://www.artstation.com/artwork/example8" },
-      { id: 9, title: "Cyberpunk Street", category: "environment", tools: ["Unreal Engine", "Blender", "Substance Painter"], img: "assets/portfolio/project9", artstation: "https://www.artstation.com/artwork/example9" },
-      { id: 10, title: "Medieval Castle", category: "environment", tools: ["Unreal Engine", "Blender", "Substance 3D Painter"], img: "assets/portfolio/project10", artstation: "https://www.artstation.com/artwork/example10" },
-      { id: 11, title: "Futuristic Hangar", category: "environment", tools: ["Unreal Engine", "Photoshop", "Substance Painter"], img: "assets/portfolio/project11", artstation: "https://www.artstation.com/artwork/ZG18zw" },
-      { id: 12, title: "Old Piano 1875", category: "props", tools: ["Blender", "Substance Painter"], img: "assets/portfolio/project12", artstation: "https://www.artstation.com/artwork/bK1b0n" },
-      { id: 13, title: "Jukebox Wurlitzer 1015", category: "props", tools: ["3ds Max", "Substance Painter"], img: "assets/portfolio/project13", artstation: "https://www.artstation.com/artwork/J90rxa" },
-      { id: 14, title: "Jet Engine", category: "props", tools: ["3ds Max", "Substance Painter"], img: "assets/portfolio/project14", artstation: "https://www.artstation.com/artwork/w0Jbzw" },
-      { id: 15, title: "Exploration of Cubemaps for Level Art", category: "environment", tools: ["Photoshop", "3ds Max", "Unreal Engine", "Substance Painter"], img: "assets/portfolio/project15", artstation: "https://www.artstation.com/artwork/Jv5Z0m", note: "Thanks to Marko Margeta" },
+    const cursor = document.querySelector('.cursor');
+    const cursorFollower = document.querySelector('.cursor-follower');
+
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+      cursorFollower.style.left = (e.clientX - 15) + 'px';
+      cursorFollower.style.top = (e.clientY - 15) + 'px';
+    });
+
+    document.addEventListener('mouseenter', () => {
+      cursor.style.opacity = '1';
+      cursorFollower.style.opacity = '0.5';
+    });
+
+    document.addEventListener('mouseleave', () => {
+      cursor.style.opacity = '0';
+      cursorFollower.style.opacity = '0';
+    });
+
+    // ═══════════════════════════════════════════
+    // NAVBAR SCROLL
+    // ═══════════════════════════════════════════
+    const navbar = document.querySelector('.navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // ═══════════════════════════════════════════
+    // PORTFOLIO DATA
+    // ═══════════════════════════════════════════
+    const portfolioData = [
+      { id: 1, title: 'Environnement Urbain', image: 'assets/portfolio-1.jpg' },
+      { id: 2, title: 'Forêt Enchantée', image: 'assets/portfolio-2.jpg' },
+      { id: 3, title: 'Ruines Anciennes', image: 'assets/portfolio-3.jpg' },
+      { id: 4, title: 'Ville Futuriste', image: 'assets/portfolio-4.jpg' },
+      { id: 5, title: 'Paysage Montagneux', image: 'assets/portfolio-5.jpg' },
+      { id: 6, title: 'Intérieur Moderne', image: 'assets/portfolio-6.jpg' },
     ];
 
     // ═══════════════════════════════════════════
-    // RENDER PROJETS
+    // RENDER PORTFOLIO
     // ═══════════════════════════════════════════
-    function renderProjects(cat = 'all') {
-      const filtered = cat === 'all' ? projects : projects.filter(p => p.category === cat);
-      const grid = document.getElementById('projectsGrid');
-      grid.innerHTML = filtered.map(p => `
-        <div class="project-card" onclick="openLightbox(${p.id})">
-          <img src="${p.img}.jpg" alt="${p.title}" class="project-img" onerror="this.style.display='none'">
-          <div class="project-info">
-            <h3 class="project-title">${p.title}</h3>
-            <div class="project-tools">
-              ${p.tools.map(t => `<span class="tool-tag">${t}</span>`).join('')}
-            </div>
+    function renderProjects() {
+      const grid = document.getElementById('portfolioGrid');
+      grid.innerHTML = portfolioData.map(project => `
+        <div class="portfolio-card" data-id="${project.id}">
+          <img src="${project.image}" alt="${project.title}" class="portfolio-image">
+          <div class="portfolio-overlay">
+            <div class="overlay-text">${project.title}</div>
           </div>
         </div>
       `).join('');
     }
 
-    function filterProjects(cat, btn) {
-      document.querySelectorAll('.filter-bar .filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderProjects(cat);
-    }
-
     // ═══════════════════════════════════════════
-    // LIGHTBOX
+    // SKILLS DATA
     // ═══════════════════════════════════════════
-    function openLightbox(id) {
-      const p = projects.find(x => x.id === id);
-      if (!p) return;
-      document.getElementById('lightboxImg').src = p.img + '.jpg';
-      document.getElementById('lightboxTitle').textContent = p.title;
-      document.getElementById('lightboxTools').innerHTML = p.tools.map(t => `<span class="tool-tag">${t}</span>`).join('');
-      document.getElementById('lightboxLink').href = p.artstation;
-      document.getElementById('lightbox').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeLightbox(e) {
-      if (e.target === document.getElementById('lightbox')) closeLightboxBtn();
-    }
-
-    function closeLightboxBtn() {
-      document.getElementById('lightbox').classList.remove('active');
-      document.body.style.overflow = '';
-    }
-
-    // ═══════════════════════════════════════════
-    // SKILLS
-    // ═══════════════════════════════════════════
-    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ8BWDBerFgMRzV4Kd6GqB5eoLksjiWgVHq-eAmBuSL_YkrCb5yYFreRgyes27Jrg/pub?output=csv';
-
-    const FALLBACK_SKILLS = [
-      { name: 'Unreal Engine 5', cat: 'moteur', maitrise: 'Avancé', niveau: 85 },
-      { name: 'Blender', cat: 'dcc', maitrise: 'Avancé', niveau: 80 },
-      { name: 'Substance 3D Painter', cat: 'texturing', maitrise: 'Avancé', niveau: 85 },
-      { name: 'Photoshop', cat: 'texturing', maitrise: 'Intermédiaire', niveau: 70 },
-      { name: 'ZBrush', cat: 'dcc', maitrise: 'Avancé', niveau: 75 },
-      { name: '3ds Max', cat: 'dcc', maitrise: 'Avancé', niveau: 80 },
-      { name: 'Modélisation 3D', cat: 'dcc', maitrise: 'Expert', niveau: 90 },
-      { name: 'Texturing PBR', cat: 'texturing', maitrise: 'Expert', niveau: 90 },
-      { name: 'Level Design', cat: 'moteur', maitrise: 'Avancé', niveau: 80 },
-      { name: 'Optimisation Assets', cat: 'pipeline', maitrise: 'Avancé', niveau: 75 },
+    const skillsData = [
+      { name: 'Blender', level: 95, category: 'DCC' },
+      { name: 'Substance 3D Painter', level: 90, category: 'Texturing' },
+      { name: 'Unreal Engine 5', level: 85, category: 'Moteur' },
+      { name: 'Terrain Creation', level: 88, category: 'Terrain' },
+      { name: 'UV / Retopology', level: 92, category: 'UV/Retopo' },
+      { name: 'Photogrammetry', level: 80, category: 'Photogrammétrie' },
     ];
 
-    let allSkills = [];
-
-    async function loadSkills() {
-      try {
-        const response = await fetch(SHEET_URL);
-        const csv = await response.text();
-        const lines = csv.trim().split('\n');
-        const skills = [];
-
-        for (let i = 1; i < lines.length; i++) {
-          const [name, cat, maitrise] = lines[i].split(',').map(s => s.trim());
-          if (!name) continue;
-          const niveau = maitriseToPercent(maitrise);
-          skills.push({ name, cat, maitrise, niveau });
-        }
-
-        allSkills = skills.length ? skills : FALLBACK_SKILLS;
-        const uniqueCats = [...new Set(allSkills.map(s => s.cat))].sort();
-        renderCategoryButtons(uniqueCats);
-      } catch (e) {
-        console.warn('Fallback utilisé', e);
-        allSkills = FALLBACK_SKILLS;
-      }
-      renderSkills(allSkills);
-    }
-
-    function renderCategoryButtons(cats) {
-      const container = document.getElementById('categoryButtons');
-      container.innerHTML = cats.map(cat => `
-        <button class="category-btn active" onclick="filterSkills('${cat}', this)">
-          ${cat.toUpperCase()}
-        </button>
-      `).join('');
-    }
-
-    function renderSkills(skills = allSkills) {
-      const grid = document.getElementById('skillsGrid');
-      grid.innerHTML = skills.map(s => `
+    // ═══════════════════════════════════════════
+    // RENDER SKILLS
+    // ═══════════════════════════════════════════
+    function loadSkills() {
+      const container = document.getElementById('skillsContainer');
+      container.innerHTML = skillsData.map(skill => `
         <div class="skill-card">
-          <div class="skill-name">${s.name}</div>
-          <div class="skill-level ${getLevelClass(s.niveau)}">${s.maitrise}</div>
-          <div class="skill-bar-wrap">
-            <div class="skill-bar-track">
-              <div class="skill-bar-fill" style="width: ${s.niveau}%"></div>
-            </div>
-            <div class="skill-pct">${s.niveau}%</div>
+          <div class="skill-header">
+            <span class="skill-name">${skill.name}</span>
+            <span class="skill-level">${skill.level}%</span>
           </div>
-          <span class="skill-badge">${s.cat}</span>
+          <div class="skill-bar">
+            <div class="skill-fill" style="width: ${skill.level}%"></div>
+          </div>
+          <span class="skill-category">${skill.category}</span>
         </div>
       `).join('');
-    }
-
-    function getLevelClass(niveau) {
-      if (niveau >= 75) return 'level-operationnel';
-      if (niveau >= 50) return 'level-apprentissage';
-      return 'level-decouverte';
-    }
-
-    function filterSkills(cat, btn) {
-      document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const filtered = allSkills.filter(s => s.cat === cat);
-      renderSkills(filtered);
-    }
-
-    function maitriseToPercent(val) {
-      if (!val) return 0;
-      val = val.toLowerCase().trim();
-
-      const map = {
-        'découverte': 20,
-        'débutant': 30,
-        'notions': 35,
-        'intermédiaire': 60,
-        'avancé': 75,
-        'expert': 90,
-        'maîtrise': 95
-      };
-
-      return map[val] || 0;
-    }
-
-    // ═══════════════════════════════════════════
-    // CONTACT
-    // ═══════════════════════════════════════════
-    function copyEmail(event) {
-      navigator.clipboard.writeText('Danhoudebine@gmail.com').then(() => {
-        const confirm = document.getElementById('copyConfirm');
-        confirm.classList.add('visible');
-        setTimeout(() => confirm.classList.remove('visible'), 2000);
-      });
     }
 
     // ═══════════════════════════════════════════
@@ -1244,11 +963,6 @@
     document.addEventListener('DOMContentLoaded', () => {
       renderProjects();
       loadSkills();
-
-      // Hide loader
-      setTimeout(() => {
-        document.getElementById('loader').classList.add('hidden');
-      }, 1000);
 
       // Active nav link on scroll
       const sections = document.querySelectorAll('section');
