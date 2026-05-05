@@ -1,249 +1,1482 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio — Environment Artist Senior</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dan Houdebine – Environment Artist</title>
+  <link rel="icon" href="assets/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #00d4ff;
+      --secondary: #7b2fff;
+      --accent: #ff6b35;
+      --bg-dark: #050a0e;
+      --bg-card: #0a1628;
+      --bg-card2: #0d1f3c;
+      --text: #e0e8f0;
+      --text-dim: #8899aa;
+      --glow: 0 0 20px rgba(0,212,255,0.3);
+      --glow-strong: 0 0 40px rgba(0,212,255,0.6);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 16px;
+      overflow-x: hidden;
+    }
+
+    /* Fond animé */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: 
+        radial-gradient(ellipse at 20% 50%, rgba(123,47,255,0.05) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(0,212,255,0.05) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ═══════════════ NAV ═══════════════ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 3rem;
+      background: rgba(5,10,14,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,212,255,0.15);
+    }
+
+    .nav-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--primary);
+      text-shadow: var(--glow);
+      letter-spacing: 3px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--primary);
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--primary); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ═══════════════ HERO ═══════════════ */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 8rem 6rem 4rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content {
+      display: flex;
+      align-items: center;
+      gap: 6rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .hero-text { flex: 1; }
+
+    .hero-tag {
+      font-size: 0.75rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .hero-tag::before {
+      content: '';
+      width: 40px; height: 1px;
+      background: var(--primary);
+      box-shadow: var(--glow);
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    h1 .name { color: var(--text); }
+    h1 .lastname {
+      color: var(--primary);
+      text-shadow: var(--glow-strong);
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: var(--secondary);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+
+    .hero-desc {
+      color: var(--text-dim);
+      line-height: 1.8;
+      max-width: 500px;
+      margin-bottom: 2.5rem;
+      font-size: 1.05rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      padding: 0.8rem 2rem;
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s;
+      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      background: rgba(0,212,255,0.1);
+      box-shadow: var(--glow);
+    }
+
+    .btn-secondary {
+      padding: 0.8rem 2rem;
+      background: rgba(123,47,255,0.15);
+      border: 1px solid var(--secondary);
+      color: var(--text);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s;
+      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+      display: inline-block;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(123,47,255,0.3);
+      box-shadow: 0 0 20px rgba(123,47,255,0.4);
+    }
+
+    /* Photo profil */
+    .hero-photo {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .photo-frame {
+      width: 280px;
+      height: 280px;
+      position: relative;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      clip-path: polygon(20px 0%, 100% 0%, calc(100% - 20px) 100%, 0% 100%);
+      filter: grayscale(20%) contrast(1.1);
+    }
+
+    .photo-frame::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      clip-path: polygon(20px 0%, 100% 0%, calc(100% - 20px) 100%, 0% 100%);
+      z-index: -1;
+    }
+
+    .photo-frame::after {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border: 1px solid rgba(0,212,255,0.2);
+      clip-path: polygon(25px 0%, 100% 0%, calc(100% - 25px) 100%, 0% 100%);
+    }
+
+    .photo-badge {
+      position: absolute;
+      bottom: -15px;
+      right: -15px;
+      background: var(--bg-card);
+      border: 1px solid var(--primary);
+      padding: 0.5rem 1rem;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.65rem;
+      color: var(--primary);
+      letter-spacing: 1px;
+      box-shadow: var(--glow);
+    }
+
+    /* Stats hero */
+    .hero-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-shadow: var(--glow);
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    /* ═══════════════ SECTIONS ═══════════════ */
+    section {
+      padding: 6rem 6rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-tag {
+      font-size: 0.7rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 60%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      margin: 0.5rem auto 0;
+    }
+
+    /* ═══════════════ PORTFOLIO ═══════════════ */
+    #portfolio { background: rgba(10,22,40,0.3); }
+
+    .filter-bar {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 0.5rem 1.5rem;
+      background: transparent;
+      border: 1px solid rgba(0,212,255,0.3);
+      color: var(--text-dim);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: rgba(0,212,255,0.1);
+      border-color: var(--primary);
+      color: var(--primary);
+      box-shadow: var(--glow);
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0,212,255,0.1);
+      overflow: hidden;
+      transition: all 0.4s;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .project-card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--glow), inset 0 0 30px rgba(0,212,255,0.03);
+      transform: translateY(-4px);
+    }
+
+    .project-card.hidden { display: none; }
+
+    .card-image {
+      position: relative;
+      overflow: hidden;
+      height: 220px;
+    }
+
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+
+    .project-card:hover .card-image img {
+      transform: scale(1.05);
+    }
+
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(5,10,14,0.9) 0%, transparent 60%);
+    }
+
+    .card-category {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      background: rgba(0,212,255,0.15);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .card-body {
+      padding: 1.2rem 1.5rem 1.5rem;
+    }
+
+    .card-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      color: var(--text);
+    }
+
+    .card-desc {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .card-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tool-tag {
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      padding: 0.2rem 0.6rem;
+      background: rgba(123,47,255,0.15);
+      border: 1px solid rgba(123,47,255,0.3);
+      color: #a78bfa;
+      text-transform: uppercase;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(5,10,14,0.95);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .lightbox.active { display: flex; }
+
+    .lightbox-content {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+    }
+
+    .lightbox-content img {
+      max-width: 100%;
+      max-height: 85vh;
+      object-fit: contain;
+      border: 1px solid rgba(0,212,255,0.3);
+      box-shadow: var(--glow-strong);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .lightbox-info {
+      padding: 1rem;
+      background: var(--bg-card);
+      border: 1px solid rgba(0,212,255,0.1);
+      border-top: none;
+    }
+
+    .lightbox-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      color: var(--primary);
+      margin-bottom: 0.3rem;
+    }
+
+    .lightbox-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+    }
+
+    /* ═══════════════ SKILLS ═══════════════ */
+    #skills { }
+
+    .skills-container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .skills-filter {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .skill-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0,212,255,0.08);
+      padding: 1.2rem 1.5rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--primary);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .skill-card:hover { border-color: rgba(0,212,255,0.3); }
+    .skill-card:hover::before { opacity: 1; }
+
+    .skill-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.8rem;
+    }
+
+    .skill-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .skill-level-text {
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .skill-level-text.expert { color: #00d4ff; }
+    .skill-level-text.avance { color: #7b2fff; }
+    .skill-level-text.intermediaire { color: #ff6b35; }
+    .skill-level-text.notions { color: #8899aa; }
+
+    .skill-cat {
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    .skill-bar {
+      height: 4px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      box-shadow: 0 0 10px rgba(0,212,255,0.5);
+      transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0%;
+    }
+
+    /* ═══════════════ ABOUT ═══════════════ */
+    #about { background: rgba(10,22,40,0.3); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--text-dim);
+      line-height: 1.9;
+      margin-bottom: 1.2rem;
+      font-size: 1.05rem;
+    }
+
+    .about-text p strong {
+      color: var(--primary);
+    }
+
+    .about-info {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid rgba(0,212,255,0.1);
+      border-left: 3px solid var(--primary);
+    }
+
+    .info-label {
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      min-width: 100px;
+    }
+
+    .info-value {
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    /* ═══════════════ CONTACT ═══════════════ */
+    #contact { }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .contact-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0,212,255,0.1);
+      padding: 2rem;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: block;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--primary);
+      transition: width 0.3s;
+    }
+
+    .contact-card:hover::after { width: 100%; }
+
+    .contact-card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--glow);
+      transform: translateY(-3px);
+    }
+
+    .contact-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .contact-label {
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-value {
+      color: var(--primary);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+    }
+
+    /* CV download */
+    .cv-section {
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    .btn-cv {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 1rem 3rem;
+      background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(123,47,255,0.1));
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.3s;
+      clip-path: polygon(15px 0%, 100% 0%, calc(100% - 15px) 100%, 0% 100%);
+    }
+
+    .btn-cv:hover {
+      background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(123,47,255,0.2));
+      box-shadow: var(--glow-strong);
+    }
+
+    /* ═══════════════ FOOTER ═══════════════ */
+    footer {
+      background: rgba(5,10,14,0.9);
+      border-top: 1px solid rgba(0,212,255,0.1);
+      padding: 2rem 6rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      color: var(--primary);
+      letter-spacing: 3px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .footer-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover { color: var(--primary); }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+    }
+
+    /* ═══════════════ SCROLL INDICATOR ═══════════════ */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-dim);
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, var(--primary), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    /* ═══════════════ LOADING SCREEN ═══════════════ */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-dark);
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.5s, visibility 0.5s;
+    }
+
+    #loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--primary);
+      text-shadow: var(--glow-strong);
+      letter-spacing: 5px;
+      margin-bottom: 2rem;
+    }
+
+    .loader-bar {
+      width: 200px;
+      height: 2px;
+      background: rgba(0,212,255,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .loader-bar::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      animation: loaderAnim 1s ease-in-out forwards;
+    }
+
+    @keyframes loaderAnim {
+      to { left: 100%; }
+    }
+
+    /* ═══════════════ RESPONSIVE ═══════════════ */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      #hero { padding: 7rem 2rem 4rem; }
+      .hero-content { flex-direction: column-reverse; gap: 3rem; text-align: center; }
+      h1 { font-size: 2.5rem; }
+      .hero-desc { margin: 0 auto 2rem; }
+      .hero-buttons { justify-content: center; }
+      .hero-stats { justify-content: center; }
+      section { padding: 4rem 2rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .contact-grid { grid-template-columns: 1fr; max-width: 400px; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem; }
+      .portfolio-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
-    <!-- CURSEUR CUSTOM -->
-    <div class="cursor"></div>
-    <div class="cursor-follower"></div>
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">H.D.</div>
+  <div class="loader-bar"></div>
+</div>
 
-    <!-- NAVIGATION -->
-    <nav class="navbar">
-        <div class="nav-logo">
-            <span class="logo-text"><span class="accent">[</span>H<span class="accent">.</span>D<span class="accent">.]</span></span>
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">H.D.</div>
+  <ul class="nav-links">
+    <li><a href="#hero">Accueil</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#skills">Compétences</a></li>
+    <li><a href="#about">À Propos</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-tag">Environment Artist</div>
+      <h1>
+        <span class="name">Dan </span><br>
+        <span class="lastname">Houdebine</span>
+      </h1>
+      <div class="hero-subtitle">Senior 3D Artist</div>
+      <p class="hero-desc">
+        Spécialisé dans la création d'environnements 3D immersifs pour le jeu vidéo et la visualisation. 
+        Expert en modélisation, texturing et intégration temps réel.
+      </p>
+      <div class="hero-buttons">
+        <a href="#portfolio" class="btn-primary">Voir le Portfolio</a>
+        <a href="assets/CV_Dan_HoudebineFR.pdf" download class="btn-secondary">⬇ Télécharger CV</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">15</div>
+          <div class="stat-label">Projets</div>
         </div>
-        <ul class="nav-links">
-            <li><a href="#home" class="nav-link active">Accueil</a></li>
-            <li><a href="#projets" class="nav-link">Projets</a></li>
-            <li><a href="#competences" class="nav-link">Compétences</a></li>
-            <li><a href="#stats" class="nav-link">Stats</a></li>
-            <li><a href="#contact" class="nav-link">Contact</a></li>
-        </ul>
-        <div class="nav-toggle">
-            <span></span><span></span><span></span>
+        <div class="stat">
+          <div class="stat-num">8+</div>
+          <div class="stat-label">Logiciels</div>
         </div>
-    </nav>
-
-    <!-- SECTION HERO -->
-    <section id="home" class="hero">
-        <div class="hero-bg">
-            <div class="grid-overlay"></div>
-            <div class="particles" id="particles"></div>
+        <div class="stat">
+          <div class="stat-num">3D</div>
+          <div class="stat-label">Expert</div>
         </div>
-        <div class="hero-content">
-            <div class="hero-tag">// ENVIRONMENT ARTIST SENIOR</div>
-            <h1 class="hero-title">
-                <span class="line1">Créateur de</span>
-                <span class="line2 accent-text">Mondes</span>
-                <span class="line3">Numériques</span>
-            </h1>
-            <p class="hero-subtitle">
-                Spécialisé dans la création d'environnements 3D AAA<br>
-                Blender · Unreal Engine 5 · ZBrush · Substance 3D
-            </p>
-            <div class="hero-stats">
-                <div class="stat-item" id="stat-outils">
-                    <span class="stat-number" data-target="66">0</span>
-                    <span class="stat-label">Outils maîtrisés</span>
-                </div>
-                <div class="stat-item" id="stat-expert">
-                    <span class="stat-number" data-target="36">0</span>
-                    <span class="stat-label">Niveau Expert</span>
-                </div>
-                <div class="stat-item" id="stat-studios">
-                    <span class="stat-number" data-target="25">0</span>
-                    <span class="stat-label">Studios analysés</span>
-                </div>
-            </div>
-            <div class="hero-buttons">
-                <a href="#projets" class="btn btn-primary">Voir mes projets</a>
-                <a href="#competences" class="btn btn-secondary">Mes compétences</a>
-            </div>
-        </div>
-        <div class="scroll-indicator">
-            <div class="scroll-line"></div>
-            <span>Scroll</span>
-        </div>
-    </section>
-
-    <!-- SECTION PROJETS -->
-    <section id="projets" class="section projets">
-        <div class="section-header">
-            <span class="section-tag">// 01</span>
-            <h2 class="section-title">Mes <span class="accent-text">Projets</span></h2>
-            <p class="section-subtitle">Environnements 3D — Scènes — Worlds</p>
-        </div>
-        <div class="projets-grid" id="projets-grid">
-            <!-- Projets à ajouter manuellement -->
-            <div class="projet-card">
-                <div class="projet-img-placeholder">
-                    <span>+ Ajouter projet</span>
-                </div>
-                <div class="projet-info">
-                    <h3>Nom du projet</h3>
-                    <p>Description courte</p>
-                    <div class="projet-tags">
-                        <span class="tag">Blender</span>
-                        <span class="tag">UE5</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION COMPÉTENCES (lié Google Sheet) -->
-    <section id="competences" class="section competences">
-        <div class="section-header">
-            <span class="section-tag">// 02</span>
-            <h2 class="section-title">Mes <span class="accent-text">Compétences</span></h2>
-            <p class="section-subtitle">Données synchronisées depuis Google Sheet</p>
-        </div>
-
-        <!-- FILTRES PAR CATÉGORIE -->
-        <div class="filter-tabs" id="filter-tabs">
-            <button class="filter-btn active" data-filter="all">Tous</button>
-            <!-- généré dynamiquement -->
-        </div>
-
-        <!-- GRILLE DES COMPÉTENCES -->
-        <div class="skills-grid" id="skills-grid">
-            <div class="loading-skills">
-                <div class="loader"></div>
-                <span>Chargement des données...</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION STATS (lié Google Sheet) -->
-    <section id="stats" class="section stats-section">
-        <div class="section-header">
-            <span class="section-tag">// 03</span>
-            <h2 class="section-title">Mes <span class="accent-text">Statistiques</span></h2>
-            <p class="section-subtitle">Vue globale de mon toolkit</p>
-        </div>
-        <div class="stats-grid" id="stats-grid">
-            <!-- généré dynamiquement -->
-        </div>
-
-        <!-- GRAPHIQUE CAMEMBERT PAR CATÉGORIE -->
-        <div class="chart-container">
-            <h3 class="chart-title">Répartition par catégorie</h3>
-            <div class="donut-chart" id="donut-chart"></div>
-        </div>
-    </section>
-
-    <!-- CONTACT -->
-<section id="contact" class="section">
-    <div class="container">
-        <p class="section-tag">// 05</p>
-        <h2 class="section-title">Me <span class="accent">Contacter</span></h2>
-        <p class="section-sub">Disponible pour des opportunités freelance ou en studio</p>
-
-        <div class="contact-grid">
-
-            <!-- EMAIL -->
-            <div class="contact-card">
-                <div class="contact-icon">✉️</div>
-                <h3 class="contact-label">Email</h3>
-                <p class="contact-email">
-                    Danhoudebine
-                    <span class="at-bracket">[</span>
-                    <span class="at-sign">@</span>
-                    <span class="at-bracket">]</span>
-                    gmail.com
-                </p>
-                <button class="btn btn-primary copy-email-btn" onclick="copyEmail()">
-                    Copier l'adresse
-                </button>
-            </div>
-
-            <!-- ARTSTATION -->
-            <div class="contact-card">
-                <div class="contact-icon">🎨</div>
-                <h3 class="contact-label">ArtStation</h3>
-                <p class="contact-info">Portfolio & Projets 3D</p>
-                <a href="https://www.artstation.com/danhoudebine" 
-                   target="_blank" 
-                   rel="noopener noreferrer"
-                   class="btn btn-primary">
-                    Voir le Portfolio →
-                </a>
-            </div>
-
-            <!-- LINKEDIN -->
-            <div class="contact-card">
-                <div class="contact-icon">💼</div>
-                <h3 class="contact-label">LinkedIn</h3>
-                <p class="contact-info">Profil Professionnel</p>
-                <a href="https://www.linkedin.com/in/danhoudebine/" 
-                   target="_blank" 
-                   rel="noopener noreferrer"
-                   class="btn btn-secondary">
-                    Me Contacter →
-                </a>
-            </div>
-
-        </div>
-
-        <!-- MESSAGE COPIE -->
-        <div class="copy-confirm" id="copy-confirm">
-            ✅ Email copié dans le presse-papiers !
-        </div>
-
+      </div>
     </div>
+
+    <div class="hero-photo">
+      <div class="photo-frame">
+        <img src="assets/img/dan.jpg" alt="Dan Houdebine">
+      </div>
+      <div class="photo-badge">Environment Artist</div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
 </section>
 
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="section-header">
+    <div class="section-tag">// Mes Réalisations</div>
+    <h2 class="section-title">Portfolio</h2>
+  </div>
 
-    <!-- FOOTER -->
-<footer class="footer">
-    <div class="container">
-        <div class="footer-content">
-	<span class="logo-text">
-	<span class="accent">[</span>H<span class="accent">.</span>D<span class="accent">.]
-		</span>
-	</span>
-		<p class="footer-tagline">Environment Artist Senior</p>
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterProjects('all')">Tous</button>
+    <button class="filter-btn" onclick="filterProjects('Environment')">Environment</button>
+    <button class="filter-btn" onclick="filterProjects('Props')">Props</button>
+  </div>
 
-            <!-- Liens sociaux footer -->
-            <div class="footer-socials">
-                <a href="https://www.artstation.com/danhoudebine" 
-                   target="_blank" 
-                   rel="noopener noreferrer"
-                   class="footer-social-link">
-                    ArtStation
-                </a>
-                <span class="footer-sep">·</span>
-                <a href="https://www.linkedin.com/in/danhoudebine/" 
-                   target="_blank" 
-                   rel="noopener noreferrer"
-                   class="footer-social-link">
-                    LinkedIn
-                </a>
-                <span class="footer-sep">·</span>
-                <!-- Email affiché de façon anti-spam -->
-                <span class="footer-email">
-                    Danhoudebine
-                    <span class="at-bracket">[</span>@<span class="at-bracket">]</span>
-                    gmail.com
-                </span>
-            </div>
+  <div class="portfolio-grid" id="portfolioGrid">
+    <!-- Les cards sont générées en JS -->
+  </div>
+</section>
 
-            <p class="footer-copy">
-                © 2025 Dan Houdebine — Tous droits réservés
-            </p>
-        </div>
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lightbox-content">
+    <button class="lightbox-close" onclick="closeLightbox()">✕ FERMER</button>
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-info">
+      <div class="lightbox-title" id="lightboxTitle"></div>
+      <div id="lightboxDesc" style="font-size:0.85rem;color:var(--text-dim);margin:0.3rem 0;"></div>
+      <div class="lightbox-tools" id="lightboxTools"></div>
     </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header">
+    <div class="section-tag">// Maîtrise Logiciels</div>
+    <h2 class="section-title">Compétences</h2>
+  </div>
+
+  <div class="skills-container">
+    <div class="skills-filter filter-bar" id="skillsFilter">
+      <button class="filter-btn active" onclick="filterSkills('all', this)">Tous</button>
+    </div>
+    <div class="skills-grid" id="skillsGrid">
+      <div style="color:var(--text-dim);text-align:center;grid-column:1/-1;padding:2rem;">
+        Chargement des compétences depuis Google Sheets...
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header">
+    <div class="section-tag">// Qui suis-je ?</div>
+    <h2 class="section-title">À Propos</h2>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-text">
+      <p>
+        Passionné par la création de <strong>mondes virtuels immersifs</strong>, je suis Environment Artist 3D Senior 
+        avec une expertise approfondie dans les pipelines de production jeu vidéo.
+      </p>
+      <p>
+        Mon approche combine <strong>précision technique</strong> et <strong>sensibilité artistique</strong> pour 
+        créer des environnements qui racontent une histoire et transportent le joueur dans un univers cohérent.
+      </p>
+      <p>
+        De la modélisation low-poly optimisée au texturing PBR avancé, en passant par l'intégration 
+        dans <strong>Unreal Engine</strong>, je maîtrise l'ensemble du pipeline de création 3D.
+      </p>
+      <div style="margin-top:2rem;">
+        <a href="assets/CV_Dan_HoudebineFR.pdf" download class="btn-cv">⬇ Télécharger mon CV</a>
+      </div>
+    </div>
+
+    <div class="about-info">
+      <div class="info-item">
+        <span class="info-label">Spécialité</span>
+        <span class="info-value">Environment Art 3D</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Moteur</span>
+        <span class="info-value">Unreal Engine 5</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Logiciels</span>
+        <span class="info-value">Blender · 3ds Max · ZBrush</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Texturing</span>
+        <span class="info-value">Substance 3D Painter</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">ArtStation</span>
+        <span class="info-value">
+          <a href="https://www.artstation.com/danhoudebine" target="_blank" style="color:var(--primary);text-decoration:none;">
+            danhoudebine →
+          </a>
+        </span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">LinkedIn</span>
+        <span class="info-value">
+          <a href="https://www.linkedin.com/in/danhoudebine/" target="_blank" style="color:var(--primary);text-decoration:none;">
+            Dan Houdebine →
+          </a>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <div class="section-tag">// Me Contacter</div>
+    <h2 class="section-title">Contact</h2>
+  </div>
+
+  <div class="contact-grid">
+    <div class="contact-card" onclick="copyEmail()" style="cursor:pointer;">
+      <div class="contact-icon">✉️</div>
+      <div class="contact-label">Email</div>
+      <div class="contact-value">Danhoudebine[@]gmail.com</div>
+      <div style="font-size:0.7rem;color:var(--text-dim);margin-top:0.5rem;">(Cliquer pour copier)</div>
+    </div>
+
+    <a href="https://www.artstation.com/danhoudebine" target="_blank" class="contact-card">
+      <div class="contact-icon">🎨</div>
+      <div class="contact-label">ArtStation</div>
+      <div class="contact-value">danhoudebine</div>
+      <div style="font-size:0.7rem;color:var(--text-dim);margin-top:0.5rem;">Voir le portfolio →</div>
+    </a>
+
+    <a href="https://www.linkedin.com/in/danhoudebine/" target="_blank" class="contact-card">
+      <div class="contact-icon">💼</div>
+      <div class="contact-label">LinkedIn</div>
+      <div class="contact-value">Dan Houdebine</div>
+      <div style="font-size:0.7rem;color:var(--text-dim);margin-top:0.5rem;">Me contacter →</div>
+    </a>
+  </div>
+
+  <div class="cv-section">
+    <a href="assets/CV_Dan_HoudebineFR.pdf" download class="btn-cv">
+      ⬇ Télécharger mon CV
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">H.D.</div>
+  <div class="footer-links">
+    <a href="https://www.artstation.com/danhoudebine" target="_blank">ArtStation</a>
+    <a href="https://www.linkedin.com/in/danhoudebine/" target="_blank">LinkedIn</a>
+    <a href="assets/CV_Dan_HoudebineFR.pdf" download>CV</a>
+  </div>
+  <div class="footer-copy">© 2025 Dan Houdebine — All rights reserved</div>
 </footer>
 
+<script>
+// ═══════════════════════════════════════════
+// DONNÉES PROJETS
+// ═══════════════════════════════════════════
+const projects = [
+  {
+    id: 1,
+    title: "The Glimmers of Twilight",
+    desc: "",
+    category: "Environment",
+    tools: ["Unreal Engine", "Blender", "Substance Painter"],
+    img: "assets/portfolio/project1.png"
+  },
+  {
+    id: 2,
+    title: "Sanctum of the Fallen",
+    desc: "",
+    category: "Environment",
+    tools: ["Substance 3D Painter", "Unreal Engine", "3ds Max", "Photoshop"],
+    img: "assets/portfolio/project2.png"
+  },
+  {
+    id: 3,
+    title: "The Cursed Legacy of the Aristocrat",
+    desc: "Vue 1",
+    category: "Environment",
+    tools: ["Unreal Engine", "Blender", "Substance 3D Painter", "ZBrush"],
+    img: "assets/portfolio/project3.png"
+  },
+  {
+    id: 4,
+    title: "The Cursed Legacy of the Aristocrat",
+    desc: "Vue 2",
+    category: "Environment",
+    tools: ["Unreal Engine", "Blender", "Substance 3D Painter", "ZBrush"],
+    img: "assets/portfolio/project4.png"
+  },
+  {
+    id: 5,
+    title: "Dead Line",
+    desc: "Vue 1",
+    category: "Environment",
+    tools: ["Unreal Engine", "Photoshop", "Substance 3D Painter"],
+    img: "assets/portfolio/project5.png"
+  },
+  {
+    id: 6,
+    title: "Dead Line",
+    desc: "Vue 2",
+    category: "Environment",
+    tools: ["Unreal Engine", "Photoshop", "Substance 3D Painter"],
+    img: "assets/portfolio/project6.png"
+  },
+  {
+    id: 7,
+    title: "The Beast of the Forgotten Tunnel",
+    desc: "",
+    category: "Environment",
+    tools: ["Unreal Engine", "3ds Max", "Blender", "Photoshop", "Substance 3D Painter"],
+    img: "assets/portfolio/project7.png"
+  },
+  {
+    id: 8,
+    title: "Lost Temple",
+    desc: "",
+    category: "Environment",
+    tools: ["Unreal Engine", "Photoshop", "Substance 3D Painter"],
+    img: "assets/portfolio/project8.png"
+  },
+  {
+    id: 9,
+    title: "A Plague Tale Inspiration",
+    desc: "",
+    category: "Environment",
+    tools: ["Unreal Engine", "SpeedTree", "Photoshop", "Blender", "ZBrush"],
+    img: "assets/portfolio/project9.png"
+  },
+  {
+    id: 10,
+    title: "Colt M1911",
+    desc: "",
+    category: "Props",
+    tools: ["3ds Max", "Substance Painter", "Photoshop"],
+    img: "assets/portfolio/project10.png"
+  },
+  {
+    id: 11,
+    title: "FN Scar-L",
+    desc: "",
+    category: "Props",
+    tools: ["3ds Max", "Substance Painter", "Photoshop"],
+    img: "assets/portfolio/project11.png"
+  },
+  {
+    id: 12,
+    title: "Old Piano 1875",
+    desc: "",
+    category: "Props",
+    tools: ["Blender", "Substance Painter"],
+    img: "assets/portfolio/project12.png"
+  },
+  {
+    id: 13,
+    title: "Jukebox Wurlitzer 1015",
+    desc: "",
+    category: "Props",
+    tools: ["3ds Max", "Substance Painter"],
+    img: "assets/portfolio/project13.png"
+  },
+  {
+    id: 14,
+    title: "Jet Engine",
+    desc: "",
+    category: "Props",
+    tools: ["3ds Max", "Substance Painter"],
+    img: "assets/portfolio/project14.png"
+  },
+  {
+    id: 15,
+    title: "Exploration of Cubemaps for Level Art",
+    desc: "Thanks to Marko Margeta",
+    category: "Environment",
+    tools: ["Photoshop", "3ds Max", "Unreal Engine", "Substance Painter"],
+    img: "assets/portfolio/project15.png"
+  }
+];
 
-    <script src="js/sheets.js"></script>
-    <script src="js/main.js"></script>
+// Extensions alternatives (jpg si png manquant)
+function getImagePath(project) {
+  return project.img;
+}
+
+// ═══════════════════════════════════════════
+// GÉNÉRATION PORTFOLIO
+// ═══════════════════════════════════════════
+function renderProjects(filter = 'all') {
+  const grid = document.getElementById('portfolioGrid');
+  grid.innerHTML = '';
+
+  const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter);
+
+  filtered.forEach(p => {
+    const tools = p.tools.map(t => `<span class="tool-tag">${t}</span>`).join('');
+    const descHtml = p.desc ? `<div class="card-desc">${p.desc}</div>` : '';
+
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    card.innerHTML = `
+      <div class="card-image">
+        <img src="${p.img}" alt="${p.title}" onerror="this.src='assets/portfolio/project${p.id}.jpg'">
+        <div class="card-overlay"></div>
+        <span class="card-category">${p.category}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-title">${p.title}</div>
+        ${descHtml}
+        <div class="card-tools">${tools}</div>
+      </div>
+    `;
+    card.onclick = () => openLightbox(p);
+    grid.appendChild(card);
+  });
+}
+
+function filterProjects(cat) {
+  document.querySelectorAll('.filter-bar .filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderProjects(cat);
+}
+
+// ═══════════════════════════════════════════
+// LIGHTBOX
+// ═══════════════════════════════════════════
+function openLightbox(p) {
+  document.getElementById('lightboxImg').src = p.img;
+  document.getElementById('lightboxImg').onerror = function() {
+    this.src = `assets/portfolio/project${p.id}.jpg`;
+  };
+  document.getElementById('lightboxTitle').textContent = p.title;
+  document.getElementById('lightboxDesc').textContent = p.desc || '';
+  document.getElementById('lightboxTools').innerHTML = p.tools.map(t => `<span class="tool-tag">${t}</span>`).join('');
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox(e) {
+  if (!e || e.target === document.getElementById('lightbox') || e.target.classList.contains('lightbox-close')) {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox({ target: document.getElementById('lightbox') });
+});
+
+// ═══════════════════════════════════════════
+// GOOGLE SHEETS → SKILLS
+// ═══════════════════════════════════════════
+
+// 🔧 REMPLACE PAR TON URL :
+// Format : https://docs.google.com/spreadsheets/d/TON_ID/gviz/tq?tqx=out:json&sheet=NOM_ONGLET
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1LfDDyMi36kDBhq3V8sVttipoajdN-faH/edit?gid=77125513#gid=77125513';
+
+// Mapping niveau → %
+const levelMap = {
+  'expert': 95,
+  'avancé': 80, 'avance': 80,
+  'intermédiaire': 60, 'intermediaire': 60,
+  'notions': 35,
+};
+
+function getLevelClass(level) {
+  const l = level.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  if (l.includes('expert')) return 'expert';
+  if (l.includes('avan')) return 'avance';
+  if (l.includes('interm')) return 'intermediaire';
+  return 'notions';
+}
+
+function getLevelPct(level) {
+  const l = level.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  for (const [key, val] of Object.entries(levelMap)) {
+    if (l.includes(key)) return val;
+  }
+  return 30;
+}
+
+async function loadSkillsFromSheet() {
+  if (!SHEET_URL || SHEET_URL.includes('REMPLACE')) {
+    loadFallbackSkills();
+    return;
+  }
+
+  try {
+    const res = await fetch(SHEET_URL);
+    const text = await res.text();
+    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\)/)[1]);
+    const rows = json.table.rows;
+    const cols = json.table.cols.map(c => c.label.toLowerCase());
+
+    const skills = rows.map(row => ({
+      name: row.c[0]?.v || '',
+      category: row.c[1]?.v || 'Autre',
+      level: row.c[2]?.v || 'Notions',
+    })).filter(s => s.name);
+
+    renderSkills(skills);
+  } catch (e) {
+    console.warn('Google Sheet non accessible, données de secours chargées.');
+    loadFallbackSkills();
+  }
+}
+
+// Données de secours si le sheet n'est pas configuré
+function loadFallbackSkills() {
+  const skills = [
+    { name: 'Unreal Engine 5', category: 'Moteur de jeu', level: 'Expert' },
+    { name: 'Blender', category: 'DCC 3D', level: 'Expert' },
+    { name: '3ds Max', category: 'DCC 3D', level: 'Avancé' },
+    { name: 'ZBrush', category: 'Sculpture', level: 'Avancé' },
+    { name: 'Substance 3D Painter', category: 'Texturing', level: 'Expert' },
+    { name: 'Substance 3D Designer', category: 'Texturing', level: 'Avancé' },
+    { name: 'Photoshop', category: 'Post-production', level: 'Avancé' },
+    { name: 'SpeedTree', category: 'Végétation', level: 'Intermédiaire' },
+  ];
+  renderSkills(skills);
+}
+
+function renderSkills(skills) {
+  const grid = document.getElementById('skillsGrid');
+  const filterEl = document.getElementById('skillsFilter');
+  grid.innerHTML = '';
+
+  // Catégories uniques
+  const cats = [...new Set(skills.map(s => s.category))];
+  filterEl.innerHTML = `<button class="filter-btn active" onclick="filterSkills('all', this)">Tous</button>`;
+  cats.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.textContent = cat;
+    btn.onclick = function() { filterSkills(cat, this); };
+    filterEl.appendChild(btn);
+  });
+
+  skills.forEach(skill => {
+    const pct = getLevelPct(skill.level);
+    const cls = getLevelClass(skill.level);
+
+    const card = document.createElement('div');
+    card.className = 'skill-card';
+    card.dataset.cat = skill.category;
+    card.innerHTML = `
+      <div class="skill-header">
+        <div class="skill-name">${skill.name}</div>
+        <div class="skill-level-text ${cls}">${skill.level}</div>
+      </div>
+      <div class="skill-cat">${skill.category}</div>
+      <div class="skill-bar">
+        <div class="skill-bar-fill" data-pct="${pct}" style="width:0%"></div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // Animation barres
+  setTimeout(() => {
+    document.querySelectorAll('.skill-bar-fill').forEach(bar => {
+      bar.style.width = bar.dataset.pct + '%';
+    });
+  }, 300);
+}
+
+function filterSkills(cat, btn) {
+  document.querySelectorAll('#skillsFilter .filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  document.querySelectorAll('.skill-card').forEach(card => {
+    card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+  });
+}
+
+// ═══════════════════════════════════════════
+// COPY EMAIL
+// ═══════════════════════════════════════════
+function copyEmail() {
+  navigator.clipboard.writeText('Danhoudebine@gmail.com').then(() => {
+    const el = event.currentTarget;
+    const orig = el.querySelector('.contact-value').textContent;
+    el.querySelector('.contact-value').textContent = '✓ Copié !';
+    setTimeout(() => {
+      el.querySelector('.contact-value').textContent = orig;
+    }, 2000);
+  });
+}
+
+// ═══════════════════════════════════════════
+// INTERSECTION OBSERVER (animations)
+// ═══════════════════════════════════════════
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+        bar.style.width = bar.dataset.pct + '%';
+      });
+    }
+  });
+}, { threshold: 0.1 });
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  // Loader
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hidden');
+  }, 1200);
+
+  // Projets
+  renderProjects();
+
+  // Skills depuis Google Sheet
+  loadSkillsFromSheet();
+});
+</script>
 </body>
 </html>
