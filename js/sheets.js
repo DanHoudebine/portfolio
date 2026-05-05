@@ -1,311 +1,309 @@
 // ============================================
-// CONFIGURATION GOOGLE SHEETS
+// CONFIGURATION
 // ============================================
-
-const SHEET_CONFIG = {
-    // ⚠️ Remplace par ton vrai ID
-    sheetId: '1LfDDyMi36kDBhq3V8sVttipoajdN-faH',
-    
-    // Noms exacts de tes onglets
-    sheets: {
-        toolkit:      'Toolkit',
-        maitrise:     'Maîtrise',
-        studios:      'Studios',
-        statistiques: 'Statistiques',
-        priorites:    'Priorités'
-    },
-    
-    // URL de base pour l'API publique (sans clé requise)
-    baseUrl: 'https://docs.google.com/spreadsheets/d/'
-};
+const SHEET_ID = '1LfDDyMi36kDBhq3V8sVttipoajdN-faH';
 
 // ============================================
-// FONCTION PRINCIPALE — FETCH SHEET
+// FETCH — récupère un onglet par son nom
 // ============================================
-
 async function fetchSheet(sheetName) {
-    const url = `${SHEET_CONFIG.baseUrl}${SHEET_CONFIG.sheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
     
     try {
-        const response = await fetch(url);
-        const text = await response.text();
+        const res = await fetch(url);
+        const text = await res.text();
         
-        // Nettoyer la réponse JSONP de Google
-        const jsonStart = text.indexOf('{');
-        const jsonEnd = text.lastIndexOf('}') + 1;
-        const jsonString = text.substring(jsonStart, jsonEnd);
-        const data = JSON.parse(jsonString);
+        // Google renvoie du JSONP → on extrait le JSON pur
+        const clean = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/);
+        if (!clean) return [];
         
-        return parseGoogleSheetData(data);
-    } catch (error) {
-        console.error(`Erreur chargement onglet "${sheetName}":`, error);
+        const json = JSON.parse(clean[1]);
+        if (!json.table) return [];
+        
+        const { cols, rows } = json.table;
+        
+        // Headers = labels des colonnes
+        const headers = cols.map(c => (c.label || '').trim());
+        
+        // Convertir chaque ligne en objet
+        const result = [];
+        rows.forEach(row => {
+            if (!row.c) return;
+            const obj = {};
+            let hasContent = false;
+            row.c.forEach((cell, i) => {
+                const key = headers[i] || `col${i}`;
+                const val = cell ? (cell.v !== undefined && cell.v !== null ? String(cell.v) : '') : '';
+                obj[key] = val.trim();
+                if (val.trim()) hasContent = true;
+            });
+            if (hasContent) result.push(obj);
+        });
+        
+        return result;
+        
+    } catch (err) {
+        console.error(`Erreur fetchSheet("${sheetName}"):`, err);
         return [];
     }
 }
 
 // ============================================
-// PARSER — CONVERTIT LE FORMAT GOOGLE EN TABLEAU
+// SECTION COMPÉTENCES
+// Affiche les 10 premiers + bouton "Voir tout"
 // ============================================
-
-function parseGoogleSheetData(data) {
-    if (!data.table || !data.table.rows) return [];
-    
-    const rows = data.table.rows;
-    const cols = data.table.cols;
-    
-    // Récupérer les headers (première ligne non vide)
-    const headers = cols.map(col => col.label || '');
-    
-    return rows.map(row => {
-        const obj = {};
-        row.c.forEach((cell, i) => {
-            const key = headers[i] || `col${i}`;
-            obj[key] = cell ? (cell.v !== null ? cell.v : '') : '';
-        });
-        return obj;
-    }).filter(row => Object.values(row).some(v => v !== ''));
-}
-
-// ============================================
-// CHARGEMENT COMPÉTENCES (onglet Maîtrise)
-// ============================================
-
 async function loadCompetences() {
     const grid = document.getElementById('skills-grid');
     const filterTabs = document.getElementById('filter-tabs');
     
-    const data = await fetchSheet(SHEET_CONFIG.sheets.maitrise);
+    // Indicateur de chargement
+    grid.innerHTML = `
+        <div class="loading-skills">
+            <div class="loader"></div>
+            <span>Chargement depuis Google Sheet...</span>
+        </div>`;
+    
+    const data = await fetchSheet('Maîtrise');
+    
+    // Debug — affiche dans la console ce qu'on reçoit
+    console.log('Données Maîtrise reçues :', data.slice(0, 3));
     
     if (!data.length) {
-        grid.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:40px">Impossible de charger les données.</p>';
+        grid.innerHTML = `
+            <div style="text-align:center;padding:60px;color:var(--text-muted)">
+                <p style="font-size:2rem;margin-bottom:16px">⚠️</p>
+                <p>Impossible de charger les données.<br>
+                Vérifie que le Sheet est bien partagé en lecture publique.</p>
+            </div>`;
         return;
     }
     
-    // Extraire les catégories uniques
-    const categories = [...new Set(data.map(row => row['CATÉGORIE'] || row['Catégorie']).filter(Boolean))];
+    // Détecter les bonnes clés (insensible à la casse/accents)
+    const firstRow = data[0];
+    const keys = Object.keys(firstRow);
+    console.log('Colonnes détectées :', keys);
     
-    // Créer les boutons de filtre
-    filterTabs.innerHTML = '<button class="filter-btn active" data-filter="all">Tous</button>';
+    const keyOutil    = keys.find(k => k.toLowerCase().includes('outil')) || keys[0];
+    const keyCat      = keys.find(k => k.toLowerCase().includes('cat')) || keys[1];
+    const keyMaitrise = keys.find(k => k.toLowerCase().includes('ma') && !k.includes('%')) || keys[2];
+    const keyPct      = keys.find(k => k.includes('%')) || keys[3];
+    
+    // Catégories uniques pour les filtres
+    const categories = [...new Set(data.map(r => r[keyCat]).filter(Boolean))];
+    
+    // Boutons filtre
+    filterTabs.innerHTML = `<button class="filter-btn active" data-filter="all">Tous</button>`;
     categories.forEach(cat => {
-        const btn = document.createElement('button');
-        btn.className = 'filter-btn';
-        btn.dataset.filter = cat;
-        btn.textContent = cat;
-        filterTabs.appendChild(btn);
+        filterTabs.innerHTML += `<button class="filter-btn" data-filter="${cat}">${cat}</button>`;
     });
     
-    // Créer les cartes
-    grid.innerHTML = '';
-    data.forEach((row, index) => {
-        const outil = row['OUTIL'] || row['Outil'] || '';
-        const categorie = row['CATÉGORIE'] || row['Catégorie'] || '';
-        const maitrise = row['MAÎTRISE'] || row['Maitrise'] || '';
-        const pourcentage = row['MAÎTRISE %'] || row['Maîtrise %'] || '0%';
+    // ---- AFFICHAGE : TOP 10 par défaut ----
+    let showAll = false;
+    const TOP_N = 10;
+    
+    function renderCards(filter = 'all') {
+        grid.innerHTML = '';
         
-        if (!outil) return;
+        let filtered = data.filter(r => r[keyOutil]);
+        if (filter !== 'all') {
+            filtered = filtered.filter(r => r[keyCat] === filter);
+        }
         
-        const pct = parseInt(pourcentage) || 0;
-        const levelClass = getLevelClass(maitrise);
+        const toShow = showAll ? filtered : filtered.slice(0, TOP_N);
         
-        const card = document.createElement('div');
-        card.className = 'skill-card reveal';
-        card.dataset.category = categorie;
-        card.style.animationDelay = `${index * 0.05}s`;
+        toShow.forEach((row, i) => {
+            const outil    = row[keyOutil]    || '';
+            const cat      = row[keyCat]      || '';
+            const maitrise = row[keyMaitrise] || '';
+            const pctRaw   = row[keyPct]      || '0';
+            const pct      = parseInt(pctRaw) || 0;
+            
+            const card = document.createElement('div');
+            card.className = 'skill-card reveal';
+            card.dataset.category = cat;
+            
+            card.innerHTML = `
+                <div class="skill-header">
+                    <span class="skill-name">${outil}</span>
+                    <span class="skill-cat-badge">${cat}</span>
+                </div>
+                <div class="skill-level ${getLevelClass(maitrise)}">
+                    <span class="level-dot"></span>
+                    ${maitrise}
+                </div>
+                <div class="skill-bar-wrap">
+                    <div class="skill-bar-track">
+                        <div class="skill-bar-fill" style="width:0%" data-target="${pct}"></div>
+                    </div>
+                    <span class="skill-pct">${pct}%</span>
+                </div>
+            `;
+            
+            grid.appendChild(card);
+        });
         
-        card.innerHTML = `
-            <div class="skill-header">
-                <span class="skill-name">${outil}</span>
-                <span class="skill-category-badge">${categorie}</span>
-            </div>
-            <div class="skill-meta">
-                <span class="skill-level-badge ${levelClass}">${maitrise}</span>
-            </div>
-            <div class="skill-bar-container">
-                <div class="skill-bar" data-width="${pct}"></div>
-            </div>
-            <div class="skill-percentage">${pourcentage}</div>
-        `;
+        // Bouton "Voir tout / Réduire"
+        if (!showAll && filtered.length > TOP_N) {
+            const btnWrap = document.createElement('div');
+            btnWrap.className = 'show-more-wrap';
+            btnWrap.innerHTML = `
+                <button class="btn btn-secondary show-more-btn">
+                    Voir les ${filtered.length - TOP_N} autres →
+                </button>`;
+            grid.appendChild(btnWrap);
+            
+            btnWrap.querySelector('.show-more-btn').addEventListener('click', () => {
+                showAll = true;
+                renderCards(filter);
+            });
+        } else if (showAll && filtered.length > TOP_N) {
+            const btnWrap = document.createElement('div');
+            btnWrap.className = 'show-more-wrap';
+            btnWrap.innerHTML = `<button class="btn btn-secondary show-more-btn">↑ Réduire</button>`;
+            grid.appendChild(btnWrap);
+            
+            btnWrap.querySelector('.show-more-btn').addEventListener('click', () => {
+                showAll = false;
+                renderCards(filter);
+                document.getElementById('competences').scrollIntoView({ behavior: 'smooth' });
+            });
+        }
         
-        grid.appendChild(card);
+        // Animer barres + révéler cartes
+        setTimeout(() => {
+            document.querySelectorAll('.skill-bar-fill').forEach(bar => {
+                bar.style.width = bar.dataset.target + '%';
+            });
+            document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+        }, 100);
+        
+        updateSyncTime();
+    }
+    
+    // Render initial
+    renderCards('all');
+    
+    // Filtres
+    filterTabs.addEventListener('click', e => {
+        if (!e.target.classList.contains('filter-btn')) return;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        showAll = false;
+        renderCards(e.target.dataset.filter);
     });
-    
-    // Activer les filtres
-    setupFilters();
-    
-    // Animer les barres après un délai
-    setTimeout(() => animateSkillBars(), 300);
-    
-    // Mettre à jour le timestamp
-    updateSyncTime();
 }
 
 // ============================================
-// CHARGEMENT STATS (onglet Statistiques)
+// SECTION STATS
 // ============================================
-
 async function loadStats() {
-    const data = await fetchSheet(SHEET_CONFIG.sheets.statistiques);
     const grid = document.getElementById('stats-grid');
-    const donut = document.getElementById('donut-chart');
+    if (!grid) return;
     
-    if (!data.length) return;
+    const data = await fetchSheet('Statistiques');
+    console.log('Stats reçues :', data);
     
-    // Stats à afficher sur le site (adapter selon tes données réelles)
-    const statsToShow = [
-        { label: 'Outils total', key: 'Nombre total d\'outils', icon: '🔧' },
-        { label: 'Niveau Expert', key: 'Outils Expert', icon: '⭐' },
-        { label: 'Opérationnel', key: 'Outils Opérationnel', icon: '✅' },
-        { label: 'En apprentissage', key: 'Outils En apprentissage', icon: '📚' },
-    ];
-    
-    // Chercher les valeurs dans les données
-    grid.innerHTML = '';
-    
-    // Les données Statistiques ont une structure différente (clé/valeur)
-    // On va parser différemment
-    const statsMap = {};
+    // Parser clé → valeur
+    const map = {};
     data.forEach(row => {
-        const keys = Object.keys(row);
-        if (keys.length >= 2) {
-            statsMap[row[keys[0]]] = row[keys[1]];
-        }
+        const vals = Object.values(row).filter(v => v !== '');
+        if (vals.length >= 2) map[vals[0]] = vals[1];
     });
     
-    const displayStats = [
-        { label: 'Outils total', value: statsMap['Nombre total d\'outils'] || '66' },
-        { label: 'Niveau Expert', value: statsMap['Outils Expert'] || '36' },
-        { label: 'Opérationnel', value: statsMap['Outils Opérationnel'] || '8' },
-        { label: 'En apprentissage', value: statsMap['Outils En apprentissage'] || '8' },
-        { label: 'Studios analysés', value: statsMap['Studios analysés'] || '25' },
-        { label: 'Match ≥ 90%', value: statsMap['Studios avec match ≥ 90%'] || '6' },
+    const afficher = [
+        { label: 'Outils total',       emoji: '🔧', key: "Nombre total d'outils",       fallback: '66' },
+        { label: 'Niveau Expert',      emoji: '⭐', key: 'Outils Expert',               fallback: '36' },
+        { label: 'Opérationnel',       emoji: '✅', key: 'Outils Opérationnel',         fallback: '8'  },
+        { label: 'En apprentissage',   emoji: '📚', key: 'Outils En apprentissage',     fallback: '8'  },
+        { label: 'Studios analysés',   emoji: '🏢', key: 'Studios analysés',            fallback: '25' },
+        { label: 'Match ≥ 90%',        emoji: '🎯', key: 'Studios avec match ≥ 90%',   fallback: '6'  },
     ];
     
-    displayStats.forEach(stat => {
+    grid.innerHTML = '';
+    afficher.forEach(item => {
+        const val = parseInt(map[item.key] || item.fallback) || 0;
         const card = document.createElement('div');
         card.className = 'stat-card reveal';
         card.innerHTML = `
-            <span class="stat-card-number" data-target="${parseInt(stat.value) || 0}">0</span>
-            <span class="stat-card-label">${stat.label}</span>
+            <span class="stat-card-emoji">${item.emoji}</span>
+            <span class="stat-card-number" data-target="${val}">0</span>
+            <span class="stat-card-label">${item.label}</span>
         `;
         grid.appendChild(card);
     });
     
-    // Catégories pour le donut (depuis le Toolkit)
-    loadCategoryChart();
+    setTimeout(() => {
+        document.querySelectorAll('.stat-card').forEach(el => el.classList.add('visible'));
+        animateAllCounters();
+    }, 200);
     
-    // Animer les compteurs
-    setTimeout(() => animateCounters(), 400);
+    loadCategoryChart();
 }
 
-// ============================================
-// GRAPHIQUE CATÉGORIES
-// ============================================
-
 async function loadCategoryChart() {
-    const data = await fetchSheet(SHEET_CONFIG.sheets.toolkit);
     const donut = document.getElementById('donut-chart');
+    if (!donut) return;
     
-    if (!data.length || !donut) return;
+    const data = await fetchSheet('Toolkit');
+    const keys = data[0] ? Object.keys(data[0]) : [];
+    const keyCat = keys.find(k => k.toLowerCase().includes('cat')) || keys[1];
     
-    // Compter par catégorie
-    const categoryCounts = {};
-    data.forEach(row => {
-        const cat = row['CATÉGORIE'] || row['Catégorie'] || 'Autre';
-        if (cat && cat !== '') {
-            categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
-        }
+    const counts = {};
+    data.forEach(r => {
+        const c = r[keyCat];
+        if (c) counts[c] = (counts[c] || 0) + 1;
     });
     
-    const colors = [
-        '#00f5ff', '#7b2fff', '#ff6b35', '#64ff64',
-        '#ffa500', '#ff69b4', '#00bfff', '#adff2f',
-        '#ff4500', '#9370db', '#20b2aa', '#daa520'
-    ];
+    const colors = ['#00f5ff','#7b2fff','#ff6b35','#64ff64','#ffa500','#ff69b4','#00bfff','#adff2f','#ff4500','#9370db','#20b2aa','#daa520'];
     
     donut.innerHTML = '';
-    Object.entries(categoryCounts).sort((a, b) => b[1] - a[1]).forEach(([cat, count], i) => {
+    Object.entries(counts).sort((a,b) => b[1]-a[1]).forEach(([cat, n], i) => {
         const item = document.createElement('div');
         item.className = 'donut-item reveal';
         item.innerHTML = `
-            <div class="donut-color" style="background:${colors[i % colors.length]}"></div>
+            <div class="donut-color" style="background:${colors[i%colors.length]}"></div>
             <span class="donut-label">${cat}</span>
-            <span class="donut-value">${count}</span>
+            <span class="donut-count">${n} outils</span>
         `;
         donut.appendChild(item);
+        setTimeout(() => item.classList.add('visible'), i * 80);
     });
 }
 
 // ============================================
 // HELPERS
 // ============================================
-
-function getLevelClass(maitrise) {
-    if (!maitrise) return '';
-    const m = maitrise.toLowerCase();
-    if (m.includes('expert')) return 'level-expert';
-    if (m.includes('opérationnel') || m.includes('operationnel')) return 'level-operationnel';
-    if (m.includes('apprentissage')) return 'level-apprentissage';
-    if (m.includes('découverte') || m.includes('decouverte')) return 'level-decouverte';
+function getLevelClass(m) {
+    if (!m) return '';
+    const l = m.toLowerCase();
+    if (l.includes('expert'))                        return 'level-expert';
+    if (l.includes('rationnel'))                     return 'level-operationnel';
+    if (l.includes('apprentissage'))                 return 'level-apprentissage';
+    if (l.includes('couverte') || l.includes('non')) return 'level-decouverte';
     return 'level-decouverte';
 }
 
-function setupFilters() {
-    const btns = document.querySelectorAll('.filter-btn');
-    const cards = document.querySelectorAll('.skill-card');
-    
-    btns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            btns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            const filter = btn.dataset.filter;
-            cards.forEach(card => {
-                if (filter === 'all' || card.dataset.category === filter) {
-                    card.style.display = 'block';
-                    setTimeout(() => animateSkillBars(), 100);
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
-    });
-}
-
-function animateSkillBars() {
-    document.querySelectorAll('.skill-bar').forEach(bar => {
-        const target = bar.dataset.width;
-        bar.style.width = target + '%';
-    });
-}
-
-function animateCounters() {
-    document.querySelectorAll('.stat-card-number[data-target]').forEach(el => {
+function animateAllCounters() {
+    document.querySelectorAll('[data-target]').forEach(el => {
         const target = parseInt(el.dataset.target);
         let current = 0;
         const step = target / 60;
         const timer = setInterval(() => {
-            current += step;
-            if (current >= target) {
-                current = target;
-                clearInterval(timer);
-            }
+            current = Math.min(current + step, target);
             el.textContent = Math.floor(current);
+            if (current >= target) clearInterval(timer);
         }, 16);
     });
 }
 
 function updateSyncTime() {
     const el = document.getElementById('last-sync');
-    if (el) {
-        const now = new Date();
-        el.textContent = `Sync: ${now.toLocaleTimeString('fr-FR')}`;
-    }
+    if (el) el.textContent = `Sync: ${new Date().toLocaleTimeString('fr-FR')}`;
 }
 
 // ============================================
-// INITIALISATION
+// INIT
 // ============================================
-
 document.addEventListener('DOMContentLoaded', () => {
     loadCompetences();
     loadStats();
