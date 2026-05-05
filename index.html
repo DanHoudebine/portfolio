@@ -17,7 +17,7 @@
     <!-- NAVIGATION -->
     <nav class="navbar">
         <div class="nav-logo">
-            <span class="logo-text">[H<span class="accent">.</span>D<span class="accent">.]</span></span>
+            <span class="logo-text"><span class="accent">[</span>H<span class="accent">.</span>D<span class="accent">.]</span></span>
         </div>
         <ul class="nav-links">
             <li><a href="#home" class="nav-link active">Accueil</a></li>
@@ -139,49 +139,109 @@
         </div>
     </section>
 
-    <!-- SECTION CONTACT -->
-    <section id="contact" class="section contact">
-        <div class="section-header">
-            <span class="section-tag">// 04</span>
-            <h2 class="section-title">Me <span class="accent-text">Contacter</span></h2>
-        </div>
-        <div class="contact-container">
-            <div class="contact-info">
-                <div class="contact-item">
-                    <span class="contact-icon">📧</span>
-                    <span>ton.email@gmail.com</span>
-                </div>
-                <div class="contact-item">
-                    <span class="contact-icon">🌐</span>
-                    <span>ArtStation / LinkedIn</span>
-                </div>
+    <!-- CONTACT -->
+<section id="contact" class="section">
+    <div class="container">
+        <p class="section-tag">// 05</p>
+        <h2 class="section-title">Me <span class="accent">Contacter</span></h2>
+        <p class="section-sub">Disponible pour des opportunités freelance ou en studio</p>
+
+        <div class="contact-grid">
+
+            <!-- EMAIL -->
+            <div class="contact-card">
+                <div class="contact-icon">✉️</div>
+                <h3 class="contact-label">Email</h3>
+                <p class="contact-email">
+                    Danhoudebine
+                    <span class="at-bracket">[</span>
+                    <span class="at-sign">@</span>
+                    <span class="at-bracket">]</span>
+                    gmail.com
+                </p>
+                <button class="btn btn-primary copy-email-btn" onclick="copyEmail()">
+                    Copier l'adresse
+                </button>
             </div>
-            <form class="contact-form" id="contact-form">
-                <div class="form-group">
-                    <input type="text" placeholder="Votre nom" class="form-input" required>
-                    <label>Nom</label>
-                </div>
-                <div class="form-group">
-                    <input type="email" placeholder="Votre email" class="form-input" required>
-                    <label>Email</label>
-                </div>
-                <div class="form-group">
-                    <textarea placeholder="Votre message" class="form-input" rows="5" required></textarea>
-                    <label>Message</label>
-                </div>
-                <button type="submit" class="btn btn-primary">Envoyer</button>
-            </form>
+
+            <!-- ARTSTATION -->
+            <div class="contact-card">
+                <div class="contact-icon">🎨</div>
+                <h3 class="contact-label">ArtStation</h3>
+                <p class="contact-info">Portfolio & Projets 3D</p>
+                <a href="https://www.artstation.com/danhoudebine" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="btn btn-primary">
+                    Voir le Portfolio →
+                </a>
+            </div>
+
+            <!-- LINKEDIN -->
+            <div class="contact-card">
+                <div class="contact-icon">💼</div>
+                <h3 class="contact-label">LinkedIn</h3>
+                <p class="contact-info">Profil Professionnel</p>
+                <a href="https://www.linkedin.com/in/danhoudebine/" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="btn btn-secondary">
+                    Me Contacter →
+                </a>
+            </div>
+
         </div>
-    </section>
+
+        <!-- MESSAGE COPIE -->
+        <div class="copy-confirm" id="copy-confirm">
+            ✅ Email copié dans le presse-papiers !
+        </div>
+
+    </div>
+</section>
+
 
     <!-- FOOTER -->
-    <footer class="footer">
+<footer class="footer">
+    <div class="container">
         <div class="footer-content">
-            <span class="footer-logo">[H<span class="accent">.</span>D<span class="accent">.]</span></span>
-            <span class="footer-copy">© 2025 — Environment Artist Senior</span>
-            <span class="footer-sync" id="last-sync">Sync: --</span>
+	<span class="logo-text">
+	<span class="accent">[</span>H<span class="accent">.</span>D<span class="accent">.]
+		</span>
+	</span>
+		<p class="footer-tagline">Environment Artist Senior</p>
+
+            <!-- Liens sociaux footer -->
+            <div class="footer-socials">
+                <a href="https://www.artstation.com/danhoudebine" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="footer-social-link">
+                    ArtStation
+                </a>
+                <span class="footer-sep">·</span>
+                <a href="https://www.linkedin.com/in/danhoudebine/" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="footer-social-link">
+                    LinkedIn
+                </a>
+                <span class="footer-sep">·</span>
+                <!-- Email affiché de façon anti-spam -->
+                <span class="footer-email">
+                    Danhoudebine
+                    <span class="at-bracket">[</span>@<span class="at-bracket">]</span>
+                    gmail.com
+                </span>
+            </div>
+
+            <p class="footer-copy">
+                © 2025 Dan Houdebine — Tous droits réservés
+            </p>
         </div>
-    </footer>
+    </div>
+</footer>
+
 
     <script src="js/sheets.js"></script>
     <script src="js/main.js"></script>

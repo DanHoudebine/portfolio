@@ -187,3 +187,20 @@ window.addEventListener('load', () => {
     setTimeout(animateHeroCounters, 1500);
     revealElements();
 });
+// ============================================
+// COPY EMAIL ANTI-SPAM
+// L'adresse réelle n'est jamais écrite en clair
+// dans le HTML → les bots ne peuvent pas la lire
+// ============================================
+function copyEmail() {
+    // On reconstruit l'adresse uniquement au moment du clic
+    const user   = 'Danhoudebine';
+    const domain = 'gmail.com';
+    const email  = `${user}@${domain}`;
+    
+    navigator.clipboard.writeText(email).then(() => {
+        const confirm = document.getElementById('copy-confirm');
+        confirm.classList.add('visible');
+        setTimeout(() => confirm.classList.remove('visible'), 3000);
+    });
+}
