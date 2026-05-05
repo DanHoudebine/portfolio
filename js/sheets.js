@@ -79,14 +79,25 @@ async function loadCompetences() {
     }
     
     // Détecter les bonnes clés (insensible à la casse/accents)
-    const firstRow = data[0];
-    const keys = Object.keys(firstRow);
-    console.log('Colonnes détectées :', keys);
-    
-    const keyOutil    = keys.find(k => k.toLowerCase().includes('outil')) || keys[0];
-    const keyCat      = keys.find(k => k.toLowerCase().includes('cat')) || keys[1];
-    const keyMaitrise = keys[2]; // colonne C = MAÎTRISE
-    const keyPct      = keys[3]; // colonne D = MAÎTRISE %
+// Sauter les 2 premières lignes (titre fusionné + headers)
+const realData = data.slice(2);
+
+// Les clés sont col0, col1, col2...
+const keyOutil    = 'col0';
+const keyCat      = 'col1';
+const keyPrix     = 'col2';
+const keyMaitrise = 'col3'; // texte: Expert, Avancé...
+const keyNiveau   = 'col4';
+
+// Convertir le texte en %
+function maitriseToPercent(val) {
+    const map = {
+        'débutant': 20, 'notions': 30, 'intermédiaire': 50,
+        'avancé': 70, 'expert': 90, 'maîtrise': 95
+    };
+    return map[val?.toLowerCase()] || 0;
+}
+
 
     
     // Catégories uniques pour les filtres
@@ -116,9 +127,7 @@ async function loadCompetences() {
             const outil    = row[keyOutil]    || '';
             const cat      = row[keyCat]      || '';
             const maitrise = row[keyMaitrise] || '';
-            const pctRaw   = row[keyPct]      || '0';
-            const pct      = parseInt(pctRaw) || 0;
-            
+            const pct = maitriseToPercent(row[keyMaitrise]);
             const card = document.createElement('div');
             card.className = 'skill-card reveal';
             card.dataset.category = cat;
