@@ -11,15 +11,118 @@
   <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
 </head>
 <body>
+
+  <!-- ===== HEADER / NAVIGATION ===== -->
+  <header class="header">
+    <nav class="navbar">
+      <div class="container">
+        <div class="nav-wrapper">
+          <!-- Logo -->
+          <div class="logo">
+            <a href="#home">DAN</a>
+          </div>
+
+          <!-- Menu -->
+          <ul class="nav-menu">
+            <li><a href="#home" class="nav-link">Accueil</a></li>
+            <li><a href="#about" class="nav-link">À propos</a></li>
+            <li><a href="#skills" class="nav-link">Compétences</a></li>
+            <li><a href="#projects" class="nav-link">Projets</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+          </ul>
+
+          <!-- Hamburger Menu (Mobile) -->
+          <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Dan Houdebine</h1>
+        <p class="hero-subtitle">Développeur Web Full Stack</p>
+        <p class="hero-description">Je crée des expériences web modernes, performantes et accessibles</p>
+        
+        <div class="hero-buttons">
+          <a href="#projects" class="btn btn-primary">Voir mes projets</a>
+          <a href="#contact" class="btn btn-secondary">Me contacter</a>
+        </div>
+
+        <!-- Social Links -->
+        <div class="social-links">
+          <a href="https://github.com" target="_blank" class="social-link">GitHub</a>
+          <a href="https://linkedin.com" target="_blank" class="social-link">LinkedIn</a>
+          <a href="https://twitter.com" target="_blank" class="social-link">Twitter</a>
+        </div>
+      </div>
+
+      <!-- Hero Image / Illustration -->
+      <div class="hero-image">
+        <div class="placeholder-image">
+          <!-- Tu peux ajouter une image ici -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT SECTION ===== -->
+  <section class="about" id="about">
+    <div class="container">
+      <h2 class="section-title">À propos</h2>
+      
+      <div class="about-content">
+        <div class="about-text">
+          <p>
+            Je suis un développeur web passionné avec plus de 5 ans d'expérience. 
+            Je maîtrise les technologies modernes et j'adore créer des solutions 
+            innovantes et performantes.
+          </p>
+          
+          <p>
+            Ma spécialité est de transformer des idées en applications web fonctionnelles, 
+            avec une attention particulière à l'UX et aux performances.
+          </p>
+
+          <div class="about-info">
+            <div class="info-item">
+              <h3>📍 Localisation</h3>
+              <p>France</p>
+            </div>
+            <div class="info-item">
+              <h3>💼 Expérience</h3>
+              <p>5+ ans</p>
+            </div>
+            <div class="info-item">
+              <h3>🎓 Formation</h3>
+              <p>Développement Web</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-image">
+          <div class="placeholder-image">
+            <!-- Ta photo ici -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== SKILLS SECTION ===== -->
   <section class="section-skills" id="skills">
     <div class="container">
-      <!-- Titre -->
       <h2 class="section-title">Compétences</h2>
 
       <!-- Filtres -->
       <div class="skills-filters">
-        <button class="filter-btn" data-filter="all">Tous</button>
+        <button class="filter-btn active" data-filter="all">Tous</button>
         <button class="filter-btn" data-filter="frontend">Frontend</button>
         <button class="filter-btn" data-filter="backend">Backend</button>
         <button class="filter-btn" data-filter="tools">Outils</button>
@@ -34,7 +137,7 @@
             <span class="skill-level">Avancé</span>
           </div>
           <div class="skill-bar">
-            <div class="skill-fill" data-width="95"></div>
+            <div class="skill-fill" style="width: 95%"></div>
           </div>
         </div>
 
@@ -44,7 +147,7 @@
             <span class="skill-level">Avancé</span>
           </div>
           <div class="skill-bar">
-            <div class="skill-fill" data-width="93"></div>
+            <div class="skill-fill" style="width: 93%"></div>
           </div>
         </div>
 
@@ -54,7 +157,7 @@
             <span class="skill-level">Avancé</span>
           </div>
           <div class="skill-bar">
-            <div class="skill-fill" data-width="90"></div>
+            <div class="skill-fill" style="width: 90%"></div>
           </div>
         </div>
 
@@ -64,7 +167,7 @@
             <span class="skill-level">Intermédiaire</span>
           </div>
           <div class="skill-bar">
-            <div class="skill-fill" data-width="78"></div>
+            <div class="skill-fill" style="width: 78%"></div>
           </div>
         </div>
 
@@ -74,7 +177,7 @@
             <span class="skill-level">Intermédiaire</span>
           </div>
           <div class="skill-bar">
-            <div class="skill-fill" data-width="75"></div>
+            <div class="skill-fill" style="width: 75%"></div>
           </div>
         </div>
 
@@ -84,7 +187,7 @@
             <span class="skill-level">Avancé</span>
           </div>
           <div class="skill-bar">
-            <div class="skill-fill" data-width="92"></div>
+            <div class="skill-fill" style="width: 92%"></div>
           </div>
         </div>
 
@@ -95,7 +198,7 @@
             <span class="skill-level">Avancé</span>
           </div>
           <div class="skill-bar">
-            <div class="skill-fill" data-width="88"></div>
+            <div class="skill-fill" style="width: 88%"></div>
           </div>
         </div>
 
@@ -105,7 +208,7 @@
             <span class="skill-level">Intermédiaire</span>
           </div>
           <div class="skill-bar">
-            <div class="skill-fill" data-width="80"></div>
+            <div class="skill-fill" style="width: 80%"></div>
           </div>
         </div>
 
@@ -115,7 +218,7 @@
             <span class="skill-level">Avancé</span>
           </div>
           <div class="skill-bar">
-            <div class="skill-fill" data-width="87"></div>
+            <div class="skill-fill" style="width: 87%"></div>
           </div>
         </div>
 
@@ -125,7 +228,7 @@
             <span class="skill-level">Intermédiaire</span>
           </div>
           <div class="skill-bar">
-            <div class="skill-fill" data-width="82"></div>
+            <div class="skill-fill" style="width: 82%"></div>
           </div>
         </div>
 
@@ -135,7 +238,7 @@
             <span class="skill-level">Intermédiaire</span>
           </div>
           <div class="skill-bar">
-            <div class="skill-fill" data-width="76"></div>
+            <div class="skill-fill" style="width: 76%"></div>
           </div>
         </div>
 
@@ -146,7 +249,7 @@
             <span class="skill-level">Avancé</span>
           </div>
           <div class="skill-bar">
-            <div class="skill-fill" data-width="91"></div>
+            <div class="skill-fill" style="width: 91%"></div>
           </div>
         </div>
 
@@ -156,7 +259,7 @@
             <span class="skill-level">Avancé</span>
           </div>
           <div class="skill-bar">
-            <div class="skill-fill" data-width="94"></div>
+            <div class="skill-fill" style="width: 94%"></div>
           </div>
         </div>
 
@@ -166,7 +269,7 @@
             <span class="skill-level">Intermédiaire</span>
           </div>
           <div class="skill-bar">
-            <div class="skill-fill" data-width="79"></div>
+            <div class="skill-fill" style="width: 79%"></div>
           </div>
         </div>
 
@@ -176,7 +279,7 @@
             <span class="skill-level">Intermédiaire</span>
           </div>
           <div class="skill-bar">
-            <div class="skill-fill" data-width="74"></div>
+            <div class="skill-fill" style="width: 74%"></div>
           </div>
         </div>
 
@@ -186,13 +289,195 @@
             <span class="skill-level">Intermédiaire</span>
           </div>
           <div class="skill-bar">
-            <div class="skill-fill" data-width="73"></div>
+            <div class="skill-fill" style="width: 73%"></div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <script src="scripts/script.js"></script>
+  <!-- ===== PROJECTS SECTION ===== -->
+  <section class="projects" id="projects">
+    <div class="container">
+      <h2 class="section-title">Mes Projets</h2>
+
+      <div class="projects-grid">
+        <!-- Projet 1 -->
+        <div class="project-card">
+          <div class="project-image">
+            <div class="placeholder-image">
+              <!-- Image du projet -->
+            </div>
+          </div>
+          <div class="project-content">
+            <h3 class="project-title">E-Commerce Moderne</h3>
+            <p class="project-description">
+              Plateforme e-commerce complète avec React, Node.js et MongoDB
+            </p>
+            <div class="project-tags">
+              <span class="tag">React</span>
+              <span class="tag">Node.js</span>
+              <span class="tag">MongoDB</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="btn-link">Voir le projet</a>
+              <a href="#" class="btn-link">Code Source</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Projet 2 -->
+        <div class="project-card">
+          <div class="project-image">
+            <div class="placeholder-image">
+              <!-- Image du projet -->
+            </div>
+          </div>
+          <div class="project-content">
+            <h3 class="project-title">Application Météo</h3>
+            <p class="project-description">
+              App météo en temps réel avec Vue.js et API OpenWeather
+            </p>
+            <div class="project-tags">
+              <span class="tag">Vue.js</span>
+              <span class="tag">API</span>
+              <span class="tag">Responsive</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="btn-link">Voir le projet</a>
+              <a href="#" class="btn-link">Code Source</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Projet 3 -->
+        <div class="project-card">
+          <div class="project-image">
+            <div class="placeholder-image">
+              <!-- Image du projet -->
+            </div>
+          </div>
+          <div class="project-content">
+            <h3 class="project-title">Blog Collaboratif</h3>
+            <p class="project-description">
+              Plateforme de blog avec système d'authentification Laravel
+            </p>
+            <div class="project-tags">
+              <span class="tag">Laravel</span>
+              <span class="tag">PHP</span>
+              <span class="tag">MySQL</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="btn-link">Voir le projet</a>
+              <a href="#" class="btn-link">Code Source</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT SECTION ===== -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <h2 class="section-title">Me Contacter</h2>
+
+      <div class="contact-content">
+        <div class="contact-info">
+          <h3>Parlons de votre projet</h3>
+          <p>Je suis toujours ouvert à de nouvelles opportunités et collaborations.</p>
+
+          <div class="contact-methods">
+            <div class="contact-method">
+              <span class="icon">✉️</span>
+              <div>
+                <h4>Email</h4>
+                <p><a href="mailto:dan@example.com">dan@example.com</a></p>
+              </div>
+            </div>
+
+            <div class="contact-method">
+              <span class="icon">📱</span>
+              <div>
+                <h4>Téléphone</h4>
+                <p><a href="tel:+33123456789">+33 1 23 45 67 89</a></p>
+              </div>
+            </div>
+
+            <div class="contact-method">
+              <span class="icon">📍</span>
+              <div>
+                <h4>Localisation</h4>
+                <p>France</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form class="contact-form">
+          <div class="form-group">
+            <label for="name">Nom</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Sujet</label>
+            <input type="text" id="subject" name="subject" required>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="6" required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Envoyer le message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Dan Houdebine</h4>
+          <p>Développeur Web Full Stack</p>
+        </div>
+
+        <div class="footer-section">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="#home">Accueil</a></li>
+            <li><a href="#about">À propos</a></li>
+            <li><a href="#skills">Compétences</a></li>
+            <li><a href="#projects">Projets</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Réseaux Sociaux</h4>
+          <ul>
+            <li><a href="https://github.com" target="_blank">GitHub</a></li>
+            <li><a href="https://linkedin.com" target="_blank">LinkedIn</a></li>
+            <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2024 Dan Houdebine. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script src="Scripts/script.js"></script>
 </body>
 </html>
