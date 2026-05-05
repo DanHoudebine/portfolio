@@ -285,6 +285,17 @@ body {
     animation: fadeInUp 0.8s ease 1.4s forwards;
 }
 
+.btn-tertiary {
+  background: rgba(0,212,255,0.1);
+  border: 1px solid var(--primary);
+  color: var(--primary);
+}
+
+.btn-tertiary:hover {
+  background: rgba(0,212,255,0.2);
+  box-shadow: var(--glow);
+}
+
 /* ============================================
    BOUTONS
 ============================================ */
