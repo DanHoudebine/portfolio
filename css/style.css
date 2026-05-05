@@ -302,6 +302,13 @@ body {
     overflow: hidden;
 }
 
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
 .btn-primary {
     background: var(--primary);
     color: var(--bg-dark);
