@@ -1442,6 +1442,35 @@ body {
   background: rgba(0, 255, 255, 0.1);
 }
 
+/* ============================================
+   PROFILE IMAGE (HERO)
+============================================ */
+.profile-image {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(0, 255, 255, 0.2), rgba(0, 100, 150, 0.4));
+  border: 2px solid rgba(0, 255, 255, 0.6);
+  box-shadow: 
+    0 0 40px rgba(0, 255, 255, 0.5),
+    inset 0 0 40px rgba(0, 255, 255, 0.1);
+  animation: subtleGlow 3s ease-in-out infinite;
+  margin-left: 60px;
+}
+
+@keyframes subtleGlow {
+  0%, 100% {
+    box-shadow: 
+      0 0 40px rgba(0, 255, 255, 0.5),
+      inset 0 0 40px rgba(0, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 0 60px rgba(0, 255, 255, 0.7),
+      inset 0 0 50px rgba(0, 255, 255, 0.2);
+  }
+}
+
 .filter-btn.active {
   background: #0ff;
   color: #000;
