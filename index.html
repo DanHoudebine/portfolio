@@ -888,14 +888,24 @@ async function loadSkillsFromSheet() {
   try {
     const res = await fetch(SHEET_URL);
     const text = await res.text();
+    
+    // DEBUG — à supprimer après
+    console.log('=== RAW CSV (5 premières lignes) ===');
+    text.trim().split('\n').slice(0,5).forEach((l,i) => console.log(i+':', l));
+    
     const rows = text.trim().split('\n').slice(1);
     const skills = rows.map(row => {
       const cols = row.split(',');
+      
+      // DEBUG
+      console.log('cols:', cols);
+      
       const name = cols[0]?.trim().replace(/"/g, '');
       const cat  = cols[1]?.trim().replace(/"/g, '').toLowerCase() || 'other';
       const pct  = parseInt(cols[3]?.trim().replace(/"/g, '').replace('%', '')) || 0;
       return { name, cat, pct };
-    }).filter(s => s.name && s.name !== 'Outil' && s.name !== '');
+    }).filter(s => s.name && s.name !== 'Outil' && s.name !== '' && s.name !== 'OUTIL');
+
     allSkills = skills.length ? skills : FALLBACK_SKILLS;
   } catch(e) {
     console.warn('Fallback utilisé', e);
@@ -903,6 +913,7 @@ async function loadSkillsFromSheet() {
   }
   renderSkills(allSkills);
 }
+
 
 function getBadgeStyle(cat) {
   const colors = {
