@@ -889,20 +889,29 @@ async function loadSkillsFromSheet() {
     const res = await fetch(SHEET_URL);
     const text = await res.text();
     
-    const rows = text.trim().split('\n').slice(2); // ← Skip lignes 0 et 1
+    const rows = text.trim().split('\n').slice(2);
     
     const skills = rows.map(row => {
       const cols = row.split(',').map(c => c.trim().replace(/"/g, ''));
       
       const name = cols[0];
       const cat  = cols[1]?.toLowerCase() || 'other';
-      const maitrise = cols[3]; // "Expert", "Débutant → Expert", etc.
+      const maitrise = cols[3];
       const pct  = maitriseToPercent(maitrise);
       
       return { name, cat, pct };
     }).filter(s => s.name && s.name !== 'OUTIL' && s.name !== '');
 
     allSkills = skills.length ? skills : FALLBACK_SKILLS;
+    
+    // ← AJOUTE CES LIGNES
+    // Construis la liste unique des catégories
+    const uniqueCats = [...new Set(allSkills.map(s => s.cat))].sort();
+    console.log('Catégories trouvées:', uniqueCats);
+    
+    // Affiche les boutons de filtrage
+    renderCategoryButtons(uniqueCats);
+    
   } catch(e) {
     console.warn('Fallback utilisé', e);
     allSkills = FALLBACK_SKILLS;
@@ -957,17 +966,50 @@ function renderSkills(skills) {
   });
 }
 
+// ← NOUVELLE FONCTION
+function renderCategoryButtons(categories) {
+  const container = document.querySelector('.filters') || document.querySelector('nav') || document.body;
+  
+  let html = '<div class="category-filters" style="display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap;">';
+  html += '<button class="filter-btn active" data-cat="tous">Tous</button>';
+  
+  categories.forEach(cat => {
+    const label = cat.charAt(0).toUpperCase() + cat.slice(1);
+    html += `<button class="filter-btn" data-cat="${cat}">${label}</button>`;
+  });
+  
+  html += '</div>';
+  
+  // Insère avant les skills
+  const skillsContainer = document.querySelector('.skills-grid');
+  if (skillsContainer) {
+    skillsContainer.insertAdjacentHTML('beforebegin', html);
+  }
+  
+  // Ajoute les event listeners
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      const selected = btn.dataset.cat;
+      const filtered = selected === 'tous' ? allSkills : allSkills.filter(s => s.cat === selected);
+      renderSkills(filtered);
+    });
+  });
+}
+
 function filterSkills(cat, btn) {
   document.querySelectorAll('#skillsFilter .filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   const filtered = cat === 'all' ? allSkills : allSkills.filter(s => s.cat === cat);
   renderSkills(filtered);
 }
+
 function maitriseToPercent(val) {
     if (!val) return 0;
     val = val.toLowerCase().trim();
     
-    // Cas avec flèche (progression)
     if (val.includes('→') || val.includes('->')) {
         const parts = val.split(/→|->/).map(s => s.trim());
         const start = parts[0];
@@ -976,10 +1018,9 @@ function maitriseToPercent(val) {
         const startVal = {'débutant': 20, 'découverte': 20, 'notions': 30, 'intermédiaire': 50, 'avancé': 70, 'expert': 90}[start] || 0;
         const endVal = {'débutant': 20, 'découverte': 20, 'notions': 30, 'intermédiaire': 50, 'avancé': 70, 'expert': 90}[end] || 90;
         
-        return Math.round((startVal + endVal) / 2); // Moyenne
+        return Math.round((startVal + endVal) / 2);
     }
     
-    // Cas simples
     const map = {
         'découverte': 20,
         'débutant': 30,
