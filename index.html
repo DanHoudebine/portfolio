@@ -966,24 +966,25 @@ let allSkills = [];
 async function loadSkillsFromSheet() {
   try {
     const res = await fetch(SHEET_URL);
-    if (!res.ok) throw new Error('HTTP ' + res.status);
     const text = await res.text();
-    const rows = text.trim().split('\n').slice(1);
+    const rows = text.trim().split('\n').slice(1); // skip ligne 1 (titre fusionné)
+    
     const skills = rows.map(row => {
       const cols = row.split(',');
-      return {
-        name: cols[0]?.trim().replace(/"/g, ''),
-        pct:  parseInt(cols[1]?.trim()) || 0,
-        cat:  (cols[2]?.trim().replace(/"/g, '') || 'other').toLowerCase()
-      };
-    }).filter(s => s.name);
+      const name = cols[0]?.trim().replace(/"/g, '');
+      const cat  = cols[1]?.trim().replace(/"/g, '') || 'other';
+      const pct  = parseInt(cols[3]?.trim().replace(/"/g, '').replace('%', '')) || 0;
+      return { name, cat, pct };
+    }).filter(s => s.name && s.name !== 'Outil' && s.name !== '');
+
     allSkills = skills.length ? skills : FALLBACK_SKILLS;
   } catch(e) {
-    console.warn('Sheet non accessible, fallback utilisé.', e);
+    console.warn('Fallback utilisé', e);
     allSkills = FALLBACK_SKILLS;
   }
   renderSkills(allSkills);
 }
+
 
 function renderSkills(skills) {
   const grid = document.getElementById('skillsGrid');
@@ -997,16 +998,31 @@ function renderSkills(skills) {
     card.className = 'skill-card';
     card.dataset.cat = s.cat;
     card.innerHTML = `
-      <div class="skill-header">
-        <span class="skill-name">${s.name}</span>
-        <span class="skill-pct">${s.pct}%</span>
-      </div>
-      <div class="skill-bar">
-        <div class="skill-bar-fill" style="width:${s.pct}%"></div>
-      </div>
-      <span class="skill-badge badge-${s.cat}">${s.cat}</span>`;
-    grid.appendChild(card);
-  });
+  <div class="skill-header">
+    <span class="skill-name">${s.name}</span>
+    <span class="skill-pct">${s.pct}%</span>
+  </div>
+  <div class="skill-bar">
+    <div class="skill-bar-fill" data-pct="${s.pct}" style="width:0%"></div>
+  </div>
+  <span class="skill-badge" style="${getBadgeStyle(s.cat)}">${s.cat}</span>
+`;
+
+function getBadgeStyle(cat) {
+  const colors = {
+    'dcc':             'background:rgba(0,212,255,0.15);color:#00d4ff;border:1px solid rgba(0,212,255,0.3)',
+    'texturing':       'background:rgba(123,47,255,0.15);color:#a78bfa;border:1px solid rgba(123,47,255,0.3)',
+    'moteur':          'background:rgba(255,107,53,0.15);color:#ff6b35;border:1px solid rgba(255,107,53,0.3)',
+    'uv/retopo':       'background:rgba(0,255,150,0.15);color:#00ff96;border:1px solid rgba(0,255,150,0.3)',
+    'végétation':      'background:rgba(100,220,50,0.15);color:#64dc32;border:1px solid rgba(100,220,50,0.3)',
+    'assets':          'background:rgba(255,200,0,0.15);color:#ffc800;border:1px solid rgba(255,200,0,0.3)',
+    'plugin blender':  'background:rgba(255,100,150,0.15);color:#ff6496;border:1px solid rgba(255,100,150,0.3)',
+    'plugin ue5':      'background:rgba(200,100,255,0.15);color:#c864ff;border:1px solid rgba(200,100,255,0.3)',
+    'ia/génératif':    'background:rgba(0,200,255,0.15);color:#00c8ff;border:1px solid rgba(0,200,255,0.3)',
+    'pipeline':        'background:rgba(255,165,0,0.15);color:#ffa500;border:1px solid rgba(255,165,0,0.3)',
+    'référence':       'background:rgba(150,150,150,0.15);color:#aaa;border:1px solid rgba(150,150,150,0.3)',
+  };
+  return colors[cat.toLowerCase()] || 'background:rgba(255,255,255,0.05);color:#8899aa;border:1px solid rgba(255,255,255,0.1)';
 }
 
 function filterSkills(cat, btn) {
