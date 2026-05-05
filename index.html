@@ -889,22 +889,18 @@ async function loadSkillsFromSheet() {
     const res = await fetch(SHEET_URL);
     const text = await res.text();
     
-    // DEBUG — à supprimer après
-    console.log('=== RAW CSV (5 premières lignes) ===');
-    text.trim().split('\n').slice(0,5).forEach((l,i) => console.log(i+':', l));
+    const rows = text.trim().split('\n').slice(2); // ← Skip lignes 0 et 1
     
-    const rows = text.trim().split('\n').slice(1);
     const skills = rows.map(row => {
-      const cols = row.split(',');
+      const cols = row.split(',').map(c => c.trim().replace(/"/g, ''));
       
-      // DEBUG
-      console.log('cols:', cols);
+      const name = cols[0];
+      const cat  = cols[1]?.toLowerCase() || 'other';
+      const maitrise = cols[3]; // "Expert", "Débutant → Expert", etc.
+      const pct  = maitriseToPercent(maitrise);
       
-      const name = cols[0]?.trim().replace(/"/g, '');
-      const cat  = cols[1]?.trim().replace(/"/g, '').toLowerCase() || 'other';
-      const pct  = parseInt(cols[3]?.trim().replace(/"/g, '').replace('%', '')) || 0;
       return { name, cat, pct };
-    }).filter(s => s.name && s.name !== 'Outil' && s.name !== '' && s.name !== 'OUTIL');
+    }).filter(s => s.name && s.name !== 'OUTIL' && s.name !== '');
 
     allSkills = skills.length ? skills : FALLBACK_SKILLS;
   } catch(e) {
@@ -913,7 +909,6 @@ async function loadSkillsFromSheet() {
   }
   renderSkills(allSkills);
 }
-
 
 function getBadgeStyle(cat) {
   const colors = {
@@ -967,6 +962,35 @@ function filterSkills(cat, btn) {
   btn.classList.add('active');
   const filtered = cat === 'all' ? allSkills : allSkills.filter(s => s.cat === cat);
   renderSkills(filtered);
+}
+function maitriseToPercent(val) {
+    if (!val) return 0;
+    val = val.toLowerCase().trim();
+    
+    // Cas avec flèche (progression)
+    if (val.includes('→') || val.includes('->')) {
+        const parts = val.split(/→|->/).map(s => s.trim());
+        const start = parts[0];
+        const end = parts[1];
+        
+        const startVal = {'débutant': 20, 'découverte': 20, 'notions': 30, 'intermédiaire': 50, 'avancé': 70, 'expert': 90}[start] || 0;
+        const endVal = {'débutant': 20, 'découverte': 20, 'notions': 30, 'intermédiaire': 50, 'avancé': 70, 'expert': 90}[end] || 90;
+        
+        return Math.round((startVal + endVal) / 2); // Moyenne
+    }
+    
+    // Cas simples
+    const map = {
+        'découverte': 20,
+        'débutant': 30,
+        'notions': 35,
+        'intermédiaire': 60,
+        'avancé': 75,
+        'expert': 90,
+        'maîtrise': 95
+    };
+    
+    return map[val] || 0;
 }
 
 // ═══════════════════════════════════════════
