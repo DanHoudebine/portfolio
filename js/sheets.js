@@ -80,6 +80,7 @@ async function loadCompetences() {
     
     // Détecter les bonnes clés (insensible à la casse/accents)
 // Sauter les 2 premières lignes (titre fusionné + headers)
+
 const realData = data.slice(2);
 
 // Les clés sont col0, col1, col2...
@@ -101,7 +102,7 @@ function maitriseToPercent(val) {
 
     
     // Catégories uniques pour les filtres
-    const categories = [...new Set(data.map(r => r[keyCat]).filter(Boolean))];
+    const categories = [...new Set(realData.map(r => r[keyCat]).filter(Boolean))];
     
     // Boutons filtre
     filterTabs.innerHTML = `<button class="filter-btn active" data-filter="all">Tous</button>`;
@@ -116,7 +117,7 @@ function maitriseToPercent(val) {
     function renderCards(filter = 'all') {
         grid.innerHTML = '';
         
-        let filtered = data.filter(r => r[keyOutil]);
+        let filtered = realData.filter(r => r[keyOutil]);
         if (filter !== 'all') {
             filtered = filtered.filter(r => r[keyCat] === filter);
         }
