@@ -1171,7 +1171,7 @@ document.addEventListener('keydown', e => {
 // ═══════════════════════════════════════════
 // SKILLS — Google Sheet
 // ═══════════════════════════════════════════
-const SHEET_URL = 'REMPLACE_PAR_TON_URL_GOOGLE_SHEET';
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1LfDDyMi36kDBhq3V8sVttipoajdN-faH/edit?gid=1799299380#gid=1799299380';
 
 const FALLBACK_SKILLS = [
   { name: "Unreal Engine", pct: 90, cat: "engine" },
@@ -1185,7 +1185,7 @@ const FALLBACK_SKILLS = [
 ];
 
 async function loadSkillsFromSheet() {
-  if (SHEET_URL === 'REMPLACE_PAR_TON_URL_GOOGLE_SHEET') {
+  if (SHEET_URL === 'https://docs.google.com/spreadsheets/d/1LfDDyMi36kDBhq3V8sVttipoajdN-faH/edit?gid=1799299380#gid=1799299380') {
     renderSkills(FALLBACK_SKILLS);
     return;
   }
