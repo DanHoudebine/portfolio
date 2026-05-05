@@ -154,23 +154,12 @@ body {
 .hero {
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
     position: relative;
     overflow: hidden;
     padding: 100px 60px 60px;
-}
-
-.hero-content {
-    text-align: center;
-    margin-bottom: 3rem;
-    z-index: 1;
-}
-
-.profile-image {
-    margin-top: 2rem;
-    z-index: 1;
 }
 
 .hero-bg {
