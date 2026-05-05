@@ -1402,3 +1402,18 @@ body {
     letter-spacing: 2px;
     margin-top: 8px;
 }
+/* Couleurs par catégorie */
+.badge[data-cat="DCC"]              { background: #0ff2; color: #0ff; border-color: #0ff; }
+.badge[data-cat="Texturing"]        { background: #f0a2; color: #f0a; border-color: #f0a; }
+.badge[data-cat="Moteur"]           { background: #0f82; color: #0f8; border-color: #0f8; }
+.badge[data-cat="Terrain"]          { background: #fa02; color: #fa0; border-color: #fa0; }
+.badge[data-cat="UV/Retopo"]        { background: #f002; color: #f44; border-color: #f44; }
+.badge[data-cat="Photogrammétrie"]  { background: #a0f2; color: #a0f; border-color: #a0f; }
+.badge[data-cat="Végétation"]       { background: #0f02; color: #0f0; border-color: #0f0; }
+.badge[data-cat="Assets"]           { background: #ff02; color: #ff0; border-color: #ff0; }
+.badge[data-cat="Plugin Blender"]   { background: #f802; color: #f80; border-color: #f80; }
+.badge[data-cat="Plugin UES"]       { background: #08f2; color: #08f; border-color: #08f; }
+.badge[data-cat="IA/Génératif"]     { background: #f0f2; color: #f0f; border-color: #f0f; }
+.badge[data-cat="Pipeline"]         { background: #0882; color: #088; border-color: #088; }
+.badge[data-cat="Référence"]        { background: #8882; color: #888; border-color: #888; }
+.badge[data-cat="Formation"]        { background: #fc02; color: #fc0; border-color: #fc0; }

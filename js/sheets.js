@@ -85,8 +85,9 @@ async function loadCompetences() {
     
     const keyOutil    = keys.find(k => k.toLowerCase().includes('outil')) || keys[0];
     const keyCat      = keys.find(k => k.toLowerCase().includes('cat')) || keys[1];
-    const keyMaitrise = keys.find(k => k.toLowerCase().includes('ma') && !k.includes('%')) || keys[2];
-    const keyPct      = keys.find(k => k.includes('%')) || keys[3];
+    const keyMaitrise = keys[2]; // colonne C = MAÎTRISE
+    const keyPct      = keys[3]; // colonne D = MAÎTRISE %
+
     
     // Catégories uniques pour les filtres
     const categories = [...new Set(data.map(r => r[keyCat]).filter(Boolean))];
@@ -125,7 +126,7 @@ async function loadCompetences() {
             card.innerHTML = `
                 <div class="skill-header">
                     <span class="skill-name">${outil}</span>
-                    <span class="skill-cat-badge">${cat}</span>
+                    <span class="skill-cat-badge" data-cat="${cat}">${cat}</span>
                 </div>
                 <div class="skill-level ${getLevelClass(maitrise)}">
                     <span class="level-dot"></span>
