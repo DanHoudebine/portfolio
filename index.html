@@ -866,48 +866,46 @@
 // DONNÉES PROJETS
 // ═══════════════════════════════════════════
 const projects = [
-  { id:1,  title:"The Glimmers of Twilight",                        category:"environment", tools:["Unreal Engine","Blender","Substance Painter"],                          img:"assets/portfolio/project1",  artstation:"https://www.artstation.com/artwork/nJVWQr" },
-  { id:2,  title:"Sanctum of the Fallen",                           category:"environment", tools:["Substance 3D Painter","Unreal Engine","3ds Max","Photoshop"],           img:"assets/portfolio/project2",  artstation:"https://www.artstation.com/artwork/gRQALE" },
-  { id:3,  title:"The Cursed Legacy of the Aristocrat – Vue 1",     category:"environment", tools:["Unreal Engine","Blender","Substance 3D Painter","ZBrush"],              img:"assets/portfolio/project3",  artstation:"https://www.artstation.com/artwork/K3ov1y" },
-  { id:4,  title:"The Cursed Legacy of the Aristocrat – Vue 2",     category:"environment", tools:["Unreal Engine","Blender","Substance 3D Painter","ZBrush"],              img:"assets/portfolio/project4",  artstation:"https://www.artstation.com/artwork/K3ov1y" },
-  { id:5,  title:"Dead Line – Vue 1",                               category:"environment", tools:["Unreal Engine","Photoshop","Substance 3D Painter"],                     img:"assets/portfolio/project5",  artstation:"https://www.artstation.com/artwork/98aqZN" },
-  { id:6,  title:"Dead Line – Vue 2",                               category:"environment", tools:["Unreal Engine","Photoshop","Substance 3D Painter"],                     img:"assets/portfolio/project6",  artstation:"https://www.artstation.com/artwork/98aqZN" },
-  { id:7,  title:"Dead Line – Vue 3",                               category:"environment", tools:["Unreal Engine","Photoshop","Substance 3D Painter"],                     img:"assets/portfolio/project7",  artstation:"https://www.artstation.com/artwork/98aqZN" },
-  { id:8,  title:"Bunker",                                          category:"environment", tools:["Unreal Engine","3ds Max","Substance 3D Painter"],                       img:"assets/portfolio/project8",  artstation:"https://www.artstation.com/artwork/VdYqBw" },
-  { id:9,  title:"Forgotten Library",                               category:"environment", tools:["Unreal Engine","3ds Max","Substance 3D Painter","Photoshop"],           img:"assets/portfolio/project9",  artstation:"https://www.artstation.com/artwork/lRydOl" },
-  { id:10, title:"Viking Age",                                      category:"environment", tools:["Unreal Engine","3ds Max","Substance 3D Painter","ZBrush","SpeedTree"],  img:"assets/portfolio/project10", artstation:"https://www.artstation.com/artwork/5BGxb4" },
-  { id:11, title:"Anubis Canopic Jar",                              category:"props",       tools:["ZBrush","Substance Painter","Photoshop"],                               img:"assets/portfolio/project11", artstation:"https://www.artstation.com/artwork/ZG18zw" },
-  { id:12, title:"Old Piano 1875",                                  category:"props",       tools:["Blender","Substance Painter"],                                          img:"assets/portfolio/project12", artstation:"https://www.artstation.com/artwork/bK1b0n" },
-  { id:13, title:"Jukebox Wurlitzer 1015",                          category:"props",       tools:["3ds Max","Substance Painter"],                                          img:"assets/portfolio/project13", artstation:"https://www.artstation.com/artwork/J90rxa" },
-  { id:14, title:"Jet Engine",                                      category:"props",       tools:["3ds Max","Substance Painter"],                                          img:"assets/portfolio/project14", artstation:"https://www.artstation.com/artwork/w0Jbzw" },
-  { id:15, title:"Exploration of Cubemaps for Level Art",           category:"environment", tools:["Photoshop","3ds Max","Unreal Engine","Substance Painter"],              img:"assets/portfolio/project15", artstation:"https://www.artstation.com/artwork/Jv5Z0m", note:"Thanks to Marko Margeta" },
+  { id:1,  title:"The Glimmers of Twilight",                      category:"environment", tools:["Unreal Engine","Blender","Substance Painter"],                     img:"assets/portfolio/project1",  artstation:"https://www.artstation.com/artwork/nJVWQr" },
+  { id:2,  title:"Sanctum of the Fallen",                         category:"environment", tools:["Substance 3D Painter","Unreal Engine","3ds Max","Photoshop"],      img:"assets/portfolio/project2",  artstation:"https://www.artstation.com/artwork/gRQALE" },
+  { id:3,  title:"The Cursed Legacy of the Aristocrat – Vue 1",   category:"environment", tools:["Unreal Engine","Blender","Substance 3D Painter","ZBrush"],         img:"assets/portfolio/project3",  artstation:"https://www.artstation.com/artwork/K3ov1y" },
+  { id:4,  title:"The Cursed Legacy of the Aristocrat – Vue 2",   category:"environment", tools:["Unreal Engine","Blender","Substance 3D Painter","ZBrush"],         img:"assets/portfolio/project4",  artstation:"https://www.artstation.com/artwork/K3ov1y" },
+  { id:5,  title:"Dead Line – Vue 1",                             category:"environment", tools:["Unreal Engine","Photoshop","Substance 3D Painter"],                img:"assets/portfolio/project5",  artstation:"https://www.artstation.com/artwork/98aqZN" },
+  { id:6,  title:"Dead Line – Vue 2",                             category:"environment", tools:["Unreal Engine","Photoshop","Substance 3D Painter"],                img:"assets/portfolio/project6",  artstation:"https://www.artstation.com/artwork/98aqZN" },
+  { id:7,  title:"The Abandoned Greenhouse",                      category:"environment", tools:["Unreal Engine","Blender","Substance 3D Painter"],                  img:"assets/portfolio/project7",  artstation:"https://www.artstation.com/artwork/lxvgJw" },
+  { id:8,  title:"The Forgotten Observatory",                     category:"environment", tools:["Unreal Engine","Blender","Substance 3D Painter"],                  img:"assets/portfolio/project8",  artstation:"https://www.artstation.com/artwork/lxvgJw" },
+  { id:9,  title:"Modular Dungeon Kit",                           category:"environment", tools:["3ds Max","Substance Painter","Unreal Engine"],                     img:"assets/portfolio/project9",  artstation:"https://www.artstation.com/artwork/lxvgJw" },
+  { id:10, title:"Viking Mead Hall",                              category:"environment", tools:["Blender","Substance Painter","Unreal Engine"],                     img:"assets/portfolio/project10", artstation:"https://www.artstation.com/artwork/lxvgJw" },
+  { id:11, title:"Anubis Canopic Jar",                            category:"props",       tools:["ZBrush","Substance Painter","Photoshop"],                         img:"assets/portfolio/project11", artstation:"https://www.artstation.com/artwork/ZG18zw" },
+  { id:12, title:"Old Piano 1875",                                category:"props",       tools:["Blender","Substance Painter"],                                    img:"assets/portfolio/project12", artstation:"https://www.artstation.com/artwork/bK1b0n" },
+  { id:13, title:"Jukebox Wurlitzer 1015",                        category:"props",       tools:["3ds Max","Substance Painter"],                                    img:"assets/portfolio/project13", artstation:"https://www.artstation.com/artwork/J90rxa" },
+  { id:14, title:"Jet Engine",                                    category:"props",       tools:["3ds Max","Substance Painter"],                                    img:"assets/portfolio/project14", artstation:"https://www.artstation.com/artwork/w0Jbzw" },
+  { id:15, title:"Exploration of Cubemaps for Level Art",         category:"environment", tools:["Photoshop","3ds Max","Unreal Engine","Substance Painter"],        img:"assets/portfolio/project15", artstation:"https://www.artstation.com/artwork/Jv5Z0m", note:"Thanks to Marko Margeta" },
 ];
 
 // ═══════════════════════════════════════════
-// RENDER PROJETS
+// PORTFOLIO
 // ═══════════════════════════════════════════
 function renderProjects(filter = 'all') {
   const grid = document.getElementById('projectsGrid');
   grid.innerHTML = '';
-  const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter);
-  filtered.forEach(p => {
-    const tools = p.tools.map(t => `<span class="tool-tag">${t}</span>`).join('');
-    const catLabel = p.category === 'environment' ? 'ENV' : 'PROP';
+  const list = filter === 'all' ? projects : projects.filter(p => p.category === filter);
+  list.forEach(p => {
     const card = document.createElement('div');
     card.className = 'project-card';
     card.innerHTML = `
-      <div class="project-thumb">
-        <img src="${p.img}.png" alt="${p.title}"
-             onerror="this.src='${p.img}.jpg'; this.onerror=null;" loading="lazy">
-        <div class="project-overlay"><span class="overlay-hint">🔍 Agrandir</span></div>
-        <span class="project-badge">${catLabel}</span>
+      <div class="project-thumb" style="background:#0a1628;cursor:pointer;">
+        <img src="${p.img}.jpg"
+             onerror="this.onerror=null;this.src='${p.img}.png'"
+             alt="${p.title}"
+             style="width:100%;height:100%;object-fit:cover;display:block;">
       </div>
       <div class="project-info">
-        <div class="project-title">${p.title}</div>
-        <div class="project-tools">${tools}</div>
-        ${p.note ? `<div style="font-size:0.72rem;color:var(--text-dim);margin-bottom:0.75rem;">— ${p.note}</div>` : ''}
+        <h3 class="project-title">${p.title}</h3>
+        <div class="project-tools">${p.tools.map(t => `<span class="tool-tag">${t}</span>`).join('')}</div>
+        ${p.note ? `<p style="font-size:0.75rem;color:var(--text-dim);margin-top:0.5rem;">${p.note}</p>` : ''}
         <div class="project-actions">
-          <a class="btn-artstation" href="${p.artstation}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🎨 ArtStation</a>
+          <a href="${p.artstation}" target="_blank" class="btn-artstation">🎨 ArtStation</a>
           <button class="btn-lightbox" onclick="openLightbox(${p.id})" title="Agrandir">⛶</button>
         </div>
       </div>`;
@@ -928,22 +926,22 @@ function filterProjects(cat, btn) {
 function openLightbox(id) {
   const p = projects.find(x => x.id === id);
   if (!p) return;
-  document.getElementById('lightboxImg').src = p.img + '.png';
-  document.getElementById('lightboxImg').onerror = function(){ this.src = p.img + '.jpg'; this.onerror=null; };
+  document.getElementById('lightboxImg').src = p.img + '.jpg';
   document.getElementById('lightboxTitle').textContent = p.title;
   document.getElementById('lightboxTools').innerHTML = p.tools.map(t => `<span class="tool-tag">${t}</span>`).join('');
   document.getElementById('lightboxLink').href = p.artstation;
-  document.getElementById('lightbox').classList.add('open');
+  document.getElementById('lightbox').classList.add('active');
   document.body.style.overflow = 'hidden';
 }
-function closeLightboxBtn() {
-  document.getElementById('lightbox').classList.remove('open');
-  document.body.style.overflow = '';
-}
+
 function closeLightbox(e) {
   if (e.target === document.getElementById('lightbox')) closeLightboxBtn();
 }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightboxBtn(); });
+
+function closeLightboxBtn() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
 
 // ═══════════════════════════════════════════
 // SKILLS — Google Sheet CSV
@@ -951,14 +949,14 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbo
 const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ8BWDBerFgMRzV4Kd6GqB5eoLksjiWgVHq-eAmBuSL_YkrCb5yYFreRgyes27Jrg/pub?output=csv';
 
 const FALLBACK_SKILLS = [
-  { name:"Unreal Engine",       pct:90, cat:"engine"  },
-  { name:"3ds Max",             pct:88, cat:"3d"      },
-  { name:"Blender",             pct:80, cat:"3d"      },
-  { name:"ZBrush",              pct:75, cat:"3d"      },
-  { name:"Substance 3D Painter",pct:92, cat:"texture" },
-  { name:"Photoshop",           pct:85, cat:"texture" },
-  { name:"SpeedTree",           pct:70, cat:"other"   },
-  { name:"Marmoset Toolbag",    pct:72, cat:"other"   },
+  { name:"Unreal Engine",        pct:90, cat:"engine"  },
+  { name:"3ds Max",              pct:88, cat:"3d"      },
+  { name:"Blender",              pct:80, cat:"3d"      },
+  { name:"ZBrush",               pct:75, cat:"3d"      },
+  { name:"Substance 3D Painter", pct:92, cat:"texture" },
+  { name:"Photoshop",            pct:85, cat:"texture" },
+  { name:"SpeedTree",            pct:70, cat:"other"   },
+  { name:"Marmoset Toolbag",     pct:72, cat:"other"   },
 ];
 
 let allSkills = [];
@@ -967,16 +965,14 @@ async function loadSkillsFromSheet() {
   try {
     const res = await fetch(SHEET_URL);
     const text = await res.text();
-    const rows = text.trim().split('\n').slice(1); // skip ligne 1 (titre fusionné)
-    
+    const rows = text.trim().split('\n').slice(1);
     const skills = rows.map(row => {
       const cols = row.split(',');
       const name = cols[0]?.trim().replace(/"/g, '');
-      const cat  = cols[1]?.trim().replace(/"/g, '') || 'other';
+      const cat  = cols[1]?.trim().replace(/"/g, '').toLowerCase() || 'other';
       const pct  = parseInt(cols[3]?.trim().replace(/"/g, '').replace('%', '')) || 0;
       return { name, cat, pct };
     }).filter(s => s.name && s.name !== 'Outil' && s.name !== '');
-
     allSkills = skills.length ? skills : FALLBACK_SKILLS;
   } catch(e) {
     console.warn('Fallback utilisé', e);
@@ -985,7 +981,29 @@ async function loadSkillsFromSheet() {
   renderSkills(allSkills);
 }
 
+// ═══════════════════════════════════════════
+// BADGE STYLE
+// ═══════════════════════════════════════════
+function getBadgeStyle(cat) {
+  const colors = {
+    'dcc':            'background:rgba(0,212,255,0.15);color:#00d4ff;border:1px solid rgba(0,212,255,0.3)',
+    'texturing':      'background:rgba(123,47,255,0.15);color:#a78bfa;border:1px solid rgba(123,47,255,0.3)',
+    'moteur':         'background:rgba(255,107,53,0.15);color:#ff6b35;border:1px solid rgba(255,107,53,0.3)',
+    'uv/retopo':      'background:rgba(0,255,150,0.15);color:#00ff96;border:1px solid rgba(0,255,150,0.3)',
+    'végétation':     'background:rgba(100,220,50,0.15);color:#64dc32;border:1px solid rgba(100,220,50,0.3)',
+    'assets':         'background:rgba(255,200,0,0.15);color:#ffc800;border:1px solid rgba(255,200,0,0.3)',
+    'plugin blender': 'background:rgba(255,100,150,0.15);color:#ff6496;border:1px solid rgba(255,100,150,0.3)',
+    'plugin ue5':     'background:rgba(200,100,255,0.15);color:#c864ff;border:1px solid rgba(200,100,255,0.3)',
+    'ia/génératif':   'background:rgba(0,200,255,0.15);color:#00c8ff;border:1px solid rgba(0,200,255,0.3)',
+    'pipeline':       'background:rgba(255,165,0,0.15);color:#ffa500;border:1px solid rgba(255,165,0,0.3)',
+    'référence':      'background:rgba(150,150,150,0.15);color:#aaa;border:1px solid rgba(150,150,150,0.3)',
+  };
+  return colors[cat] || 'background:rgba(255,255,255,0.05);color:#8899aa;border:1px solid rgba(255,255,255,0.1)';
+}
 
+// ═══════════════════════════════════════════
+// RENDER SKILLS
+// ═══════════════════════════════════════════
 function renderSkills(skills) {
   const grid = document.getElementById('skillsGrid');
   grid.innerHTML = '';
@@ -998,33 +1016,27 @@ function renderSkills(skills) {
     card.className = 'skill-card';
     card.dataset.cat = s.cat;
     card.innerHTML = `
-  <div class="skill-header">
-    <span class="skill-name">${s.name}</span>
-    <span class="skill-pct">${s.pct}%</span>
-  </div>
-  <div class="skill-bar">
-    <div class="skill-bar-fill" data-pct="${s.pct}" style="width:0%"></div>
-  </div>
-  <span class="skill-badge" style="${getBadgeStyle(s.cat)}">${s.cat}</span>
-`;
-
-function getBadgeStyle(cat) {
-  const colors = {
-    'dcc':             'background:rgba(0,212,255,0.15);color:#00d4ff;border:1px solid rgba(0,212,255,0.3)',
-    'texturing':       'background:rgba(123,47,255,0.15);color:#a78bfa;border:1px solid rgba(123,47,255,0.3)',
-    'moteur':          'background:rgba(255,107,53,0.15);color:#ff6b35;border:1px solid rgba(255,107,53,0.3)',
-    'uv/retopo':       'background:rgba(0,255,150,0.15);color:#00ff96;border:1px solid rgba(0,255,150,0.3)',
-    'végétation':      'background:rgba(100,220,50,0.15);color:#64dc32;border:1px solid rgba(100,220,50,0.3)',
-    'assets':          'background:rgba(255,200,0,0.15);color:#ffc800;border:1px solid rgba(255,200,0,0.3)',
-    'plugin blender':  'background:rgba(255,100,150,0.15);color:#ff6496;border:1px solid rgba(255,100,150,0.3)',
-    'plugin ue5':      'background:rgba(200,100,255,0.15);color:#c864ff;border:1px solid rgba(200,100,255,0.3)',
-    'ia/génératif':    'background:rgba(0,200,255,0.15);color:#00c8ff;border:1px solid rgba(0,200,255,0.3)',
-    'pipeline':        'background:rgba(255,165,0,0.15);color:#ffa500;border:1px solid rgba(255,165,0,0.3)',
-    'référence':       'background:rgba(150,150,150,0.15);color:#aaa;border:1px solid rgba(150,150,150,0.3)',
-  };
-  return colors[cat.toLowerCase()] || 'background:rgba(255,255,255,0.05);color:#8899aa;border:1px solid rgba(255,255,255,0.1)';
+      <div class="skill-header">
+        <span class="skill-name">${s.name}</span>
+        <span class="skill-pct">${s.pct}%</span>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-bar-fill" data-pct="${s.pct}" style="width:0%"></div>
+      </div>
+      <span class="skill-badge" style="${getBadgeStyle(s.cat)}">${s.cat}</span>
+    `;
+    grid.appendChild(card);
+  });
+  requestAnimationFrame(() => {
+    grid.querySelectorAll('.skill-bar-fill').forEach(bar => {
+      bar.style.width = bar.dataset.pct + '%';
+    });
+  });
 }
 
+// ═══════════════════════════════════════════
+// FILTER SKILLS
+// ═══════════════════════════════════════════
 function filterSkills(cat, btn) {
   document.querySelectorAll('#skillsFilter .filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -1052,5 +1064,6 @@ document.addEventListener('DOMContentLoaded', () => {
   loadSkillsFromSheet();
 });
 </script>
+
 </body>
 </html>
