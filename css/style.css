@@ -1447,17 +1447,18 @@ body {
    PROFILE IMAGE (HERO)
 ============================================ */
 .profile-image {
-  width: 280px;
-  height: 280px;
+  width: 320px;
+  height: 320px;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, rgba(0, 255, 255, 0.2), rgba(0, 100, 150, 0.4));
-  border: 2px solid rgba(0, 255, 255, 0.6);
+  border: 2px solid rgba(0, 245, 255, 0.6);
   box-shadow: 
-    0 0 40px rgba(0, 255, 255, 0.5),
-    inset 0 0 40px rgba(0, 255, 255, 0.1);
+    0 0 40px rgba(0, 245, 255, 0.5),
+    inset 0 0 40px rgba(0, 245, 255, 0.1);
+  object-fit: cover;
   animation: subtleGlow 3s ease-in-out infinite;
-  margin-left: 60px;
+  margin-left: 80px;  /* ← DÉCALE VERS LA DROITE */
 }
+
 
 @keyframes subtleGlow {
   0%, 100% {

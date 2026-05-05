@@ -852,7 +852,7 @@ function filterProjects(cat, btn) {
 function openLightbox(id) {
   const p = projects.find(x => x.id === id);
   if (!p) return;
-  document.getElementById('lightboxImg').src = p.img + '.jpg';
+  document.getElementById('lightboxImg').src = p.img + '.png';
   document.getElementById('lightboxTitle').textContent = p.title;
   document.getElementById('lightboxTools').innerHTML = p.tools.map(t => `<span class="tool-tag">${t}</span>`).join('');
   document.getElementById('lightboxLink').href = p.artstation;
