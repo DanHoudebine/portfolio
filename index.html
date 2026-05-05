@@ -1,272 +1,198 @@
-<!-- ===== SKILLS ===== -->
-<section id="skills" class="section-skills">
-  <div class="container">
-    <h2 class="section-title">Mon Toolkit</h2>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio - Dan Houdebine - Développeur Web">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>Dan Houdebine - Portfolio</title>
+  
+  <link rel="stylesheet" href="styles/style.css">
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <!-- ===== SKILLS SECTION ===== -->
+  <section class="section-skills" id="skills">
+    <div class="container">
+      <!-- Titre -->
+      <h2 class="section-title">Compétences</h2>
 
-    <!-- Filtres -->
-    <div class="skills-filters">
-      <button class="filter-btn active" data-filter="all">Tous</button>
-      <button class="filter-btn" data-filter="dcc">DCC</button>
-      <button class="filter-btn" data-filter="texturing">Texturing</button>
-      <button class="filter-btn" data-filter="moteur">Moteur</button>
-      <button class="filter-btn" data-filter="terrain">Terrain</button>
-      <button class="filter-btn" data-filter="photogrammetrie">Photogrammétrie</button>
-      <button class="filter-btn" data-filter="ia">IA</button>
-      <button class="filter-btn" data-filter="pipeline">Pipeline</button>
-      <button class="filter-btn" data-filter="plugins">Plugins</button>
+      <!-- Filtres -->
+      <div class="skills-filters">
+        <button class="filter-btn" data-filter="all">Tous</button>
+        <button class="filter-btn" data-filter="frontend">Frontend</button>
+        <button class="filter-btn" data-filter="backend">Backend</button>
+        <button class="filter-btn" data-filter="tools">Outils</button>
+      </div>
+
+      <!-- Grille des skills -->
+      <div class="skills-grid">
+        <!-- FRONTEND -->
+        <div class="skill-item" data-category="frontend">
+          <div class="skill-header">
+            <h3 class="skill-name">HTML5</h3>
+            <span class="skill-level">Avancé</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-fill" data-width="95"></div>
+          </div>
+        </div>
+
+        <div class="skill-item" data-category="frontend">
+          <div class="skill-header">
+            <h3 class="skill-name">CSS3</h3>
+            <span class="skill-level">Avancé</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-fill" data-width="93"></div>
+          </div>
+        </div>
+
+        <div class="skill-item" data-category="frontend">
+          <div class="skill-header">
+            <h3 class="skill-name">JavaScript</h3>
+            <span class="skill-level">Avancé</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-fill" data-width="90"></div>
+          </div>
+        </div>
+
+        <div class="skill-item" data-category="frontend">
+          <div class="skill-header">
+            <h3 class="skill-name">React</h3>
+            <span class="skill-level">Intermédiaire</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-fill" data-width="78"></div>
+          </div>
+        </div>
+
+        <div class="skill-item" data-category="frontend">
+          <div class="skill-header">
+            <h3 class="skill-name">Vue.js</h3>
+            <span class="skill-level">Intermédiaire</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-fill" data-width="75"></div>
+          </div>
+        </div>
+
+        <div class="skill-item" data-category="frontend">
+          <div class="skill-header">
+            <h3 class="skill-name">Responsive Design</h3>
+            <span class="skill-level">Avancé</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-fill" data-width="92"></div>
+          </div>
+        </div>
+
+        <!-- BACKEND -->
+        <div class="skill-item" data-category="backend">
+          <div class="skill-header">
+            <h3 class="skill-name">PHP</h3>
+            <span class="skill-level">Avancé</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-fill" data-width="88"></div>
+          </div>
+        </div>
+
+        <div class="skill-item" data-category="backend">
+          <div class="skill-header">
+            <h3 class="skill-name">Node.js</h3>
+            <span class="skill-level">Intermédiaire</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-fill" data-width="80"></div>
+          </div>
+        </div>
+
+        <div class="skill-item" data-category="backend">
+          <div class="skill-header">
+            <h3 class="skill-name">SQL</h3>
+            <span class="skill-level">Avancé</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-fill" data-width="87"></div>
+          </div>
+        </div>
+
+        <div class="skill-item" data-category="backend">
+          <div class="skill-header">
+            <h3 class="skill-name">Laravel</h3>
+            <span class="skill-level">Intermédiaire</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-fill" data-width="82"></div>
+          </div>
+        </div>
+
+        <div class="skill-item" data-category="backend">
+          <div class="skill-header">
+            <h3 class="skill-name">MongoDB</h3>
+            <span class="skill-level">Intermédiaire</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-fill" data-width="76"></div>
+          </div>
+        </div>
+
+        <!-- TOOLS -->
+        <div class="skill-item" data-category="tools">
+          <div class="skill-header">
+            <h3 class="skill-name">Git / GitHub</h3>
+            <span class="skill-level">Avancé</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-fill" data-width="91"></div>
+          </div>
+        </div>
+
+        <div class="skill-item" data-category="tools">
+          <div class="skill-header">
+            <h3 class="skill-name">VS Code</h3>
+            <span class="skill-level">Avancé</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-fill" data-width="94"></div>
+          </div>
+        </div>
+
+        <div class="skill-item" data-category="tools">
+          <div class="skill-header">
+            <h3 class="skill-name">Figma</h3>
+            <span class="skill-level">Intermédiaire</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-fill" data-width="79"></div>
+          </div>
+        </div>
+
+        <div class="skill-item" data-category="tools">
+          <div class="skill-header">
+            <h3 class="skill-name">Docker</h3>
+            <span class="skill-level">Intermédiaire</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-fill" data-width="74"></div>
+          </div>
+        </div>
+
+        <div class="skill-item" data-category="tools">
+          <div class="skill-header">
+            <h3 class="skill-name">Webpack</h3>
+            <span class="skill-level">Intermédiaire</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-fill" data-width="73"></div>
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <!-- Grid Skills -->
-    <div class="skills-grid">
-
-      <!-- DCC -->
-      <div class="skill-item" data-category="dcc">
-        <div class="skill-header">
-          <span class="skill-name">Blender</span>
-          <span class="skill-level expert">Expert</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="dcc">
-        <div class="skill-header">
-          <span class="skill-name">3ds Max</span>
-          <span class="skill-level expert">Expert</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="dcc">
-        <div class="skill-header">
-          <span class="skill-name">ZBrush</span>
-          <span class="skill-level expert">Expert</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="dcc">
-        <div class="skill-header">
-          <span class="skill-name">Cinema 4D</span>
-          <span class="skill-level expert">Expert</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="dcc">
-        <div class="skill-header">
-          <span class="skill-name">Houdini</span>
-          <span class="skill-level apprentissage">En apprentissage</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="40"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="dcc">
-        <div class="skill-header">
-          <span class="skill-name">Autodesk Maya</span>
-          <span class="skill-level decouverte">Découverte</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="20"></div></div>
-      </div>
-
-      <!-- Texturing -->
-      <div class="skill-item" data-category="texturing">
-        <div class="skill-header">
-          <span class="skill-name">Substance 3D Painter</span>
-          <span class="skill-level expert">Expert</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="texturing">
-        <div class="skill-header">
-          <span class="skill-name">Substance 3D Designer</span>
-          <span class="skill-level expert">Expert</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="texturing">
-        <div class="skill-header">
-          <span class="skill-name">Quixel Mixer</span>
-          <span class="skill-level expert">Expert</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="texturing">
-        <div class="skill-header">
-          <span class="skill-name">Photoshop</span>
-          <span class="skill-level expert">Expert</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="texturing">
-        <div class="skill-header">
-          <span class="skill-name">Substance 3D Sampler</span>
-          <span class="skill-level apprentissage">En apprentissage</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="40"></div></div>
-      </div>
-
-      <!-- Moteur -->
-      <div class="skill-item" data-category="moteur">
-        <div class="skill-header">
-          <span class="skill-name">Unreal Engine 5</span>
-          <span class="skill-level expert">Expert</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="moteur">
-        <div class="skill-header">
-          <span class="skill-name">Unity (HDRP)</span>
-          <span class="skill-level expert">Expert</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-      </div>
-
-      <!-- Terrain -->
-      <div class="skill-item" data-category="terrain">
-        <div class="skill-header">
-          <span class="skill-name">Gaea</span>
-          <span class="skill-level apprentissage">En apprentissage</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="40"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="terrain">
-        <div class="skill-header">
-          <span class="skill-name">World Creator</span>
-          <span class="skill-level apprentissage">En apprentissage</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="40"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="terrain">
-        <div class="skill-header">
-          <span class="skill-name">World Machine</span>
-          <span class="skill-level apprentissage">En apprentissage</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="40"></div></div>
-      </div>
-
-      <!-- Photogrammétrie -->
-      <div class="skill-item" data-category="photogrammetrie">
-        <div class="skill-header">
-          <span class="skill-name">RealityCapture</span>
-          <span class="skill-level operationnel">Opérationnel</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="70"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="photogrammetrie">
-        <div class="skill-header">
-          <span class="skill-name">Polycam</span>
-          <span class="skill-level operationnel">Opérationnel</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="70"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="photogrammetrie">
-        <div class="skill-header">
-          <span class="skill-name">Metashape</span>
-          <span class="skill-level apprentissage">En apprentissage</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="40"></div></div>
-      </div>
-
-      <!-- IA -->
-      <div class="skill-item" data-category="ia">
-        <div class="skill-header">
-          <span class="skill-name">Midjourney</span>
-          <span class="skill-level expert">Expert</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="ia">
-        <div class="skill-header">
-          <span class="skill-name">Stable Diffusion</span>
-          <span class="skill-level expert">Expert</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="ia">
-        <div class="skill-header">
-          <span class="skill-name">Meshy AI</span>
-          <span class="skill-level expert">Expert</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="ia">
-        <div class="skill-header">
-          <span class="skill-name">Adobe Firefly</span>
-          <span class="skill-level expert">Expert</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-      </div>
-
-      <!-- Pipeline -->
-      <div class="skill-item" data-category="pipeline">
-        <div class="skill-header">
-          <span class="skill-name">Marmoset Toolbag</span>
-          <span class="skill-level expert">Expert</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="pipeline">
-        <div class="skill-header">
-          <span class="skill-name">Perforce</span>
-          <span class="skill-level apprentissage">En apprentissage</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="40"></div></div>
-      </div>
-
-      <!-- Plugins -->
-      <div class="skill-item" data-category="plugins">
-        <div class="skill-header">
-          <span class="skill-name">Hard Ops</span>
-          <span class="skill-level expert">Expert</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="plugins">
-        <div class="skill-header">
-          <span class="skill-name">BoxCutter</span>
-          <span class="skill-level expert">Expert</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="plugins">
-        <div class="skill-header">
-          <span class="skill-name">PCG Framework</span>
-          <span class="skill-level expert">Expert</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="plugins">
-        <div class="skill-header">
-          <span class="skill-name">Botaniq</span>
-          <span class="skill-level expert">Expert</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
-      </div>
-
-      <div class="skill-item" data-category="plugins">
-        <div class="skill-header">
-          <span class="skill-name">Houdini Engine Bridge</span>
-          <span class="skill-level apprentissage">En apprentissage</span>
-        </div>
-        <div class="skill-bar"><div class="skill-fill" data-width="40"></div></div>
-      </div>
-
-    </div>
-  </div>
-</section>
+  <script src="scripts/script.js"></script>
+</body>
+</html>
