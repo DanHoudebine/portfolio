@@ -33,24 +33,6 @@ document.querySelectorAll('a, button, .skill-card, .projet-card').forEach(el => 
         follower.style.height = '30px';
     });
 });
-// ============================================
-// NAV MOBILE
-// ============================================
-const navToggle = document.querySelector('.nav-toggle');
-const navLinks = document.querySelector('.nav-links');
-
-navToggle.addEventListener('click', () => {
-  navToggle.classList.toggle('open');
-  navLinks.classList.toggle('open');
-});
-
-// Fermer le menu au clic sur un lien
-navLinks.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => {
-    navToggle.classList.remove('open');
-    navLinks.classList.remove('open');
-  });
-});
 
 // ============================================
 // NAVBAR — SCROLL EFFECT
@@ -181,19 +163,21 @@ if (contactForm) {
 // ============================================
 // NAVIGATION MOBILE
 // ============================================
+const navToggle = document.querySelector('.nav-toggle');
+const navMenu = document.querySelector('.nav-links');
 
 if (navToggle) {
     navToggle.addEventListener('click', () => {
         navMenu.classList.toggle('open');
     });
 
-    // Ferme le menu quand on clique sur un lien
     navMenu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             navMenu.classList.remove('open');
         });
     });
 }
+
 
 // ============================================
 // INIT
