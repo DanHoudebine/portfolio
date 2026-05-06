@@ -1217,38 +1217,6 @@ nav {
         padding: 100px 40px;
     }
     
-    .profile-image {
-        width: 380px;
-        height: 380px;
-        min-width: 380px;
-    }
-}
-
-    
-    .profile-image {
-        width: 280px;
-        height: 280px;
-        min-width: 280px;
-    }
-}
-
-    .navbar { padding: 16px 20px; }
-    
-    /* Bouton hamburger visible */
-    .nav-toggle { 
-        display: flex; 
-        flex-direction: column; 
-        gap: 5px; 
-        cursor: pointer;
-        z-index: 1001;
-    }
-    .nav-toggle span { 
-        width: 24px; 
-        height: 2px; 
-        background: var(--primary);
-        transition: all 0.3s;
-    }
-
     /* Menu caché par défaut */
     .nav-links {
         display: none;
