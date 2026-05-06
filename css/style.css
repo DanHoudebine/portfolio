@@ -791,11 +791,13 @@ body {
   display: none;
   font-family: 'Rajdhani', sans-serif;
   font-size: 0.85rem;
-  color: rgba(0,212,255,0.7);
+  color: rgba(0, 212, 255, 0.7);
   letter-spacing: 1px;
   animation: fadeInMsg 0.3s ease;
 }
-.loader-msg.active { display: block; }
+.loader-msg.active { 
+  display: block; 
+}
 
 @keyframes fadeInMsg {
   from { opacity: 0; transform: translateX(-8px); }
