@@ -684,8 +684,8 @@
     /* ═══ RESPONSIVE ═══ */
     @media (max-width: 768px) {
       nav { padding: 1rem 1.5rem; }
-        .nav-links { display: none; }
-  .nav-toggle { display: none; }
+      .nav-toggle { display: none; }
+      .nav-links { display: none; }
       .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 2rem; }
       .hero-visual { order: -1; }
       .profile-frame { width: 220px; height: 220px; }
@@ -702,10 +702,13 @@
   .loader-msg.active { display: block !important; }
 
 /* ═══ NAV MOBILE ═══ */
+.nav-toggle { display: none; }
+
 @media (max-width: 768px) {
+  .nav-toggle { display: flex; }
   .nav-links { display: none; }
-  .nav-toggle { display: none; }
 }
+
 
   .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .nav-toggle.open span:nth-child(2) { opacity: 0; }
