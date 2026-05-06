@@ -33,6 +33,24 @@ document.querySelectorAll('a, button, .skill-card, .projet-card').forEach(el => 
         follower.style.height = '30px';
     });
 });
+// ============================================
+// NAV MOBILE
+// ============================================
+const navToggle = document.querySelector('.nav-toggle');
+const navLinks = document.querySelector('.nav-links');
+
+navToggle.addEventListener('click', () => {
+  navToggle.classList.toggle('open');
+  navLinks.classList.toggle('open');
+});
+
+// Fermer le menu au clic sur un lien
+navLinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    navToggle.classList.remove('open');
+    navLinks.classList.remove('open');
+  });
+});
 
 // ============================================
 // NAVBAR — SCROLL EFFECT
