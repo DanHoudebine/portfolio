@@ -998,7 +998,8 @@ function closeLightboxBtn() {
 // ═══════════════════════════════════════════
 // SKILLS — Google Sheet
 // ═══════════════════════════════════════════
-const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ8BWDBerFgMRzV4Kd6GqB5eoLksjiWgVHq-eAmBuSL_YkrCb5yYFreRgyes27Jrg/pub?output=csv';
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTWYv50zUGHzAXvZfTmn8f0IKEK677mOPm8LicKYlXKf86DH8BpfIpDangNrjZ22Nbgh41-B2lu7AP2/pub?gid=242366803&single=true&output=csv';
+
 
 const FALLBACK_SKILLS = [
   { name:"Unreal Engine",        pct:90, cat:"moteur"    },
@@ -1030,11 +1031,15 @@ async function loadSkillsFromSheet() {
   try {
     const res = await fetch(SHEET_URL);
     const text = await res.text();
-    const rows = text.trim().split('\n').slice(2);
+    const rows = text.trim().split('\n').slice(1); // slice(1) = saute la ligne header
     const skills = rows.map(row => {
       const cols = row.split(',').map(c => c.trim().replace(/"/g, ''));
-      return { name: cols[0], cat: cols[1]?.toLowerCase() || 'other', pct: maitriseToPercent(cols[3]) };
-    }).filter(s => s.name && s.name !== 'OUTIL' && s.name !== '' && s.pct > 0);
+      return {
+        name: cols[0],
+        cat: cols[1]?.toLowerCase() || 'other',
+        pct: parseInt(cols[2]) || 0
+      };
+    }).filter(s => s.name && s.name !== 'Outil' && s.name !== '' && s.pct > 0);
     allSkills = skills.length > 0 ? skills : FALLBACK_SKILLS;
   } catch(e) {
     allSkills = FALLBACK_SKILLS;
@@ -1048,17 +1053,16 @@ async function loadSkillsFromSheet() {
 // RADAR CHART
 // ═══════════════════════════════════════════
 const CAT_COLORS = {
-  'dcc':            '#00d4ff',
-  'texturing':      '#a78bfa',
-  'moteur':         '#ff6b35',
-  'uv/retopo':      '#00ff96',
-  'végétation':     '#64dc32',
-  'assets':         '#ffc800',
-  'plugin blender': '#ff6496',
-  'plugin ue5':     '#c864ff',
-  'ia/génératif':   '#00c8ff',
-  'pipeline':       '#ffa500',
-  'référence':      '#aaaaaa',
+  'dcc / modélisation': '#00d4ff',
+  'texturing':          '#a78bfa',
+  'moteurs de jeu':     '#ff6b35',
+  'uv / retopo':        '#00ff96',
+  'végétation':         '#64dc32',
+  'assets':             '#ffc800',
+  'photogrammétrie':    '#00c8ff',
+  'ia / génératif':     '#ff6496',
+  'pipeline & rendu':   '#c864ff',
+  'référence':          '#aaaaaa',
 };
 
 function getCatColor(cat) {
@@ -1079,19 +1083,19 @@ function renderRadar(skills) {
   const colors = cats.map(c => getCatColor(c));
 
   // Labels lisibles
-  const catLabels = {
-    'dcc': 'DCC / 3D',
-    'texturing': 'Texturing',
-    'moteur': 'Game Engine',
-    'uv/retopo': 'UV / Retopo',
-    'végétation': 'Végétation',
-    'assets': 'Assets',
-    'plugin blender': 'Plugins Blender',
-    'plugin ue5': 'Plugins UE5',
-    'ia/génératif': 'IA / Génératif',
-    'pipeline': 'Pipeline',
-    'référence': 'Référence',
-  };
+const catLabels = {
+  'dcc / modélisation': 'DCC / 3D',
+  'texturing':          'Texturing',
+  'moteurs de jeu':     'Game Engine',
+  'uv / retopo':        'UV / Retopo',
+  'végétation':         'Végétation',
+  'assets':             'Assets',
+  'photogrammétrie':    'Photogrammétrie',
+  'ia / génératif':     'IA / Génératif',
+  'pipeline & rendu':   'Pipeline & Rendu',
+  'référence':          'Référence',
+};
+
   const labels = cats.map(c => catLabels[c] || c.charAt(0).toUpperCase() + c.slice(1));
 
   // Destroy ancien chart si existe
