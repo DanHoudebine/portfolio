@@ -784,25 +784,29 @@ body {
 .loader-messages {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.4rem;
   width: clamp(260px, 50vw, 420px);
+  margin-bottom: 1.5rem;
 }
+
 .loader-msg {
   display: none;
   font-family: 'Rajdhani', sans-serif;
   font-size: 0.85rem;
   color: rgba(0, 212, 255, 0.7);
   letter-spacing: 1px;
-  animation: fadeInMsg 0.3s ease;
 }
-.loader-msg.active { 
-  display: block; 
+
+.loader-msg.active {
+  display: block;
+  animation: fadeInMsg 0.4s ease forwards;
 }
 
 @keyframes fadeInMsg {
   from { opacity: 0; transform: translateX(-8px); }
   to   { opacity: 1; transform: translateX(0); }
 }
+
 
 /* Barre */
 .loader-bar-wrap {
