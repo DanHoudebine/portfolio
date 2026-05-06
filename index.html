@@ -344,25 +344,33 @@
 
     /* ═══ FILTER BAR ═══ */
     .filter-bar {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 3rem;
-    }
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
 
 .filter-btn {
   font-family: var(--font-body);
   font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.5px;
+  padding: 0.5rem 1.5rem;
+  background: transparent;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 20px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
-    .filter-btn:hover, .filter-btn.active {
-      background: rgba(0,212,255,0.1);
-      border-color: var(--primary);
-      color: var(--primary);
-    }
+.filter-btn:hover, .filter-btn.active {
+  background: rgba(0, 212, 255, 0.1);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
 
     /* ═══ PROJECTS GRID ═══ */
     .projects-grid {
