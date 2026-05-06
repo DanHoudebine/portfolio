@@ -701,8 +701,25 @@
 
 <!-- LOADER -->
 <div id="loader">
-  <div class="loader-logo">H.D.</div>
-  <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  <div class="loader-inner">
+    <div class="loader-glitch" data-text="H.D.">H.D.</div>
+    <div class="loader-subtitle">ENVIRONMENT ARTIST</div>
+    <div class="loader-messages">
+      <span class="loader-msg active">// Initialisation système...</span>
+      <span class="loader-msg">// Chargement des assets...</span>
+      <span class="loader-msg">// Compilation shaders...</span>
+      <span class="loader-msg">// Rendu environnement...</span>
+      <span class="loader-msg">// Prêt.</span>
+    </div>
+    <div class="loader-bar-wrap">
+      <div class="loader-bar-track">
+        <div class="loader-bar-fill" id="loaderBar"></div>
+        <div class="loader-bar-glow"></div>
+      </div>
+      <div class="loader-pct" id="loaderPct">0%</div>
+    </div>
+    <div class="loader-scanline"></div>
+  </div>
 </div>
 
 <!-- NAV -->
@@ -1243,10 +1260,47 @@ function copyEmail(event) {
 // INIT
 // ═══════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1200);
+  // LOADER
+  (function() {
+    const bar = document.getElementById('loaderBar');
+    const pct = document.getElementById('loaderPct');
+    const msgs = document.querySelectorAll('.loader-msg');
+    let current = 0;
+    const steps = [
+      { at: 0,   msg: 0 },
+      { at: 20,  msg: 1 },
+      { at: 50,  msg: 2 },
+      { at: 75,  msg: 3 },
+      { at: 95,  msg: 4 },
+    ];
+
+    const interval = setInterval(() => {
+      current += Math.random() * 3 + 1;
+      if (current > 100) current = 100;
+
+      bar.style.width = current + '%';
+      pct.textContent = Math.floor(current) + '%';
+
+      steps.forEach(s => {
+        if (current >= s.at) {
+          msgs.forEach(m => m.classList.remove('active'));
+          msgs[s.msg].classList.add('active');
+        }
+      });
+
+      if (current >= 100) {
+        clearInterval(interval);
+        setTimeout(() => {
+          document.getElementById('loader').classList.add('hidden');
+        }, 400);
+      }
+    }, 40);
+  })();
+
   renderProjects();
   loadSkillsFromSheet();
 });
+
 </script>
 
 </body>

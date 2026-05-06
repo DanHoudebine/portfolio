@@ -280,6 +280,7 @@ body {
 }
 
 /* ═══ BOUTONS ═══ */
+
 .hero-buttons {
     display: flex;
     gap: 1.5rem;
@@ -345,6 +346,7 @@ body {
 /* ============================================
    SCROLL INDICATOR
 ============================================ */
+
 .scroll-indicator {
     position: absolute;
     bottom: 40px;
@@ -380,6 +382,7 @@ body {
 /* ============================================
    SECTIONS GÉNÉRALES
 ============================================ */
+
 .section {
     padding: 120px 60px;
     position: relative;
@@ -415,6 +418,7 @@ body {
 /* ============================================
    PROJETS
 ============================================ */
+
 .projets {
     background: var(--bg-card);
 }
@@ -503,6 +507,7 @@ body {
 /* ============================================
    COMPÉTENCES
 ============================================ */
+
 .competences {
     background: var(--bg-dark);
 }
@@ -690,14 +695,160 @@ body {
     color: var(--text-muted);
 }
 
-.loader {
-    width: 40px;
-    height: 40px;
-    border: 2px solid rgba(0, 245, 255, 0.2);
-    border-top: 2px solid var(--primary);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+/* ═══ LOADER ═══ */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: #050a0e;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+  overflow: hidden;
 }
+#loader::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(0,212,255,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+#loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+.loader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  position: relative;
+}
+/* Glitch title */
+.loader-glitch {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 900;
+  color: #00d4ff;
+  text-shadow: 0 0 30px rgba(0,212,255,0.8), 0 0 60px rgba(0,212,255,0.4);
+  position: relative;
+  letter-spacing: 8px;
+  animation: glitchMain 3s infinite;
+}
+.loader-glitch::before,
+.loader-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+}
+.loader-glitch::before {
+  color: #ff6b35;
+  animation: glitchTop 3s infinite;
+  clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+}
+.loader-glitch::after {
+  color: #7b2fff;
+  animation: glitchBot 3s infinite;
+  clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+}
+@keyframes glitchMain {
+  0%, 90%, 100% { transform: translate(0); }
+  91% { transform: translate(-2px, 1px); }
+  93% { transform: translate(2px, -1px); }
+  95% { transform: translate(-1px, 2px); }
+  97% { transform: translate(1px, -2px); }
+}
+@keyframes glitchTop {
+  0%, 90%, 100% { transform: translate(0); opacity: 0; }
+  91% { transform: translate(-3px, 0); opacity: 0.8; }
+  93% { transform: translate(3px, 0); opacity: 0.8; }
+  95% { transform: translate(0); opacity: 0; }
+}
+@keyframes glitchBot {
+  0%, 88%, 100% { transform: translate(0); opacity: 0; }
+  89% { transform: translate(3px, 0); opacity: 0.8; }
+  91% { transform: translate(-3px, 0); opacity: 0.8; }
+  93% { transform: translate(0); opacity: 0; }
+}
+.loader-subtitle {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(0.6rem, 2vw, 0.85rem);
+  letter-spacing: 6px;
+  color: rgba(0,212,255,0.5);
+  text-transform: uppercase;
+}
+/* Messages */
+.loader-messages {
+  height: 1.4rem;
+  overflow: hidden;
+  position: relative;
+}
+.loader-msg {
+  display: none;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(0,212,255,0.6);
+  letter-spacing: 2px;
+}
+.loader-msg.active { display: block; }
+/* Barre */
+.loader-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: clamp(260px, 50vw, 420px);
+}
+.loader-bar-track {
+  flex: 1;
+  height: 3px;
+  background: rgba(0,212,255,0.1);
+  position: relative;
+  overflow: visible;
+}
+.loader-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #7b2fff, #00d4ff);
+  transition: width 0.1s linear;
+  position: relative;
+}
+.loader-bar-fill::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00d4ff;
+  box-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff;
+}
+.loader-pct {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.8rem;
+  color: #00d4ff;
+  min-width: 42px;
+  text-align: right;
+}
+/* Scanline */
+.loader-scanline {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba(0,212,255,0.15);
+  animation: scanline 4s linear infinite;
+  pointer-events: none;
+}
+@keyframes scanline {
+  0% { top: -3px; }
+  100% { top: 100vh; }
+}
+
 
 @keyframes spin {
     to { transform: rotate(360deg); }
@@ -706,6 +857,7 @@ body {
 /* ============================================
    STATS
 ============================================ */
+
 .stats-section {
     background: var(--bg-card);
 }
@@ -810,6 +962,7 @@ body {
 /* ============================================
    CONTACT
 ============================================ */
+
 .contact-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -939,6 +1092,7 @@ body {
 /* ============================================
    FOOTER
 ============================================ */
+
 .footer {
     background: rgba(5, 5, 16, 0.95);
     border-top: 1px solid var(--border);
@@ -978,6 +1132,7 @@ body {
 /* ============================================
    ANIMATIONS
 ============================================ */
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -1007,6 +1162,7 @@ body {
 /* ============================================
    RESPONSIVE
 ============================================ */
+
 @media (max-width: 1024px) {
     .hero {
         gap: 40px;
@@ -1074,6 +1230,7 @@ body {
 /* ============================================
    BADGE COLORS
 ============================================ */
+
 .badge[data-cat="DCC"]              { background: #0ff2; color: #0ff; border-color: #0ff; }
 .badge[data-cat="Texturing"]        { background: #f0a2; color: #f0a; border-color: #f0a; }
 .badge[data-cat="Moteur"]           { background: #0f82; color: #0f8; border-color: #0f8; }
