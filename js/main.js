@@ -164,18 +164,18 @@ if (contactForm) {
 // NAVIGATION MOBILE
 // ============================================
 const navToggle = document.querySelector('.nav-toggle');
-const navLinks = document.querySelector('.nav-links');
+const navMenu = document.querySelector('.nav-links');
 
 if (navToggle) {
     navToggle.addEventListener('click', () => {
-        navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-        navLinks.style.flexDirection = 'column';
-        navLinks.style.position = 'absolute';
-        navLinks.style.top = '70px';
-        navLinks.style.left = '0';
-        navLinks.style.right = '0';
-        navLinks.style.background = 'rgba(5,5,16,0.98)';
-        navLinks.style.padding = '20px';
+        navMenu.classList.toggle('open');
+    });
+
+    // Ferme le menu quand on clique sur un lien
+    navMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('open');
+        });
     });
 }
 
