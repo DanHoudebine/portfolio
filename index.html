@@ -1261,12 +1261,12 @@ function copyEmail(event) {
 // ═══════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
   // LOADER
+
 (function() {
   const bar = document.getElementById('loaderBar');
   const pct = document.getElementById('loaderPct');
   const msgs = document.querySelectorAll('.loader-msg');
   let current = 0;
-  const triggered = new Set();
 
   const steps = [
     { at: 0,   msg: 0 },
@@ -1278,6 +1278,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Cache tous les messages au départ
   msgs.forEach(m => m.classList.remove('active'));
+  msgs[0].classList.add('active'); // Affiche le premier
 
   const interval = setInterval(() => {
     current += Math.random() * 3 + 1;
@@ -1286,13 +1287,15 @@ document.addEventListener('DOMContentLoaded', () => {
     bar.style.width = current + '%';
     pct.textContent = Math.floor(current) + '%';
 
-    // Affiche les messages progressivement (sans effacer les précédents)
+    // Trouve le bon message selon le pourcentage actuel
+    let currentMsg = 0;
     steps.forEach(s => {
-      if (current >= s.at && !triggered.has(s.at)) {
-        triggered.add(s.at);
-        msgs[s.msg].classList.add('active');
-      }
+      if (current >= s.at) currentMsg = s.msg;
     });
+
+    // Retire active de tous, met active sur le bon
+    msgs.forEach(m => m.classList.remove('active'));
+    msgs[currentMsg].classList.add('active');
 
     if (current >= 100) {
       clearInterval(interval);
@@ -1302,6 +1305,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, 40);
 })();
+
 
 
   renderProjects();
