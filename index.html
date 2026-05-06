@@ -85,10 +85,10 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 1.5rem 3rem;
-      background: rgba(5,10,14,0.8);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(0,212,255,0.1);
+      padding: 1.2rem 3rem;
+      background: rgba(5,10,14,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,212,255,0.08);
     }
     .nav-logo {
       font-family: 'Orbitron', sans-serif;
@@ -98,11 +98,11 @@
       text-shadow: var(--glow);
       letter-spacing: 4px;
     }
-    .nav-logo .bracket { color: var(--primary); }
     .nav-links {
       display: flex;
-      gap: 2.5rem;
       list-style: none;
+      gap: 2.5rem;
+      align-items: center;
     }
     .nav-links a {
       color: var(--text-dim);
@@ -114,252 +114,185 @@
     }
     .nav-links a:hover { color: var(--primary); }
 
-    /* ═══ SECTIONS ═══ */
-    section {
-      padding: 6rem 3rem;
-      max-width: 1200px;
-      margin: 0 auto;
+    /* ═══ LANG TOGGLE ═══ */
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(0,212,255,0.08);
+      border: 1px solid rgba(0,212,255,0.25);
+      border-radius: 20px;
+      padding: 0.3rem 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .lang-toggle:hover {
+      background: rgba(0,212,255,0.15);
+      border-color: var(--primary);
+    }
+    .lang-btn {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      padding: 0.2rem 0.5rem;
+      border-radius: 12px;
+      transition: all 0.3s;
+      color: var(--text-dim);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+    .lang-btn.active {
+      background: var(--primary);
+      color: #000;
+      font-weight: 700;
+    }
+
+    /* ═══ HERO ═══ */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 6rem 3rem 4rem;
       position: relative;
       z-index: 1;
     }
-    .section-header { text-align: center; margin-bottom: 3rem; }
-    .section-eyebrow {
-      font-size: 0.8rem;
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4rem;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .hero-eyebrow {
+      font-size: 0.85rem;
       letter-spacing: 4px;
       color: var(--primary);
       text-transform: uppercase;
-      margin-bottom: 0.5rem;
     }
-    .section-title {
+    .hero-title {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .hero-title .line1 {
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-size: clamp(2rem, 4vw, 3.5rem);
       font-weight: 900;
-      background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
+      color: #fff;
+      line-height: 1.1;
+    }
+    .hero-title .line2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.2rem, 2.5vw, 2rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
     }
-    .section-line {
-      width: 60px;
-      height: 2px;
-      background: var(--primary);
-      margin: 1rem auto 0;
-      box-shadow: var(--glow);
+    .hero-subtitle {
+      color: var(--text-dim);
+      font-size: 1.4rem;
+      line-height: 1.7;
+      max-width: 480px;
     }
+    .hero-stats {
+      display: flex;
+      gap: 2.5rem;
+    }
+    .stat-item { display: flex; flex-direction: column; }
+    .stat-number {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--primary);
+      text-shadow: var(--glow);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 2rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #000;
+      border-radius: 4px;
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      transition: all 0.3s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--glow-strong); }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 2rem;
+      background: transparent;
+      border: 1px solid rgba(0,212,255,0.4);
+      color: var(--primary);
+      border-radius: 4px;
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      transition: all 0.3s;
+    }
+    .btn-secondary:hover { background: rgba(0,212,255,0.1); transform: translateY(-2px); }
 
-    /* ═══ HERO ═══ */
-    /* ═══ HERO ═══ */
-section.hero {
-  min-height: 100vh;
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  padding: 120px 80px 80px !important;
-  gap: 80px !important;
-  max-width: 1400px;
-  margin: 0 auto;
-  position: relative;
-}
-
-.hero-content {
-  flex: 1;
-  text-align: left;
-  max-width: 620px;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.hero-tag {
-  font-size: 0.85rem;
-  letter-spacing: 4px;
-  color: var(--primary);
-  text-transform: uppercase;
-}
-
-.hero-title {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.hero-title .line1 {
-  font-family: 'Orbitron', sans-serif;
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  font-weight: 900;
-  color: #fff;
-  line-height: 1.1;
-}
-
-.hero-title .line2 {
-  font-family: 'Orbitron', sans-serif;
-  font-size: clamp(1.2rem, 2.5vw, 2rem);
-  font-weight: 700;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1.2;
-}
-
-.hero-subtitle {
-  color: var(--text-dim);
-  font-size: 1.4rem;  /* était 1.1rem */
-  line-height: 1.7;
-  max-width: 480px;
-}
-
-
-.hero-stats {
-  display: flex;
-  gap: 2.5rem;
-}
-
-.stat-item {
-  display: flex;
-  flex-direction: column;
-}
-
-.stat-number {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 2rem;
-  font-weight: 900;
-  color: var(--primary);
-  text-shadow: var(--glow);
-  line-height: 1;
-}
-
-.stat-label {
-  font-size: 0.75rem;
-  color: var(--text-dim);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-.hero-buttons {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: flex-start !important;
-  margin-top: 0 !important;
-}
-
-.profile-image {
-  width: 380px !important;
-  height: 380px !important;
-  min-width: 380px !important;
-  flex-shrink: 0;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid rgba(0,245,255,0.6);
-  box-shadow: 0 0 40px rgba(0,245,255,0.5);
-  animation: subtleGlow 3s ease-in-out infinite;
-}
-
-/* ═══ RESPONSIVE HERO ═══ */
-@media (max-width: 900px) {
-  section.hero {
-    flex-direction: column !important;
-    padding: 100px 30px 60px !important;
-    text-align: center !important;
-  }
-  .hero-content { max-width: 100%; align-items: center; }
-  .hero-buttons { justify-content: center !important; }
-  .hero-stats { justify-content: center; }
-  .profile-image {
-    width: 260px !important;
-    height: 260px !important;
-    min-width: 260px !important;
-  }
-}
-
-    /* ═══ PROFILE VISUAL ═══ */
-
-.profile-image {
-  width: 320px;
-  height: 320px;
-  border-radius: 50%;
-  border: 2px solid rgba(0, 245, 255, 0.6);
-  box-shadow: 
-    0 0 40px rgba(0, 245, 255, 0.5),
-    inset 0 0 40px rgba(0, 245, 255, 0.1);
-  object-fit: cover;
-  animation: subtleGlow 3s ease-in-out infinite;
-}
-
-@keyframes subtleGlow {
-  0%, 100% {
-    box-shadow: 
-      0 0 40px rgba(0, 245, 255, 0.5),
-      inset 0 0 40px rgba(0, 245, 255, 0.1);
-  }
-  50% {
-    box-shadow: 
-      0 0 60px rgba(0, 245, 255, 0.7),
-      inset 0 0 50px rgba(0, 245, 255, 0.2);
-  }
-}
-
-    /* ═══ BOUTONS ═══ */
-.hero-buttons {
-  display: flex;
-  gap: 1.5rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 2rem;
-}
-
-.btn {
-  padding: 0.8rem 2rem;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  border-radius: 4px;
-  text-decoration: none;
-  transition: all 0.3s;
-  cursor: pointer;
-  border: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #00d4ff, #7b2fff);
-  color: white;
-  box-shadow: 0 0 30px rgba(0,212,255,0.3);
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 40px rgba(0,212,255,0.6);
-}
-
-.btn-secondary {
-  background: rgba(0,212,255,0.1);
-  border: 1px solid var(--primary);
-  color: var(--primary);
-}
-
-.btn-secondary:hover {
-  background: rgba(0,212,255,0.2);
-  box-shadow: 0 0 30px rgba(0,212,255,0.4);
-  transform: translateY(-2px);
-}
-
-.btn-tertiary {
-  background: rgba(123,47,255,0.1);
-  border: 1px solid #7b2fff;
-  color: #a78bfa;
-}
-
-.btn-tertiary:hover {
-  background: rgba(123,47,255,0.2);
-  box-shadow: 0 0 30px rgba(123,47,255,0.4);
-  transform: translateY(-2px);
-}
+    /* ═══ PROFILE ═══ */
+    .hero-visual { display: flex; align-items: center; justify-content: center; }
+    .profile-frame {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      border: 2px solid rgba(0,212,255,0.3);
+      padding: 4px;
+      box-shadow: var(--glow), inset 0 0 30px rgba(0,212,255,0.05);
+      position: relative;
+    }
+    .profile-frame img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center top;
+    }
+    .profile-frame::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,212,255,0.1);
+      animation: rotateBorder 8s linear infinite;
+    }
+    @keyframes rotateBorder {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
 
     /* ═══ SCROLL INDICATOR ═══ */
     .scroll-indicator {
@@ -379,6 +312,34 @@ section.hero {
     @keyframes bounce {
       0%, 100% { transform: translateX(-50%) translateY(0); }
       50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ═══ SECTIONS ═══ */
+    section {
+      padding: 6rem 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    .section-header { text-align: center; margin-bottom: 4rem; }
+    .section-eyebrow {
+      font-size: 0.8rem;
+      letter-spacing: 4px;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 900;
+      color: var(--text);
+    }
+    .section-line {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      margin: 1rem auto 0;
     }
 
     /* ═══ FILTER BAR ═══ */
@@ -425,18 +386,8 @@ section.hero {
       transform: translateY(-4px);
       box-shadow: var(--glow);
     }
-    .project-thumb {
-      width: 100%;
-      height: 200px;
-      overflow: hidden;
-      cursor: pointer;
-    }
-    .project-thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.4s;
-    }
+    .project-thumb { width: 100%; height: 200px; overflow: hidden; cursor: pointer; }
+    .project-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
     .project-card:hover .project-thumb img { transform: scale(1.05); }
     .project-info { padding: 1.2rem; }
     .project-title {
@@ -445,12 +396,7 @@ section.hero {
       color: var(--text);
       margin-bottom: 0.75rem;
     }
-    .project-tools {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-bottom: 1rem;
-    }
+    .project-tools { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
     .tool-tag {
       padding: 0.2rem 0.6rem;
       background: rgba(0,212,255,0.08);
@@ -470,53 +416,214 @@ section.hero {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.5rem 1rem;
-      background: linear-gradient(135deg, #13aff0, #1a6aff);
-      color: #fff;
+      padding: 0.5rem 1.2rem;
+      background: linear-gradient(135deg, rgba(19,175,240,0.2), rgba(26,106,255,0.2));
+      border: 1px solid rgba(19,175,240,0.4);
+      color: #13aff0;
       border-radius: 4px;
       text-decoration: none;
       font-family: 'Rajdhani', sans-serif;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 600;
       letter-spacing: 1px;
       transition: all 0.3s;
-      flex: 1;
-      justify-content: center;
     }
-    .btn-artstation:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 20px rgba(19,175,240,0.4);
-    }
+    .btn-artstation:hover { background: linear-gradient(135deg, rgba(19,175,240,0.3), rgba(26,106,255,0.3)); transform: translateY(-2px); }
     .btn-lightbox {
-      padding: 0.5rem 0.75rem;
-      background: rgba(0,212,255,0.1);
-      border: 1px solid rgba(0,212,255,0.3);
+      display: inline-flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-dim);
       border-radius: 4px;
-      color: var(--primary);
-      font-size: 1rem;
       cursor: pointer;
+      font-size: 0.85rem;
       transition: all 0.3s;
     }
-    .btn-lightbox:hover { background: rgba(0,212,255,0.2); }
-    .project-card.hidden { display: none; }
+    .btn-lightbox:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+
+    /* ═══ RADAR CHART ═══ */
+    .radar-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 3rem;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+    .radar-container {
+      position: relative;
+      width: 380px;
+      height: 380px;
+    }
+    canvas#radarChart {
+      width: 100% !important;
+      height: 100% !important;
+    }
+    .radar-legend {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      min-width: 180px;
+    }
+    .radar-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      color: var(--text-dim);
+    }
+    .radar-legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .radar-legend-label { color: var(--text); font-weight: 600; }
+    .radar-legend-pct {
+      margin-left: auto;
+      color: var(--primary);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.75rem;
+    }
+
+    /* ═══ SKILLS GRID ═══ */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .skill-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0,212,255,0.1);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      transition: all 0.3s;
+    }
+    .skill-card:hover { border-color: rgba(0,212,255,0.3); transform: translateY(-2px); }
+    .skill-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.6rem;
+    }
+    .skill-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .skill-pct {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      color: var(--primary);
+    }
+    .skill-bar-bg {
+      height: 4px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+    .skill-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 1s ease;
+    }
+    .skill-badge {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ═══ SKILLS FILTER ═══ */
+    #skillsFilter {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    /* ═══ CONTACT ═══ */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .contact-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0,212,255,0.1);
+      border-radius: 8px;
+      padding: 3rem 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      color: var(--text);
+      display: block;
+    }
+    .contact-card:hover { border-color: rgba(0,212,255,0.4); transform: translateY(-4px); box-shadow: var(--glow); }
+    .contact-icon { font-size: 3rem; margin-bottom: 0.75rem; }
+    .contact-label { font-size: 1rem; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 0.5rem; }
+    .contact-value { color: var(--primary); font-size: 1.2rem; }
+    .cv-section { text-align: center; }
+    .btn-cv {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #000;
+      border-radius: 4px;
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      transition: all 0.3s;
+    }
+    .btn-cv:hover { transform: translateY(-2px); box-shadow: var(--glow-strong); }
+
+    /* ═══ FOOTER ═══ */
+    footer {
+      text-align: center;
+      padding: 3rem;
+      border-top: 1px solid rgba(0,212,255,0.08);
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      position: relative;
+      z-index: 1;
+    }
+    .footer-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      color: var(--primary);
+      text-shadow: var(--glow);
+      margin-bottom: 1rem;
+      letter-spacing: 6px;
+    }
 
     /* ═══ LIGHTBOX ═══ */
     #lightbox {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.92);
+      background: rgba(0,0,0,0.9);
       z-index: 1000;
       align-items: center;
       justify-content: center;
-      padding: 2rem;
     }
     #lightbox.active { display: flex; }
     .lightbox-content {
       position: relative;
       max-width: 900px;
-      width: 100%;
-      background: var(--bg-card2);
+      width: 90%;
+      background: var(--bg-card);
       border: 1px solid rgba(0,212,255,0.2);
       border-radius: 8px;
       overflow: hidden;
@@ -525,36 +632,21 @@ section.hero {
       position: absolute;
       top: 1rem; right: 1rem;
       background: rgba(0,0,0,0.5);
-      border: 1px solid rgba(0,212,255,0.3);
+      border: none;
+      color: var(--text);
+      font-size: 1.2rem;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      color: var(--primary);
-      width: 32px; height: 32px;
-      font-size: 1rem;
       cursor: pointer;
       z-index: 10;
       transition: all 0.3s;
     }
-    .lightbox-close:hover { background: rgba(0,212,255,0.2); }
-    .lightbox-img {
-      width: 100%;
-      max-height: 500px;
-      object-fit: contain;
-      background: #000;
-      display: block;
-    }
+    .lightbox-close:hover { background: rgba(255,0,0,0.3); }
+    .lightbox-img { width: 100%; max-height: 500px; object-fit: contain; background: #000; display: block; }
     .lightbox-info { padding: 1.5rem; }
-    .lightbox-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1rem;
-      color: var(--text);
-      margin-bottom: 0.75rem;
-    }
-    .lightbox-tools {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-bottom: 1rem;
-    }
+    .lightbox-title { font-family: 'Orbitron', sans-serif; font-size: 1rem; margin-bottom: 0.75rem; }
+    .lightbox-tools { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
     .lightbox-btn {
       display: inline-flex;
       align-items: center;
@@ -570,152 +662,13 @@ section.hero {
       letter-spacing: 1px;
       transition: all 0.3s;
     }
-    .lightbox-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 20px rgba(19,175,240,0.4);
-    }
+    .lightbox-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(19,175,240,0.4); }
 
-    /* ═══ SKILLS ═══ */
-    #skills { background: rgba(0,0,0,0.15); }
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-    .skill-card {
-      background: var(--bg-card);
-      border: 1px solid rgba(0,212,255,0.1);
-      border-radius: 8px;
-      padding: 1.2rem;
-      transition: all 0.3s;
-    }
-    .skill-card:hover {
-      border-color: rgba(0,212,255,0.3);
-      transform: translateY(-2px);
-    }
-    .skill-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.75rem;
-    }
-    .skill-name {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.8rem;
-      color: var(--text);
-    }
-    .skill-pct {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.85rem;
-      color: var(--primary);
-    }
-    .skill-bar {
-      height: 4px;
-      background: rgba(0,212,255,0.1);
-      border-radius: 2px;
-      overflow: hidden;
-      margin-bottom: 0.75rem;
-    }
-    .skill-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      border-radius: 2px;
-      transition: width 1s ease;
-    }
-    .skill-badge {
-      display: inline-block;
-      padding: 0.2rem 0.6rem;
-      border-radius: 3px;
-      font-size: 0.7rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
+    /* ═══ BADGE COLORS ═══ */
     .badge-3d { background: rgba(0,212,255,0.1); color: var(--primary); border: 1px solid rgba(0,212,255,0.2); }
     .badge-texture { background: rgba(123,47,255,0.1); color: #a78bfa; border: 1px solid rgba(123,47,255,0.2); }
     .badge-engine { background: rgba(255,107,53,0.1); color: var(--accent); border: 1px solid rgba(255,107,53,0.2); }
     .badge-other { background: rgba(255,255,255,0.05); color: var(--text-dim); border: 1px solid rgba(255,255,255,0.1); }
-
-    /* ═══ CONTACT ═══ */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 3rem;
-    }
-
-.contact-card {
-  background: var(--bg-card);
-  border: 1px solid rgba(0,212,255,0.1);
-  border-radius: 8px;
-  padding: 3rem 2rem;     /* était 2rem */
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s;
-  text-decoration: none;
-  color: var(--text);
-  display: block;
-}
-
-    .contact-card:hover {
-      border-color: rgba(0,212,255,0.4);
-      transform: translateY(-4px);
-      box-shadow: var(--glow);
-    }
-
-.contact-icon { font-size: 3rem; margin-bottom: 0.75rem; }  /* était 2rem */
-
-.contact-label {
-  font-size: 1rem;        /* était 0.75rem */
-  letter-spacing: 2px;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  margin-bottom: 0.5rem;
-}
-
-.contact-value { color: var(--primary); font-size: 1.2rem; }  /* était 0.9rem */
-
-    .cv-section { text-align: center; }
-
-    .btn-cv {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 1rem 3rem;
-      background: transparent;
-      border: 2px solid var(--primary);
-      border-radius: 4px;
-      color: var(--primary);
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      text-decoration: none;
-      transition: all 0.3s;
-      box-shadow: 0 0 30px rgba(0,212,255,0.2);
-    }
-    .btn-cv:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 40px rgba(0,212,255,0.5);
-    }
-
-    /* ═══ FOOTER ═══ */
-    footer {
-      text-align: center;
-      padding: 3rem;
-      border-top: 1px solid rgba(0,212,255,0.1);
-      color: var(--text-dim);
-      font-size: 0.85rem;
-      letter-spacing: 1px;
-    }
-    .footer-logo {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.5rem;
-      color: var(--primary);
-      text-shadow: var(--glow);
-      margin-bottom: 1rem;
-      letter-spacing: 4px;
-    }
 
     /* ═══ RESPONSIVE ═══ */
     @media (max-width: 768px) {
@@ -728,6 +681,8 @@ section.hero {
       .hero-stats { justify-content: center; }
       section { padding: 4rem 1.5rem; }
       .projects-grid { grid-template-columns: 1fr; }
+      .radar-container { width: 280px; height: 280px; }
+      .radar-wrapper { flex-direction: column; align-items: center; }
     }
   </style>
 </head>
@@ -743,72 +698,71 @@ section.hero {
 <nav>
   <div class="nav-logo">H.D.</div>
   <ul class="nav-links">
-    <li><a href="#hero">Accueil</a></li>
-    <li><a href="#portfolio">Portfolio</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#hero" data-i18n="nav.home">Accueil</a></li>
+    <li><a href="#portfolio" data-i18n="nav.portfolio">Portfolio</a></li>
+    <li><a href="#skills" data-i18n="nav.skills">Skills</a></li>
+    <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
   </ul>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+  </div>
 </nav>
 
 <!-- HERO -->
-<section class="hero">
-  <div class="grid-overlay"></div>
-  
-  <!-- TEXTE À GAUCHE -->
-  <div class="hero-content">
-    <span class="hero-tag">ENVIRONEMENT ARTIST SENIOR</span>
-    
-    <div class="hero-title">
-      <span class="line1">Dan Houdebine</span>
-      <span class="line2">Environment & Prop Artist</span>
+<section id="hero" style="max-width:100%;padding-top:6rem;">
+  <div class="hero-grid">
+    <div class="hero-content">
+      <p class="hero-eyebrow" data-i18n="hero.eyebrow">// Disponible pour missions</p>
+      <div class="hero-title">
+        <span class="line1">Dan Houdebine</span>
+        <span class="line2" data-i18n="hero.title">Environment Artist Senior</span>
+      </div>
+      <p class="hero-subtitle" data-i18n="hero.subtitle">
+        10 ans d'expérience en création d'environnements 3D pour le jeu vidéo. Spécialisé Unreal Engine, environnements outdoor & indoor, assets photoréalistes.
+      </p>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number">10+</span>
+          <span class="stat-label" data-i18n="hero.stat1">Ans d'exp.</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">15+</span>
+          <span class="stat-label" data-i18n="hero.stat2">Projets</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">20+</span>
+          <span class="stat-label" data-i18n="hero.stat3">Logiciels</span>
+        </div>
+      </div>
+      <div class="hero-buttons">
+        <a href="#portfolio" class="btn-primary" data-i18n="hero.btn1">🎨 Voir le Portfolio</a>
+        <a href="#contact" class="btn-secondary" data-i18n="hero.btn2">✉ Me Contacter</a>
+      </div>
     </div>
-    
-    <p class="hero-subtitle">Création d'environnements immersifs et assets haute qualité pour jeux vidéo et projets visuels</p>
-    
-    <div class="hero-stats">
-      <div class="stat-item">
-        <span class="stat-number">25+</span>
-        <span class="stat-label">PROJETS</span>
+    <div class="hero-visual">
+      <div class="profile-frame">
+        <img src="assets/profile.jpg" alt="Dan Houdebine">
       </div>
-      <div class="stat-item">
-        <span class="stat-number">10+</span>
-        <span class="stat-label">ANNÉES</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">50+</span>
-        <span class="stat-label">SKILLS</span>
-      </div>
-    </div>
-    
-    <!-- BOUTONS -->
-    <div class="hero-buttons">
-      <a href="#portfolio" class="btn btn-primary">Portfolio</a>
-      <a href="#skills" class="btn btn-secondary">Compétences</a>
-      <a href="#contact" class="btn btn-tertiary">Contact</a>
     </div>
   </div>
-  
-  <!-- IMAGE À DROITE (EN DEHORS du hero-content) -->
-  <img src="assets/img/dan.jpg" alt="Dan Houdebine" class="profile-image">
-  
-  <!-- SCROLL INDICATOR -->
   <div class="scroll-indicator">
-    <div class="scroll-line"></div>
-    <span>SCROLL</span>
+    <span data-i18n="hero.scroll">SCROLL</span>
+    <span>↓</span>
   </div>
 </section>
 
 <!-- PORTFOLIO -->
 <section id="portfolio">
   <div class="section-header">
-    <p class="section-eyebrow">// Mes Réalisations</p>
-    <h2 class="section-title">Portfolio</h2>
+    <p class="section-eyebrow" data-i18n="portfolio.eyebrow">// Mes Réalisations</p>
+    <h2 class="section-title" data-i18n="portfolio.title">Portfolio</h2>
     <div class="section-line"></div>
   </div>
   <div class="filter-bar">
-    <button class="filter-btn active" onclick="filterProjects('all', this)">Tous</button>
-    <button class="filter-btn" onclick="filterProjects('environment', this)">Environnements</button>
-    <button class="filter-btn" onclick="filterProjects('props', this)">Props</button>
+    <button class="filter-btn active" onclick="filterProjects('all', this)" data-i18n="portfolio.all">Tous</button>
+    <button class="filter-btn" onclick="filterProjects('environment', this)" data-i18n="portfolio.env">Environnements</button>
+    <button class="filter-btn" onclick="filterProjects('props', this)" data-i18n="portfolio.props">Props</button>
   </div>
   <div class="projects-grid" id="projectsGrid"></div>
 </section>
@@ -816,13 +770,24 @@ section.hero {
 <!-- SKILLS -->
 <section id="skills">
   <div class="section-header">
-    <p class="section-eyebrow">// Mon Arsenal</p>
-    <h2 class="section-title">Competences</h2>
+    <p class="section-eyebrow" data-i18n="skills.eyebrow">// Mon Arsenal</p>
+    <h2 class="section-title" data-i18n="skills.title">Compétences</h2>
     <div class="section-line"></div>
   </div>
 
+  <!-- RADAR -->
+  <div class="radar-wrapper">
+    <div class="radar-container">
+      <canvas id="radarChart"></canvas>
+    </div>
+    <div class="radar-legend" id="radarLegend"></div>
+  </div>
+
+  <!-- FILTER SKILLS -->
+  <div id="skillsFilter"></div>
+
   <div class="skills-grid" id="skillsGrid">
-    <div style="text-align:center;color:var(--text-dim);grid-column:1/-1;padding:3rem;">
+    <div style="text-align:center;color:var(--text-dim);grid-column:1/-1;padding:3rem;" data-i18n="skills.loading">
       Chargement des compétences...
     </div>
   </div>
@@ -831,14 +796,14 @@ section.hero {
 <!-- CONTACT -->
 <section id="contact">
   <div class="section-header">
-    <p class="section-eyebrow">// Me joindre</p>
-    <h2 class="section-title">Contact</h2>
+    <p class="section-eyebrow" data-i18n="contact.eyebrow">// Me joindre</p>
+    <h2 class="section-title" data-i18n="contact.title">Contact</h2>
     <div class="section-line"></div>
   </div>
   <div class="contact-grid">
     <div class="contact-card" onclick="copyEmail(event)">
       <div class="contact-icon">✉️</div>
-      <div class="contact-label">Email</div>
+      <div class="contact-label" data-i18n="contact.email">Email</div>
       <div class="contact-value">Danhoudebine[@]gmail.com</div>
     </div>
     <a class="contact-card" href="https://www.artstation.com/danhoudebine" target="_blank">
@@ -853,14 +818,14 @@ section.hero {
     </a>
   </div>
   <div class="cv-section">
-    <a href="assets/CV_Dan_HoudebineFR.pdf" download class="btn-cv">⬇ Télécharger mon CV</a>
+    <a href="assets/CV_Dan_HoudebineFR.pdf" download class="btn-cv" data-i18n="contact.cv">⬇ Télécharger mon CV</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">H.D.</div>
-  <p>Dan Houdebine · Environment Artist Senior</p>
+  <p data-i18n="footer.title">Dan Houdebine · Environment Artist Senior</p>
   <p style="margin-top:0.5rem;font-size:0.75rem;">© 2025 · Danhoudebine[@]gmail.com</p>
 </footer>
 
@@ -872,62 +837,135 @@ section.hero {
     <div class="lightbox-info">
       <div class="lightbox-title" id="lightboxTitle"></div>
       <div class="lightbox-tools" id="lightboxTools"></div>
-      <a id="lightboxLink" href="#" target="_blank" class="lightbox-btn">🎨 Voir sur ArtStation</a>
+      <a id="lightboxLink" href="#" target="_blank" class="lightbox-btn" data-i18n="lightbox.btn">🎨 Voir sur ArtStation</a>
     </div>
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
+
+// ═══════════════════════════════════════════
+// i18n — TRADUCTIONS
+// ═══════════════════════════════════════════
+const i18n = {
+  fr: {
+    'nav.home': 'Accueil',
+    'nav.portfolio': 'Portfolio',
+    'nav.skills': 'Skills',
+    'nav.contact': 'Contact',
+    'hero.eyebrow': '// Disponible pour missions',
+    'hero.title': 'Environment Artist Senior',
+    'hero.subtitle': "10 ans d'expérience en création d'environnements 3D pour le jeu vidéo. Spécialisé Unreal Engine, environnements outdoor & indoor, assets photoréalistes.",
+    'hero.stat1': "Ans d'exp.",
+    'hero.stat2': 'Projets',
+    'hero.stat3': 'Logiciels',
+    'hero.btn1': '🎨 Voir le Portfolio',
+    'hero.btn2': '✉ Me Contacter',
+    'hero.scroll': 'SCROLL',
+    'portfolio.eyebrow': '// Mes Réalisations',
+    'portfolio.title': 'Portfolio',
+    'portfolio.all': 'Tous',
+    'portfolio.env': 'Environnements',
+    'portfolio.props': 'Props',
+    'skills.eyebrow': '// Mon Arsenal',
+    'skills.title': 'Compétences',
+    'skills.loading': 'Chargement des compétences...',
+    'contact.eyebrow': '// Me joindre',
+    'contact.title': 'Contact',
+    'contact.email': 'Email',
+    'contact.cv': '⬇ Télécharger mon CV',
+    'footer.title': 'Dan Houdebine · Environment Artist Senior',
+    'lightbox.btn': '🎨 Voir sur ArtStation',
+    'skills.filter.all': 'Tous',
+  },
+  en: {
+    'nav.home': 'Home',
+    'nav.portfolio': 'Portfolio',
+    'nav.skills': 'Skills',
+    'nav.contact': 'Contact',
+    'hero.eyebrow': '// Available for projects',
+    'hero.title': 'Senior Environment Artist',
+    'hero.subtitle': '10 years of experience creating 3D environments for video games. Specialized in Unreal Engine, outdoor & indoor environments, photorealistic assets.',
+    'hero.stat1': 'Yrs exp.',
+    'hero.stat2': 'Projects',
+    'hero.stat3': 'Software',
+    'hero.btn1': '🎨 View Portfolio',
+    'hero.btn2': '✉ Contact Me',
+    'hero.scroll': 'SCROLL',
+    'portfolio.eyebrow': '// My Work',
+    'portfolio.title': 'Portfolio',
+    'portfolio.all': 'All',
+    'portfolio.env': 'Environments',
+    'portfolio.props': 'Props',
+    'skills.eyebrow': '// My Toolkit',
+    'skills.title': 'Skills',
+    'skills.loading': 'Loading skills...',
+    'contact.eyebrow': '// Get in Touch',
+    'contact.title': 'Contact',
+    'contact.email': 'Email',
+    'contact.cv': '⬇ Download Resume',
+    'footer.title': 'Dan Houdebine · Senior Environment Artist',
+    'lightbox.btn': '🎨 View on ArtStation',
+    'skills.filter.all': 'All',
+  }
+};
+
+let currentLang = 'fr';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (i18n[lang][key]) el.textContent = i18n[lang][key];
+  });
+
+  // Re-render filter buttons avec la bonne langue
+  if (allSkills.length > 0) renderSkillsFilter(allSkills);
+}
+
 // ═══════════════════════════════════════════
 // DONNÉES PROJETS
 // ═══════════════════════════════════════════
 const projects = [
-  { id:1,  title:"The Glimmers of Twilight",                    category:"environment", tools:["Unreal Engine","Blender","Substance Painter"],              img:"assets/portfolio/project1",  artstation:"https://www.artstation.com/artwork/nJVWQr" },
-  { id:2,  title:"Sanctum of the Fallen",                       category:"environment", tools:["Substance 3D Painter","Unreal Engine","3ds Max","Photoshop"], img:"assets/portfolio/project2",  artstation:"https://www.artstation.com/artwork/gRQALE" },
-  { id:3,  title:"The Cursed Legacy – Vue 1",                   category:"environment", tools:["Unreal Engine","Blender","Substance 3D Painter","ZBrush"],   img:"assets/portfolio/project3",  artstation:"https://www.artstation.com/artwork/K3ov1y" },
-  { id:4,  title:"The Cursed Legacy – Vue 2",                   category:"environment", tools:["Unreal Engine","Blender","Substance 3D Painter","ZBrush"],   img:"assets/portfolio/project4",  artstation:"https://www.artstation.com/artwork/K3ov1y" },
-  { id:5,  title:"Dead Line – Vue 1",                           category:"environment", tools:["Unreal Engine","Photoshop","Substance 3D Painter"],           img:"assets/portfolio/project5",  artstation:"https://www.artstation.com/artwork/98aqZN" },
-  { id:6,  title:"Dead Line – Vue 2",                           category:"environment", tools:["Unreal Engine","Photoshop","Substance 3D Painter"],           img:"assets/portfolio/project6",  artstation:"https://www.artstation.com/artwork/98aqZN" },
-  { id:7,  title:"The Abandoned Greenhouse",                    category:"environment", tools:["Unreal Engine","Blender","Substance 3D Painter"],             img:"assets/portfolio/project7",  artstation:"https://www.artstation.com/artwork/lxvgJw" },
-  { id:8,  title:"The Forgotten Observatory",                   category:"environment", tools:["Unreal Engine","Blender","Substance 3D Painter"],             img:"assets/portfolio/project8",  artstation:"https://www.artstation.com/artwork/lxvgJw" },
-  { id:9,  title:"Modular Dungeon Kit",                         category:"environment", tools:["3ds Max","Substance Painter","Unreal Engine"],                img:"assets/portfolio/project9",  artstation:"https://www.artstation.com/artwork/lxvgJw" },
-  { id:10, title:"Viking Mead Hall",                            category:"environment", tools:["Blender","Substance Painter","Unreal Engine"],                img:"assets/portfolio/project10", artstation:"https://www.artstation.com/artwork/lxvgJw" },
-  { id:11, title:"Anubis Canopic Jar",                          category:"props",       tools:["ZBrush","Substance Painter","Photoshop"],                     img:"assets/portfolio/project11", artstation:"https://www.artstation.com/artwork/ZG18zw" },
-  { id:12, title:"Old Piano 1875",                              category:"props",       tools:["Blender","Substance Painter"],                                img:"assets/portfolio/project12", artstation:"https://www.artstation.com/artwork/bK1b0n" },
-  { id:13, title:"Jukebox Wurlitzer 1015",                      category:"props",       tools:["3ds Max","Substance Painter"],                                img:"assets/portfolio/project13", artstation:"https://www.artstation.com/artwork/J90rxa" },
-  { id:14, title:"Jet Engine",                                  category:"props",       tools:["3ds Max","Substance Painter"],                                img:"assets/portfolio/project14", artstation:"https://www.artstation.com/artwork/w0Jbzw" },
-  { id:15, title:"Exploration of Cubemaps for Level Art",       category:"environment", tools:["Photoshop","3ds Max","Unreal Engine","Substance Painter"],    img:"assets/portfolio/project15", artstation:"https://www.artstation.com/artwork/Jv5Z0m", note:"Thanks to Marko Margeta" },
+  { id:1,  title:"The Glimmers of Twilight",              category:"environment", tools:["Unreal Engine","Blender","Substance Painter"],              img:"assets/portfolio/project1",  artstation:"https://www.artstation.com/artwork/nJVWQr" },
+  { id:2,  title:"Sanctum of the Fallen",                 category:"environment", tools:["Substance 3D Painter","Unreal Engine","3ds Max","Photoshop"], img:"assets/portfolio/project2",  artstation:"https://www.artstation.com/artwork/gRQALE" },
+  { id:3,  title:"The Cursed Legacy – Vue 1",             category:"environment", tools:["Unreal Engine","Blender","Substance 3D Painter","ZBrush"],   img:"assets/portfolio/project3",  artstation:"https://www.artstation.com/artwork/K3ov1y" },
+  { id:4,  title:"The Cursed Legacy – Vue 2",             category:"environment", tools:["Unreal Engine","Blender","Substance 3D Painter","ZBrush"],   img:"assets/portfolio/project4",  artstation:"https://www.artstation.com/artwork/K3ov1y" },
+  { id:5,  title:"Dead Line – Vue 1",                     category:"environment", tools:["Unreal Engine","Photoshop","Substance 3D Painter"],           img:"assets/portfolio/project5",  artstation:"https://www.artstation.com/artwork/98aqZN" },
+  { id:6,  title:"Dead Line – Vue 2",                     category:"environment", tools:["Unreal Engine","Photoshop","Substance 3D Painter"],           img:"assets/portfolio/project6",  artstation:"https://www.artstation.com/artwork/98aqZN" },
+  { id:7,  title:"Neon District",                         category:"environment", tools:["Unreal Engine","3ds Max","Substance 3D Painter"],             img:"assets/portfolio/project7",  artstation:"https://www.artstation.com/artwork/KA0DOx" },
+  { id:8,  title:"Buried in Time",                        category:"environment", tools:["Unreal Engine","3ds Max","Substance 3D Painter","ZBrush"],   img:"assets/portfolio/project8",  artstation:"https://www.artstation.com/artwork/lxel2R" },
+  { id:9,  title:"The Temple of the Lost Deity",          category:"environment", tools:["Unreal Engine","3ds Max","Substance 3D Painter","ZBrush"],   img:"assets/portfolio/project9",  artstation:"https://www.artstation.com/artwork/3dyNmQ" },
+  { id:10, title:"The Watchtower",                        category:"environment", tools:["Unreal Engine","3ds Max","Substance 3D Painter"],             img:"assets/portfolio/project10", artstation:"https://www.artstation.com/artwork/lxe0bR" },
+  { id:11, title:"Robot Drone MK-II",                     category:"props",       tools:["3ds Max","Substance Painter","ZBrush"],                       img:"assets/portfolio/project11", artstation:"https://www.artstation.com/artwork/ZG18zw" },
+  { id:12, title:"Old Piano 1875",                        category:"props",       tools:["Blender","Substance Painter"],                                img:"assets/portfolio/project12", artstation:"https://www.artstation.com/artwork/bK1b0n" },
+  { id:13, title:"Jukebox Wurlitzer 1015",                category:"props",       tools:["3ds Max","Substance Painter"],                                img:"assets/portfolio/project13", artstation:"https://www.artstation.com/artwork/J90rxa" },
+  { id:14, title:"Jet Engine",                            category:"props",       tools:["3ds Max","Substance Painter"],                                img:"assets/portfolio/project14", artstation:"https://www.artstation.com/artwork/w0Jbzw" },
+  { id:15, title:"Exploration of Cubemaps for Level Art", category:"environment", tools:["Photoshop","3ds Max","Unreal Engine","Substance Painter"],    img:"assets/portfolio/project15", artstation:"https://www.artstation.com/artwork/Jv5Z0m", note:"Thanks to Marko Margeta" },
 ];
 
-// ═══════════════════════════════════════════
-// PORTFOLIO
-// ═══════════════════════════════════════════
-function renderProjects(filter = 'all') {
+function renderProjects(cat = 'all') {
   const grid = document.getElementById('projectsGrid');
-  grid.innerHTML = '';
-  const list = filter === 'all' ? projects : projects.filter(p => p.category === filter);
-  list.forEach(p => {
-    const card = document.createElement('div');
-    card.className = 'project-card';
-    card.innerHTML = `
-      <div class="project-thumb" style="background:#0a1628;cursor:pointer;">
-        <img src="${p.img}.jpg"
-             onerror="this.onerror=null;this.src='${p.img}.png'"
-             alt="${p.title}"
-             style="width:100%;height:100%;object-fit:cover;display:block;">
+  const list = cat === 'all' ? projects : projects.filter(p => p.category === cat);
+  grid.innerHTML = list.map(p => `
+    <div class="project-card">
+      <div class="project-thumb" onclick="openLightbox(${p.id})">
+        <img src="${p.img}.png" alt="${p.title}" loading="lazy" onerror="this.src='${p.img}.jpg'">
       </div>
       <div class="project-info">
-        <h3 class="project-title">${p.title}</h3>
+        <div class="project-title">${p.title}</div>
         <div class="project-tools">${p.tools.map(t => `<span class="tool-tag">${t}</span>`).join('')}</div>
-        ${p.note ? `<p style="font-size:0.75rem;color:var(--text-dim);margin-top:0.5rem;">${p.note}</p>` : ''}
         <div class="project-actions">
-          <a href="${p.artstation}" target="_blank" class="btn-artstation">🎨 ArtStation</a>
-          <button class="btn-lightbox" onclick="openLightbox(${p.id})" title="Agrandir">⛶</button>
+          <button class="btn-lightbox" onclick="openLightbox(${p.id})">🔍 Preview</button>
+          <a class="btn-artstation" href="${p.artstation}" target="_blank">🎨 ArtStation</a>
         </div>
-      </div>`;
-    card.querySelector('.project-thumb').addEventListener('click', () => openLightbox(p.id));
-    grid.appendChild(card);
-  });
+      </div>
+    </div>
+  `).join('');
 }
 
 function filterProjects(cat, btn) {
@@ -949,147 +987,198 @@ function openLightbox(id) {
   document.getElementById('lightbox').classList.add('active');
   document.body.style.overflow = 'hidden';
 }
-
 function closeLightbox(e) {
   if (e.target === document.getElementById('lightbox')) closeLightboxBtn();
 }
-
 function closeLightboxBtn() {
   document.getElementById('lightbox').classList.remove('active');
   document.body.style.overflow = '';
 }
 
 // ═══════════════════════════════════════════
-// SKILLS
+// SKILLS — Google Sheet
 // ═══════════════════════════════════════════
 const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ8BWDBerFgMRzV4Kd6GqB5eoLksjiWgVHq-eAmBuSL_YkrCb5yYFreRgyes27Jrg/pub?output=csv';
 
 const FALLBACK_SKILLS = [
-  { name:"Unreal Engine",        pct:90, cat:"moteur"   },
-  { name:"3ds Max",              pct:88, cat:"dcc"      },
-  { name:"Blender",              pct:80, cat:"dcc"      },
-  { name:"ZBrush",               pct:75, cat:"dcc"      },
-  { name:"Substance 3D Painter", pct:92, cat:"texturing"},
-  { name:"Photoshop",            pct:85, cat:"texturing"},
-  { name:"SpeedTree",            pct:70, cat:"dcc"      },
-  { name:"Marmoset Toolbag",     pct:72, cat:"texturing"},
+  { name:"Unreal Engine",        pct:90, cat:"moteur"    },
+  { name:"3ds Max",              pct:88, cat:"dcc"       },
+  { name:"Blender",              pct:80, cat:"dcc"       },
+  { name:"ZBrush",               pct:75, cat:"dcc"       },
+  { name:"Substance 3D Painter", pct:92, cat:"texturing" },
+  { name:"Photoshop",            pct:85, cat:"texturing" },
+  { name:"SpeedTree",            pct:70, cat:"végétation"},
+  { name:"Marmoset Toolbag",     pct:72, cat:"texturing" },
 ];
 
 let allSkills = [];
+let radarChartInstance = null;
+
+function maitriseToPercent(val) {
+  if (!val) return 0;
+  val = val.toLowerCase().trim();
+  if (val.includes('→') || val.includes('->')) {
+    const parts = val.split(/→|->/).map(s => s.trim());
+    const map2 = {'débutant':20,'découverte':20,'notions':30,'intermédiaire':50,'avancé':70,'expert':90};
+    return Math.round(((map2[parts[0]]||0) + (map2[parts[1]]||90)) / 2);
+  }
+  const map = {'découverte':20,'débutant':30,'notions':35,'intermédiaire':60,'avancé':75,'expert':90,'maîtrise':95};
+  return map[val] || 0;
+}
 
 async function loadSkillsFromSheet() {
   try {
     const res = await fetch(SHEET_URL);
     const text = await res.text();
-    
     const rows = text.trim().split('\n').slice(2);
-    
     const skills = rows.map(row => {
       const cols = row.split(',').map(c => c.trim().replace(/"/g, ''));
-      
-      const name = cols[0];
-      const cat  = cols[1]?.toLowerCase() || 'other';
-      const maitrise = cols[3];
-      const pct  = maitriseToPercent(maitrise);
-      
-      return { name, cat, pct };
-    }).filter(s => s.name && s.name !== 'OUTIL' && s.name !== '');
-
-    allSkills = skills.length ? skills : FALLBACK_SKILLS;
-    
-    // ← AJOUTE CES LIGNES
-    // Construis la liste unique des catégories
-    const uniqueCats = [...new Set(allSkills.map(s => s.cat))].sort();
-    console.log('Catégories trouvées:', uniqueCats);
-    
-    // Affiche les boutons de filtrage
-    renderCategoryButtons(uniqueCats);
-    
+      return { name: cols[0], cat: cols[1]?.toLowerCase() || 'other', pct: maitriseToPercent(cols[3]) };
+    }).filter(s => s.name && s.name !== 'OUTIL' && s.name !== '' && s.pct > 0);
+    allSkills = skills.length > 0 ? skills : FALLBACK_SKILLS;
   } catch(e) {
-    console.warn('Fallback utilisé', e);
     allSkills = FALLBACK_SKILLS;
   }
+  renderSkillsFilter(allSkills);
   renderSkills(allSkills);
+  renderRadar(allSkills);
 }
 
-function getBadgeStyle(cat) {
-  const colors = {
-    'dcc':            'background:rgba(0,212,255,0.15);color:#00d4ff;border:1px solid rgba(0,212,255,0.3)',
-    'texturing':      'background:rgba(123,47,255,0.15);color:#a78bfa;border:1px solid rgba(123,47,255,0.3)',
-    'moteur':         'background:rgba(255,107,53,0.15);color:#ff6b35;border:1px solid rgba(255,107,53,0.3)',
-    'uv/retopo':      'background:rgba(0,255,150,0.15);color:#00ff96;border:1px solid rgba(0,255,150,0.3)',
-    'végétation':     'background:rgba(100,220,50,0.15);color:#64dc32;border:1px solid rgba(100,220,50,0.3)',
-    'assets':         'background:rgba(255,200,0,0.15);color:#ffc800;border:1px solid rgba(255,200,0,0.3)',
-    'plugin blender': 'background:rgba(255,100,150,0.15);color:#ff6496;border:1px solid rgba(255,100,150,0.3)',
-    'plugin ue5':     'background:rgba(200,100,255,0.15);color:#c864ff;border:1px solid rgba(200,100,255,0.3)',
-    'ia/génératif':   'background:rgba(0,200,255,0.15);color:#00c8ff;border:1px solid rgba(0,200,255,0.3)',
-    'pipeline':       'background:rgba(255,165,0,0.15);color:#ffa500;border:1px solid rgba(255,165,0,0.3)',
-    'référence':      'background:rgba(150,150,150,0.15);color:#aaa;border:1px solid rgba(150,150,150,0.3)',
-  };
-  return colors[cat] || 'background:rgba(255,255,255,0.05);color:#8899aa;border:1px solid rgba(255,255,255,0.1)';
+// ═══════════════════════════════════════════
+// RADAR CHART
+// ═══════════════════════════════════════════
+const CAT_COLORS = {
+  'dcc':            '#00d4ff',
+  'texturing':      '#a78bfa',
+  'moteur':         '#ff6b35',
+  'uv/retopo':      '#00ff96',
+  'végétation':     '#64dc32',
+  'assets':         '#ffc800',
+  'plugin blender': '#ff6496',
+  'plugin ue5':     '#c864ff',
+  'ia/génératif':   '#00c8ff',
+  'pipeline':       '#ffa500',
+  'référence':      '#aaaaaa',
+};
+
+function getCatColor(cat) {
+  return CAT_COLORS[cat] || '#8899aa';
 }
 
-function renderSkills(skills) {
-  const grid = document.getElementById('skillsGrid');
-  grid.innerHTML = '';
-  if (!skills.length) {
-    grid.innerHTML = '<div style="text-align:center;color:var(--text-dim);grid-column:1/-1;padding:3rem;">Aucune compétence trouvée.</div>';
-    return;
-  }
+function renderRadar(skills) {
+  // Calcule la moyenne par catégorie
+  const catMap = {};
   skills.forEach(s => {
-    const card = document.createElement('div');
-    card.className = 'skill-card';
-    card.dataset.cat = s.cat;
-    card.innerHTML = `
-      <div class="skill-header">
-        <span class="skill-name">${s.name}</span>
-        <span class="skill-pct">${s.pct}%</span>
-      </div>
-      <div class="skill-bar">
-        <div class="skill-bar-fill" data-pct="${s.pct}" style="width:0%"></div>
-      </div>
-      <span class="skill-badge" style="${getBadgeStyle(s.cat)}">${s.cat}</span>
-    `;
-    grid.appendChild(card);
+    if (!catMap[s.cat]) catMap[s.cat] = { total: 0, count: 0 };
+    catMap[s.cat].total += s.pct;
+    catMap[s.cat].count++;
   });
-  requestAnimationFrame(() => {
-    grid.querySelectorAll('.skill-bar-fill').forEach(bar => {
-      bar.style.width = bar.dataset.pct + '%';
-    });
+
+  const cats = Object.keys(catMap);
+  const avgs = cats.map(c => Math.round(catMap[c].total / catMap[c].count));
+  const colors = cats.map(c => getCatColor(c));
+
+  // Labels lisibles
+  const catLabels = {
+    'dcc': 'DCC / 3D',
+    'texturing': 'Texturing',
+    'moteur': 'Game Engine',
+    'uv/retopo': 'UV / Retopo',
+    'végétation': 'Végétation',
+    'assets': 'Assets',
+    'plugin blender': 'Plugins Blender',
+    'plugin ue5': 'Plugins UE5',
+    'ia/génératif': 'IA / Génératif',
+    'pipeline': 'Pipeline',
+    'référence': 'Référence',
+  };
+  const labels = cats.map(c => catLabels[c] || c.charAt(0).toUpperCase() + c.slice(1));
+
+  // Destroy ancien chart si existe
+  if (radarChartInstance) { radarChartInstance.destroy(); radarChartInstance = null; }
+
+  const ctx = document.getElementById('radarChart').getContext('2d');
+
+  // Gradient fill
+  const gradient = ctx.createRadialGradient(190, 190, 0, 190, 190, 190);
+  gradient.addColorStop(0, 'rgba(0,212,255,0.3)');
+  gradient.addColorStop(1, 'rgba(123,47,255,0.05)');
+
+  radarChartInstance = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: avgs,
+        backgroundColor: gradient,
+        borderColor: 'rgba(0,212,255,0.8)',
+        borderWidth: 2,
+        pointBackgroundColor: colors,
+        pointBorderColor: '#fff',
+        pointBorderWidth: 1,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      scales: {
+        r: {
+          min: 0,
+          max: 100,
+          ticks: {
+            stepSize: 25,
+            color: 'rgba(136,153,170,0.5)',
+            font: { size: 10 },
+            backdropColor: 'transparent',
+          },
+          grid: { color: 'rgba(0,212,255,0.1)' },
+          angleLines: { color: 'rgba(0,212,255,0.1)' },
+          pointLabels: {
+            color: '#e0e8f0',
+            font: { family: 'Rajdhani', size: 12, weight: '600' },
+          }
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.raw}%`
+          },
+          backgroundColor: 'rgba(10,22,40,0.95)',
+          borderColor: 'rgba(0,212,255,0.3)',
+          borderWidth: 1,
+          titleColor: '#00d4ff',
+          bodyColor: '#e0e8f0',
+        }
+      }
+    }
   });
+
+  // Légende custom
+  const legend = document.getElementById('radarLegend');
+  legend.innerHTML = cats.map((c, i) => `
+    <div class="radar-legend-item">
+      <div class="radar-legend-dot" style="background:${colors[i]}"></div>
+      <span class="radar-legend-label">${labels[i]}</span>
+      <span class="radar-legend-pct">${avgs[i]}%</span>
+    </div>
+  `).join('');
 }
 
-// ← NOUVELLE FONCTION
-function renderCategoryButtons(categories) {
-  const container = document.querySelector('.filters') || document.querySelector('nav') || document.body;
-  
-  let html = '<div class="category-filters" style="display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap;">';
-  html += '<button class="filter-btn active" data-cat="tous">Tous</button>';
-  
-  categories.forEach(cat => {
-    const label = cat.charAt(0).toUpperCase() + cat.slice(1);
-    html += `<button class="filter-btn" data-cat="${cat}">${label}</button>`;
-  });
-  
-  html += '</div>';
-  
-  // Insère avant les skills
-  const skillsContainer = document.querySelector('.skills-grid');
-  if (skillsContainer) {
-    skillsContainer.insertAdjacentHTML('beforebegin', html);
-  }
-  
-  // Ajoute les event listeners
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      
-      const selected = btn.dataset.cat;
-      const filtered = selected === 'tous' ? allSkills : allSkills.filter(s => s.cat === selected);
-      renderSkills(filtered);
-    });
-  });
+// ═══════════════════════════════════════════
+// SKILLS FILTER & RENDER
+// ═══════════════════════════════════════════
+function renderSkillsFilter(skills) {
+  const cats = [...new Set(skills.map(s => s.cat))];
+  const allLabel = i18n[currentLang]['skills.filter.all'] || 'Tous';
+  const container = document.getElementById('skillsFilter');
+  container.innerHTML = `
+    <button class="filter-btn active" onclick="filterSkills('all', this)">${allLabel}</button>
+    ${cats.map(c => `<button class="filter-btn" onclick="filterSkills('${c}', this)">${c.charAt(0).toUpperCase() + c.slice(1)}</button>`).join('')}
+  `;
 }
 
 function filterSkills(cat, btn) {
@@ -1099,32 +1188,29 @@ function filterSkills(cat, btn) {
   renderSkills(filtered);
 }
 
-function maitriseToPercent(val) {
-    if (!val) return 0;
-    val = val.toLowerCase().trim();
-    
-    if (val.includes('→') || val.includes('->')) {
-        const parts = val.split(/→|->/).map(s => s.trim());
-        const start = parts[0];
-        const end = parts[1];
-        
-        const startVal = {'débutant': 20, 'découverte': 20, 'notions': 30, 'intermédiaire': 50, 'avancé': 70, 'expert': 90}[start] || 0;
-        const endVal = {'débutant': 20, 'découverte': 20, 'notions': 30, 'intermédiaire': 50, 'avancé': 70, 'expert': 90}[end] || 90;
-        
-        return Math.round((startVal + endVal) / 2);
-    }
-    
-    const map = {
-        'découverte': 20,
-        'débutant': 30,
-        'notions': 35,
-        'intermédiaire': 60,
-        'avancé': 75,
-        'expert': 90,
-        'maîtrise': 95
-    };
-    
-    return map[val] || 0;
+function renderSkills(skills) {
+  const grid = document.getElementById('skillsGrid');
+  if (!skills.length) { grid.innerHTML = '<div style="text-align:center;color:var(--text-dim);grid-column:1/-1;padding:2rem;">Aucune compétence trouvée.</div>'; return; }
+  grid.innerHTML = skills.map(s => {
+    const color = getCatColor(s.cat);
+    return `
+      <div class="skill-card">
+        <div class="skill-header">
+          <span class="skill-name">${s.name}</span>
+          <span class="skill-pct">${s.pct}%</span>
+        </div>
+        <div class="skill-bar-bg">
+          <div class="skill-bar-fill" style="width:${s.pct}%;background:linear-gradient(90deg,${color},${color}88)"></div>
+        </div>
+        <span class="skill-badge" style="background:${color}18;color:${color};border:1px solid ${color}44">${s.cat}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+function getBadgeStyle(cat) {
+  const color = getCatColor(cat);
+  return `background:${color}18;color:${color};border:1px solid ${color}44`;
 }
 
 // ═══════════════════════════════════════════
