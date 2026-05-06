@@ -699,6 +699,40 @@
 <style>
   .loader-msg { display: none !important; }
   .loader-msg.active { display: block !important; }
+
+/* ═══ NAV MOBILE ═══ */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  z-index: 200;
+}
+.nav-toggle span {
+  width: 24px;
+  height: 2px;
+  background: var(--primary);
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .nav-toggle { display: flex; }
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(5,10,14,0.98);
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    z-index: 150;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { font-size: 1.4rem; }
+}
 </style>
 </head>
 <body>
@@ -1322,6 +1356,15 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
-
+<script>
+  const toggle = document.querySelector('.nav-toggle');
+  const menu = document.querySelector('.nav-links');
+  if (toggle) {
+    toggle.addEventListener('click', () => menu.classList.toggle('open'));
+    menu.querySelectorAll('a').forEach(a => 
+      a.addEventListener('click', () => menu.classList.remove('open'))
+    );
+  }
+</script>
 </body>
 </html>
