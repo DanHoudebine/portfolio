@@ -154,48 +154,28 @@ body {
 .hero {
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;  /* ← CÔTE À CÔTE */
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;  /* ← ESPACE ENTRE */
     position: relative;
     overflow: hidden;
-    padding: 100px 60px 60px;
-}
-
-.hero-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-}
-
-.grid-overlay {
-    position: absolute;
-    inset: 0;
-    background-image:
-        linear-gradient(rgba(0, 245, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 245, 255, 0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-    animation: gridMove 20s linear infinite;
-}
-
-@keyframes gridMove {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(60px); }
+    padding: 100px 60px;
+    gap: 60px;  /* ← ESPACE ENTRE TEXTE ET IMAGE */
 }
 
 .hero-content {
     position: relative;
     z-index: 1;
+    flex: 1;  /* ← PREND LA PLACE DISPONIBLE */
     text-align: center;
-    max-width: 900px;
-    margin-bottom: 60px;
 }
 
 .hero-tag {
-    font-family: var(--font-title);
-    font-size: 0.75rem;
-    color: var(--primary);
-    letter-spacing: 5px;
+    display: block;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    text-transform: uppercase;
     margin-bottom: 24px;
     opacity: 0;
     animation: fadeInUp 0.8s ease 0.2s forwards;
@@ -210,7 +190,7 @@ body {
 }
 
 .hero-title .line1 {
-    font-size: clamp(2rem, 5vw, 4rem);
+    font-size: clamp(2.2rem, 5vw, 4.5rem);  /* ← AUGMENTÉ */
     font-weight: 400;
     color: var(--text-muted);
     opacity: 0;
@@ -218,7 +198,7 @@ body {
 }
 
 .hero-title .line2 {
-    font-size: clamp(2.5rem, 6vw, 5rem);  /* ← PLUS GRAND */
+    font-size: clamp(2.8rem, 6vw, 5.5rem);  /* ← AUGMENTÉ */
     font-weight: 900;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     -webkit-background-clip: text;
@@ -226,14 +206,6 @@ body {
     background-clip: text;
     opacity: 0;
     animation: fadeInUp 0.8s ease 0.6s forwards;
-}
-
-.hero-title .line3 {
-    font-size: clamp(2rem, 5vw, 4rem);
-    font-weight: 400;
-    color: var(--text-muted);
-    opacity: 0;
-    animation: fadeInUp 0.8s ease 0.8s forwards;
 }
 
 .hero-subtitle {
@@ -271,40 +243,35 @@ body {
 
 .stat-label {
     font-size: 0.75rem;
-    color: var(--text-muted);
+    color: var(--text-dim);
     letter-spacing: 2px;
     text-transform: uppercase;
 }
 
+/* ═══ PROFILE IMAGE ═══ */
+.profile-image {
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 245, 255, 0.6);
+    box-shadow: 
+        0 0 40px rgba(0, 245, 255, 0.5),
+        inset 0 0 40px rgba(0, 245, 255, 0.1);
+    object-fit: cover;
+    animation: subtleGlow 3s ease-in-out infinite;
+    flex-shrink: 0;  /* ← NE PAS RÉTRÉCIR */
+}
+
+/* ═══ BOUTONS ═══ */
 .hero-buttons {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    opacity: 0;
-    animation: fadeInUp 0.8s ease 1.4s forwards;
-}
-
-.btn-tertiary {
-  background: rgba(0,212,255,0.1);
-  border: 1px solid var(--primary);
-  color: var(--primary);
-}
-
-.btn-tertiary:hover {
-  background: rgba(0,212,255,0.2);
-  box-shadow: var(--glow);
-}
-
-/* ============================================
-   BOUTONS
-============================================ */
-
-.hero-buttons {
+    position: absolute;
+    bottom: 60px;  /* ← EN BAS DE LA SECTION */
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     gap: 1.5rem;
     justify-content: center;
     flex-wrap: wrap;
-    margin-top: 0;
     opacity: 0;
     animation: fadeInUp 0.8s ease 1.4s forwards;
 }
