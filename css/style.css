@@ -151,6 +151,8 @@ nav {
    RESPONSIVE NAV
 ============================================ */
 @media (max-width: 768px) {
+@media (max-width: 768px) {
+    .cursor, .cursor-follower { display: none; }
     nav { padding: 16px 20px; }
 
     .nav-toggle {
