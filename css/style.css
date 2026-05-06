@@ -782,18 +782,26 @@ body {
 }
 /* Messages */
 .loader-messages {
-  height: 1.4rem;
-  overflow: hidden;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  width: clamp(260px, 50vw, 420px);
 }
 .loader-msg {
   display: none;
   font-family: 'Rajdhani', sans-serif;
   font-size: 0.85rem;
-  color: rgba(0,212,255,0.6);
-  letter-spacing: 2px;
+  color: rgba(0,212,255,0.7);
+  letter-spacing: 1px;
+  animation: fadeInMsg 0.3s ease;
 }
 .loader-msg.active { display: block; }
+
+@keyframes fadeInMsg {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
 /* Barre */
 .loader-bar-wrap {
   display: flex;
