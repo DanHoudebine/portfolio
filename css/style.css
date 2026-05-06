@@ -1216,32 +1216,25 @@ nav {
         gap: 40px;
         padding: 100px 40px;
     }
-    
-    /* Menu caché par défaut */
+}
+
+@media (max-width: 768px) {
+    .nav-toggle { display: flex; flex-direction: column; gap: 5px; cursor: pointer; }
+    .nav-toggle span { width: 24px; height: 2px; background: var(--primary); }
+
     .nav-links {
         display: none;
         flex-direction: column;
         position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        top: 0; left: 0; right: 0; bottom: 0;
         background: rgba(5,5,16,0.98);
         justify-content: center;
         align-items: center;
         gap: 30px;
         z-index: 1000;
     }
-
-    .nav-links.open {
-        display: flex;
-    }
-
-    .nav-links a {
-        font-size: 1.5rem;
-        letter-spacing: 3px;
-    }
-}
+    .nav-links.open { display: flex; }
+    .nav-links a { font-size: 1.5rem; letter-spacing: 3px; }
 
     .hero {
         flex-direction: column;
@@ -1249,39 +1242,15 @@ nav {
         padding: 100px 20px 60px;
         text-align: center;
     }
-    
-    .hero-content {
-        max-width: 100%;
-        text-align: center;
-    }
-    
-    .stat-item {
-        align-items: center;
-    }
-    
-    .hero-buttons {
-        justify-content: center;
-        width: 100%;
-    }
-    
-    .hero-stats {
-        justify-content: center;
-    }
-    
-    .profile-image {
-        width: 220px;
-        height: 220px;
-        min-width: 220px;
-    }
-    
+    .hero-content { max-width: 100%; text-align: center; }
+    .stat-item { align-items: center; }
+    .hero-buttons { justify-content: center; width: 100%; }
+    .hero-stats { justify-content: center; gap: 30px; }
+    .profile-image { width: 220px; height: 220px; min-width: 220px; }
     .section { padding: 80px 20px; }
-    .hero-stats { gap: 30px; }
     .contact-container { grid-template-columns: 1fr; gap: 40px; }
     .footer-content { flex-direction: column; gap: 12px; text-align: center; }
-    .nav-toggle { display: flex; flex-direction: column; gap: 5px; cursor: pointer; }
-    .nav-toggle span { width: 24px; height: 2px; background: var(--primary); }
 }
-
 /* ============================================
    BADGE COLORS
 ============================================ */
