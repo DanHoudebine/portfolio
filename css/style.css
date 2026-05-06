@@ -253,19 +253,18 @@ body {
 
 /* ═══ PROFILE IMAGE À DROITE (IMPORTANT) ═══ */
 .profile-image {
-    width: 400px !important;
-    height: 400px !important;
-    min-width: 400px !important;
-    border-radius: 50%;
-    border: 3px solid rgba(0, 245, 255, 0.8);
-    box-shadow: 
-        0 0 50px rgba(0, 245, 255, 0.6),
-        inset 0 0 50px rgba(0, 245, 255, 0.15);
-    object-fit: cover;
-    animation: subtleGlow 3s ease-in-out infinite, fadeInUp 0.8s ease 0.7s forwards;
-    opacity: 0;
-    flex-shrink: 0;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 245, 255, 0.6);
+  box-shadow: 
+    0 0 40px rgba(0, 245, 255, 0.5),
+    inset 0 0 40px rgba(0, 245, 255, 0.1);
+  object-fit: cover;
+  animation: subtleGlow 3s ease-in-out infinite;
+  margin-left: 60px;
 }
+
 
 @keyframes subtleGlow {
     0%, 100% {
