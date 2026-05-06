@@ -163,8 +163,6 @@ if (contactForm) {
 // ============================================
 // NAVIGATION MOBILE
 // ============================================
-const navToggle = document.querySelector('.nav-toggle');
-const navMenu = document.querySelector('.nav-links');
 
 if (navToggle) {
     navToggle.addEventListener('click', () => {
