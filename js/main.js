@@ -269,8 +269,13 @@ const i18n = {
 // ============================================
 let currentLang = 'fr';
 
-function setLang(lang) {
-  currentLang = lang;
+const btnCV = document.querySelector('.btn-cv');
+if (btnCV) {
+  btnCV.href = lang === 'en'
+    ? 'assets/CV_Dan_HoudebineEN.pdf'
+    : 'assets/CV_Dan_HoudebineFR.pdf';
+  console.log('CV href changed to:', btnCV.href);
+}
 
   // Boutons actifs
   document.querySelectorAll('.lang-btn').forEach(btn => {
