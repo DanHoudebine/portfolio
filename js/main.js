@@ -214,25 +214,20 @@ const i18n = {
     'nav.portfolio':   'Portfolio',
     'nav.skills':      'Skills',
     'nav.contact':     'Contact',
-
     'hero.scroll':     'SCROLL',
-
     'portfolio.eyebrow': '// Mes Réalisations',
     'portfolio.title':   'Portfolio',
     'portfolio.all':     'Tous',
     'portfolio.env':     'Environnements',
     'portfolio.props':   'Props',
-
     'skills.eyebrow':  '// Mon Arsenal',
     'skills.title':    'Compétences',
     'skills.loading':  'Chargement des compétences...',
-
     'contact.eyebrow': '// Me joindre',
     'contact.title':   'Contact',
     'contact.email':   'Email',
-
+    'contact.cv':      'Télécharger mon CV',
     'lightbox.btn':    '🎨 Voir sur ArtStation',
-
     'footer.title':    'Dan Houdebine · Environment Artist Senior',
   },
   en: {
@@ -240,26 +235,20 @@ const i18n = {
     'nav.portfolio':   'Portfolio',
     'nav.skills':      'Skills',
     'nav.contact':     'Contact',
-
     'hero.scroll':     'SCROLL',
-
     'portfolio.eyebrow': '// My Work',
     'portfolio.title':   'Portfolio',
     'portfolio.all':     'All',
     'portfolio.env':     'Environments',
     'portfolio.props':   'Props',
-
     'skills.eyebrow':  '// My Arsenal',
     'skills.title':    'Skills',
     'skills.loading':  'Loading skills...',
-
     'contact.eyebrow': '// Get in touch',
     'contact.title':   'Contact',
     'contact.email':   'Email',
-    'contact.cv':      '⬇ Download my CV',
-
+    'contact.cv':      'Download my CV',
     'lightbox.btn':    '🎨 View on ArtStation',
-
     'footer.title':    'Dan Houdebine · Senior Environment Artist',
   }
 };
@@ -269,13 +258,8 @@ const i18n = {
 // ============================================
 let currentLang = 'fr';
 
-const btnCV = document.querySelector('.btn-cv');
-if (btnCV) {
-  btnCV.href = lang === 'en'
-    ? 'assets/CV_Dan_HoudebineEN.pdf'
-    : 'assets/CV_Dan_HoudebineFR.pdf';
-  console.log('CV href changed to:', btnCV.href);
-}
+function setLang(lang) {
+  currentLang = lang;
 
   // Boutons actifs
   document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -290,11 +274,11 @@ if (btnCV) {
     }
   });
 
-// CV : changer fichier ET texte selon langue
-const btnCV = document.querySelector('.btn-cv');
-if (btnCV) {
-  btnCV.href = lang === 'en'
-    ? 'assets/CV_Dan_HoudebineEN.pdf'
-    : 'assets/CV_Dan_HoudebineFR.pdf';
+  // CV : changer fichier selon langue
+  const btnCV = document.querySelector('.btn-cv');
+  if (btnCV) {
+    btnCV.href = lang === 'en'
+      ? 'assets/CV_Dan_HoudebineEN.pdf'
+      : 'assets/CV_Dan_HoudebineFR.pdf';
+  }
 }
-
