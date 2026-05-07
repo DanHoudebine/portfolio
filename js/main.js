@@ -204,3 +204,32 @@ function copyEmail() {
         setTimeout(() => confirm.classList.remove('visible'), 3000);
     });
 }
+// ============================================
+// i18n — CHANGEMENT DE LANGUE
+// ============================================
+let currentLang = 'fr';
+
+function setLang(lang) {
+  currentLang = lang;
+
+  // Boutons actifs
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+  });
+
+  // Traduire tous les éléments data-i18n
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (i18n[lang] && i18n[lang][key]) {
+      el.textContent = i18n[lang][key];
+    }
+  });
+
+  // CV : changer le fichier selon la langue
+  const btnCV = document.querySelector('.btn-cv');
+  if (btnCV) {
+    btnCV.href = lang === 'en'
+      ? 'assets/CV_Dan_HoudebineEN.pdf'
+      : 'assets/CV_Dan_HoudebineFR.pdf';
+  }
+}
