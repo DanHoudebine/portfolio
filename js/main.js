@@ -204,6 +204,67 @@ function copyEmail() {
         setTimeout(() => confirm.classList.remove('visible'), 3000);
     });
 }
+
+// ============================================
+// DICTIONNAIRE i18n
+// ============================================
+const i18n = {
+  fr: {
+    'nav.home':        'Accueil',
+    'nav.portfolio':   'Portfolio',
+    'nav.skills':      'Skills',
+    'nav.contact':     'Contact',
+
+    'hero.scroll':     'SCROLL',
+
+    'portfolio.eyebrow': '// Mes Réalisations',
+    'portfolio.title':   'Portfolio',
+    'portfolio.all':     'Tous',
+    'portfolio.env':     'Environnements',
+    'portfolio.props':   'Props',
+
+    'skills.eyebrow':  '// Mon Arsenal',
+    'skills.title':    'Compétences',
+    'skills.loading':  'Chargement des compétences...',
+
+    'contact.eyebrow': '// Me joindre',
+    'contact.title':   'Contact',
+    'contact.email':   'Email',
+    'contact.cv':      '⬇ Télécharger mon CV',
+
+    'lightbox.btn':    '🎨 Voir sur ArtStation',
+
+    'footer.title':    'Dan Houdebine · Environment Artist Senior',
+  },
+  en: {
+    'nav.home':        'Home',
+    'nav.portfolio':   'Portfolio',
+    'nav.skills':      'Skills',
+    'nav.contact':     'Contact',
+
+    'hero.scroll':     'SCROLL',
+
+    'portfolio.eyebrow': '// My Work',
+    'portfolio.title':   'Portfolio',
+    'portfolio.all':     'All',
+    'portfolio.env':     'Environments',
+    'portfolio.props':   'Props',
+
+    'skills.eyebrow':  '// My Arsenal',
+    'skills.title':    'Skills',
+    'skills.loading':  'Loading skills...',
+
+    'contact.eyebrow': '// Get in touch',
+    'contact.title':   'Contact',
+    'contact.email':   'Email',
+    'contact.cv':      '⬇ Download my CV',
+
+    'lightbox.btn':    '🎨 View on ArtStation',
+
+    'footer.title':    'Dan Houdebine · Senior Environment Artist',
+  }
+};
+
 // ============================================
 // i18n — CHANGEMENT DE LANGUE
 // ============================================
