@@ -230,7 +230,6 @@ const i18n = {
     'contact.eyebrow': '// Me joindre',
     'contact.title':   'Contact',
     'contact.email':   'Email',
-    'contact.cv':      '⬇ Télécharger mon CV',
 
     'lightbox.btn':    '🎨 Voir sur ArtStation',
 
@@ -286,11 +285,11 @@ function setLang(lang) {
     }
   });
 
-  // CV : changer le fichier selon la langue
-  const btnCV = document.querySelector('.btn-cv');
-  if (btnCV) {
-    btnCV.href = lang === 'en'
-      ? 'assets/CV_Dan_HoudebineEN.pdf'
-      : 'assets/CV_Dan_HoudebineFR.pdf';
-  }
+// CV : changer fichier ET texte selon langue
+const btnCV = document.querySelector('.btn-cv');
+if (btnCV) {
+  btnCV.href = lang === 'en'
+    ? 'assets/CV_Dan_HoudebineEN.pdf'
+    : 'assets/CV_Dan_HoudebineFR.pdf';
 }
+
