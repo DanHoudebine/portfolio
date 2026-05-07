@@ -871,10 +871,13 @@
       <div class="contact-value">danhoudebine</div>
     </a>
   </div>
-  <div class="cv-section">
-<a href="assets/CV_Dan_HoudebineFR.pdf" class="btn-cv" data-i18n-skip>
-  ⬇ <span data-i18n="contact.cv">Télécharger mon CV</span>
-</a>
+<div class="cv-section">
+  <a id="cvBtn" href="assets/CV_Dan_HoudebineFR.pdf" target="_blank" class="btn-cv">
+    ⬇ <span data-i18n="contact.cv">TÉLÉCHARGER CV</span>
+  </a>
+</div>
+
+
 
   </div>
 </section>
@@ -980,9 +983,18 @@ function setLang(lang) {
     if (i18n[lang][key]) el.textContent = i18n[lang][key];
   });
 
+  // CV selon langue
+  const cvBtn = document.getElementById('cvBtn');
+  if (cvBtn) {
+    cvBtn.href = lang === 'en' 
+      ? 'assets/CV_Dan_HoudebineEN.pdf' 
+      : 'assets/CV_Dan_HoudebineFR.pdf';
+  }
+
   // Re-render filter buttons avec la bonne langue
   if (allSkills.length > 0) renderSkillsFilter(allSkills);
 }
+
 
 // ═══════════════════════════════════════════
 // DONNÉES PROJETS
