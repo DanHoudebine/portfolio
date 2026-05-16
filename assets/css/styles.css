@@ -531,6 +531,37 @@ ul, ol { list-style: none; }
 .btn--sm { padding: 0.625rem 1.25rem; font-size: 0.8rem; }
 .btn--full { width: 100%; justify-content: center; }
 
+/* ===== TRON GRID ===== */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero-grid-plane {
+  position: absolute;
+  left: -100%;
+  right: -100%;
+  top: 55%;
+  bottom: -40%;
+  background-image:
+    linear-gradient(rgba(0, 210, 220, 0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 210, 220, 0.14) 1px, transparent 1px);
+  background-size: 70px 70px;
+  transform: perspective(700px) rotateX(72deg);
+  transform-origin: 50% 0%;
+  animation: tron-scroll 2.5s linear infinite;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 65%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 65%, transparent 100%);
+}
+
+@keyframes tron-scroll {
+  from { background-position: 0 0; }
+  to   { background-position: 0 70px; }
+}
+
 /* ===== HERO ===== */
 .hero {
   min-height: 100vh;
@@ -981,6 +1012,39 @@ ul, ol { list-style: none; }
 }
 
 .project-item:hover .project-thumb img { transform: scale(1.08); }
+
+/* Scanline overlay on hover */
+.project-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(0, 210, 220, 0.04) 3px,
+    rgba(0, 210, 220, 0.04) 4px
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.project-item:hover::before { opacity: 1; }
+
+/* Glitch flash on the image */
+.project-item:hover .project-thumb img {
+  animation: card-glitch 0.4s steps(3) forwards;
+}
+
+@keyframes card-glitch {
+  0%   { filter: none; transform: scale(1.08) translate(0); }
+  20%  { filter: hue-rotate(90deg) saturate(2); transform: scale(1.08) translate(-2px, 1px); }
+  40%  { filter: hue-rotate(-60deg) brightness(1.2); transform: scale(1.08) translate(2px, -1px); }
+  60%  { filter: hue-rotate(30deg); transform: scale(1.08) translate(-1px, 0); }
+  100% { filter: none; transform: scale(1.08) translate(0); }
+}
 
 .project-overlay {
   position: absolute;
