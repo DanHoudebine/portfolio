@@ -707,6 +707,12 @@ ul, ol { list-style: none; }
   gap: 0.25rem;
 }
 
+.stat-value {
+  display: flex;
+  align-items: baseline;
+  gap: 0.1rem;
+}
+
 .stat-num {
   font-family: var(--ff-title);
   font-size: 2rem;
@@ -717,11 +723,9 @@ ul, ol { list-style: none; }
 
 .stat-plus {
   font-family: var(--ff-title);
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: var(--cyan);
   line-height: 1;
-  vertical-align: top;
-  margin-top: 0.1rem;
 }
 
 .stat-label {
