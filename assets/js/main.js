@@ -314,7 +314,16 @@ function initLangToggle() {
     btn.setAttribute('aria-label', currentLang === 'fr' ? 'Switch to English' : 'Passer en français');
     typewriterWords = t('typed.words').split('|');
     applyTranslations();
+    updateCvLink();
   });
+}
+
+function updateCvLink() {
+  const cvBtn = qs('#cv-download-btn');
+  if (!cvBtn) return;
+  cvBtn.href = currentLang === 'fr'
+    ? 'assets/cv/CV_Dan_HoudebineFR_2026.pdf'
+    : 'assets/cv/CV_Dan_HoudebineUS_2026.pdf';
 }
 
 /* ─── HERO TYPEWRITER ────────────────────────────────────── */
