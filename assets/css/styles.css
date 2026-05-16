@@ -261,34 +261,6 @@ ul, ol { list-style: none; }
   100% { clip-path: inset(100% 0 0 0);  transform: translateX(0); }
 }
 
-/* ===== SOUND TOGGLE ===== */
-.sound-toggle {
-  margin-left: 0.5rem;
-  padding: 0.4rem 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-3);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-sm);
-  transition: color var(--transition), border-color var(--transition);
-}
-
-.sound-toggle:hover {
-  color: var(--cyan);
-  border-color: var(--cyan);
-}
-
-.sound-toggle.is-on {
-  color: var(--cyan);
-  border-color: var(--cyan);
-  box-shadow: 0 0 8px rgba(0, 210, 220, 0.3);
-}
-
-.sound-toggle .icon-off { display: block; }
-.sound-toggle .icon-on  { display: none; }
-.sound-toggle.is-on .icon-off { display: none; }
-.sound-toggle.is-on .icon-on  { display: block; }
 
 /* ===== CURSEUR PERSONNALISÉ ===== */
 .cursor {
