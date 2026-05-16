@@ -3,1372 +3,758 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dan Houdebine – Environment Artist</title>
-  <link rel="icon" href="assets/favicon.ico">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #00d4ff;
-      --secondary: #7b2fff;
-      --accent: #ff6b35;
-      --bg-dark: #050a0e;
-      --bg-card: #0a1628;
-      --bg-card2: #0d1f3c;
-      --text: #e0e8f0;
-      --text-dim: #8899aa;
-      --glow: 0 0 20px rgba(0,212,255,0.3);
-      --glow-strong: 0 0 40px rgba(0,212,255,0.6);
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--bg-dark);
-      color: var(--text);
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 16px;
-      overflow-x: hidden;
-    }
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background:
-        radial-gradient(ellipse at 20% 50%, rgba(123,47,255,0.05) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 20%, rgba(0,212,255,0.05) 0%, transparent 60%);
-      pointer-events: none;
-      z-index: 0;
-    }
+  <meta name="description" content="Dan Houdebine — 3D Environment Artist specialized in video games. Creating immersive environments for the game industry.">
+  <title>Dan Houdebine | 3D Environment Artist</title>
 
-    /* ═══ LOADER ═══ */
-    #loader {
-      position: fixed;
-      inset: 0;
-      background: var(--bg-dark);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      transition: opacity 0.6s, visibility 0.6s;
-    }
-    #loader.hidden { opacity: 0; visibility: hidden; }
-    .loader-logo {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2rem;
-      color: var(--primary);
-      text-shadow: var(--glow-strong);
-      margin-bottom: 2rem;
-      letter-spacing: 6px;
-    }
-    .loader-bar {
-      width: 200px;
-      height: 2px;
-      background: rgba(0,212,255,0.2);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-    .loader-bar-fill {
-      height: 100%;
-      width: 0;
-      background: var(--primary);
-      box-shadow: var(--glow);
-      animation: loadFill 1s ease forwards;
-    }
-    @keyframes loadFill { to { width: 100%; } }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    /* ═══ NAV ═══ */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.2rem 3rem;
-      background: rgba(5,10,14,0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(0,212,255,0.08);
-    }
-    .nav-logo {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 900;
-      color: var(--primary);
-      text-shadow: var(--glow);
-      letter-spacing: 4px;
-    }
-    .nav-links {
-      display: flex;
-      list-style: none;
-      gap: 2.5rem;
-      align-items: center;
-    }
-    .nav-links a {
-      color: var(--text-dim);
-      text-decoration: none;
-      font-size: 0.85rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      transition: color 0.3s;
-    }
-    .nav-links a:hover { color: var(--primary); }
-
-    /* ═══ LANG TOGGLE ═══ */
-    .lang-toggle {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      background: rgba(0,212,255,0.08);
-      border: 1px solid rgba(0,212,255,0.25);
-      border-radius: 20px;
-      padding: 0.3rem 0.5rem;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .lang-toggle:hover {
-      background: rgba(0,212,255,0.15);
-      border-color: var(--primary);
-    }
-    .lang-btn {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.7rem;
-      letter-spacing: 1px;
-      padding: 0.2rem 0.5rem;
-      border-radius: 12px;
-      transition: all 0.3s;
-      color: var(--text-dim);
-      background: transparent;
-      border: none;
-      cursor: pointer;
-    }
-    .lang-btn.active {
-      background: var(--primary);
-      color: #000;
-      font-weight: 700;
-    }
-
-    /* ═══ HERO ═══ */
-    #hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 6rem 3rem 4rem;
-      position: relative;
-      z-index: 1;
-    }
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 4rem;
-      align-items: center;
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
-    }
-    .hero-content {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-    .hero-eyebrow {
-      font-size: 0.85rem;
-      letter-spacing: 4px;
-      color: var(--primary);
-      text-transform: uppercase;
-    }
-    .hero-title {
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-    }
-    .hero-title .line1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      font-weight: 900;
-      color: #fff;
-      line-height: 1.1;
-    }
-    .hero-title .line2 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(1.2rem, 2.5vw, 2rem);
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1.2;
-    }
-    .hero-subtitle {
-      color: var(--text-dim);
-      font-size: 1.4rem;
-      line-height: 1.7;
-      max-width: 480px;
-    }
-    .hero-stats {
-      display: flex;
-      gap: 2.5rem;
-    }
-    .stat-item { display: flex; flex-direction: column; }
-    .stat-number {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2rem;
-      font-weight: 900;
-      color: var(--primary);
-      text-shadow: var(--glow);
-      line-height: 1;
-    }
-    .stat-label {
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-    .hero-buttons {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.8rem 2rem;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: #000;
-      border-radius: 4px;
-      text-decoration: none;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      transition: all 0.3s;
-    }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--glow-strong); }
-    .btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.8rem 2rem;
-      background: transparent;
-      border: 1px solid rgba(0,212,255,0.4);
-      color: var(--primary);
-      border-radius: 4px;
-      text-decoration: none;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      transition: all 0.3s;
-    }
-    .btn-secondary:hover { background: rgba(0,212,255,0.1); transform: translateY(-2px); }
-
-    /* ═══ PROFILE ═══ */
-    .hero-visual { display: flex; align-items: center; justify-content: center; }
-    .profile-frame {
-      width: 280px;
-      height: 280px;
-      border-radius: 50%;
-      border: 2px solid rgba(0,212,255,0.3);
-      padding: 4px;
-      box-shadow: var(--glow), inset 0 0 30px rgba(0,212,255,0.05);
-      position: relative;
-    }
-    .profile-frame img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      object-position: center top;
-    }
-    .profile-frame::before {
-      content: '';
-      position: absolute;
-      inset: -8px;
-      border-radius: 50%;
-      border: 1px solid rgba(0,212,255,0.1);
-      animation: rotateBorder 8s linear infinite;
-    }
-    @keyframes rotateBorder {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    /* ═══ SCROLL INDICATOR ═══ */
-    .scroll-indicator {
-      position: absolute;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--text-dim);
-      font-size: 0.7rem;
-      letter-spacing: 3px;
-      animation: bounce 2s infinite;
-    }
-    @keyframes bounce {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(8px); }
-    }
-
-    /* ═══ SECTIONS ═══ */
-    section {
-      padding: 6rem 3rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
-    .section-header { text-align: center; margin-bottom: 4rem; }
-    .section-eyebrow {
-      font-size: 0.8rem;
-      letter-spacing: 4px;
-      color: var(--primary);
-      margin-bottom: 0.5rem;
-    }
-    .section-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(1.8rem, 3vw, 2.5rem);
-      font-weight: 900;
-      color: var(--text);
-    }
-    .section-line {
-      width: 60px;
-      height: 2px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      margin: 1rem auto 0;
-    }
-
-    /* ═══ FILTER BAR ═══ */
-    .filter-bar {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 3rem;
-}
-
-.filter-btn {
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  padding: 0.5rem 1.5rem;
-  background: transparent;
-  border: 1px solid rgba(0, 212, 255, 0.2);
-  border-radius: 20px;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.filter-btn:hover, .filter-btn.active {
-  background: rgba(0, 212, 255, 0.1);
-  border-color: var(--primary);
-  color: var(--primary);
-}
-
-
-    /* ═══ PROJECTS GRID ═══ */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 2rem;
-    }
-    .project-card {
-      background: var(--bg-card);
-      border: 1px solid rgba(0,212,255,0.1);
-      border-radius: 8px;
-      overflow: hidden;
-      transition: all 0.3s;
-    }
-    .project-card:hover {
-      border-color: rgba(0,212,255,0.4);
-      transform: translateY(-4px);
-      box-shadow: var(--glow);
-    }
-    .project-thumb { width: 100%; height: 200px; overflow: hidden; cursor: pointer; }
-    .project-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
-    .project-card:hover .project-thumb img { transform: scale(1.05); }
-    .project-info { padding: 1.2rem; }
-    .project-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.9rem;
-      color: var(--text);
-      margin-bottom: 0.75rem;
-    }
-    .project-tools { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
-    .tool-tag {
-      padding: 0.2rem 0.6rem;
-      background: rgba(0,212,255,0.08);
-      border: 1px solid rgba(0,212,255,0.2);
-      border-radius: 3px;
-      color: var(--primary);
-      font-size: 0.7rem;
-      letter-spacing: 1px;
-    }
-    .project-actions {
-      display: flex;
-      gap: 0.75rem;
-      align-items: center;
-      justify-content: center;
-    }
-    .btn-artstation {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1.2rem;
-      background: linear-gradient(135deg, rgba(19,175,240,0.2), rgba(26,106,255,0.2));
-      border: 1px solid rgba(19,175,240,0.4);
-      color: #13aff0;
-      border-radius: 4px;
-      text-decoration: none;
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 1px;
-      transition: all 0.3s;
-    }
-    .btn-artstation:hover { background: linear-gradient(135deg, rgba(19,175,240,0.3), rgba(26,106,255,0.3)); transform: translateY(-2px); }
-    .btn-lightbox {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.5rem 1rem;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: var(--text-dim);
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.85rem;
-      transition: all 0.3s;
-    }
-    .btn-lightbox:hover { background: rgba(255,255,255,0.1); color: var(--text); }
-
-    /* ═══ RADAR CHART ═══ */
-    .radar-wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 3rem;
-      gap: 3rem;
-      flex-wrap: wrap;
-    }
-    .radar-container {
-      position: relative;
-      width: 380px;
-      height: 380px;
-    }
-    canvas#radarChart {
-      width: 100% !important;
-      height: 100% !important;
-    }
-    .radar-legend {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      min-width: 180px;
-    }
-    .radar-legend-item {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-size: 0.9rem;
-      color: var(--text-dim);
-    }
-    .radar-legend-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-    .radar-legend-label { color: var(--text); font-weight: 600; }
-    .radar-legend-pct {
-      margin-left: auto;
-      color: var(--primary);
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.75rem;
-    }
-
-    /* ═══ SKILLS GRID ═══ */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1rem;
-    }
-    .skill-card {
-      background: var(--bg-card);
-      border: 1px solid rgba(0,212,255,0.1);
-      border-radius: 8px;
-      padding: 1rem 1.2rem;
-      transition: all 0.3s;
-    }
-    .skill-card:hover { border-color: rgba(0,212,255,0.3); transform: translateY(-2px); }
-    .skill-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 0.6rem;
-    }
-    .skill-name {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--text);
-    }
-    .skill-pct {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.8rem;
-      color: var(--primary);
-    }
-    .skill-bar-bg {
-      height: 4px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 2px;
-      overflow: hidden;
-      margin-bottom: 0.5rem;
-    }
-    .skill-bar-fill {
-      height: 100%;
-      border-radius: 2px;
-      transition: width 1s ease;
-    }
-    .skill-badge {
-      display: inline-block;
-      padding: 0.15rem 0.5rem;
-      border-radius: 3px;
-      font-size: 0.7rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    /* ═══ SKILLS FILTER ═══ */
-    #skillsFilter {
-      display: flex;
-      gap: 0.75rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 2rem;
-    }
-
-    /* ═══ CONTACT ═══ */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 3rem;
-    }
-    .contact-card {
-      background: var(--bg-card);
-      border: 1px solid rgba(0,212,255,0.1);
-      border-radius: 8px;
-      padding: 3rem 2rem;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s;
-      text-decoration: none;
-      color: var(--text);
-      display: block;
-    }
-    .contact-card:hover { border-color: rgba(0,212,255,0.4); transform: translateY(-4px); box-shadow: var(--glow); }
-    .contact-icon { font-size: 3rem; margin-bottom: 0.75rem; }
-    .contact-label { font-size: 1rem; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 0.5rem; }
-    .contact-value { color: var(--primary); font-size: 1.2rem; }
-    .cv-section { text-align: center; }
-    .btn-cv {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 1rem 2.5rem;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: #000;
-      border-radius: 4px;
-      text-decoration: none;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      transition: all 0.3s;
-    }
-    .btn-cv:hover { transform: translateY(-2px); box-shadow: var(--glow-strong); }
-
-    /* ═══ FOOTER ═══ */
-    footer {
-      text-align: center;
-      padding: 3rem;
-      border-top: 1px solid rgba(0,212,255,0.08);
-      color: var(--text-dim);
-      font-size: 0.85rem;
-      position: relative;
-      z-index: 1;
-    }
-    .footer-logo {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.5rem;
-      color: var(--primary);
-      text-shadow: var(--glow);
-      margin-bottom: 1rem;
-      letter-spacing: 6px;
-    }
-
-    /* ═══ LIGHTBOX ═══ */
-    #lightbox {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.9);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-    }
-    #lightbox.active { display: flex; }
-    .lightbox-content {
-      position: relative;
-      max-width: 900px;
-      width: 90%;
-      background: var(--bg-card);
-      border: 1px solid rgba(0,212,255,0.2);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .lightbox-close {
-      position: absolute;
-      top: 1rem; right: 1rem;
-      background: rgba(0,0,0,0.5);
-      border: none;
-      color: var(--text);
-      font-size: 1.2rem;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      cursor: pointer;
-      z-index: 10;
-      transition: all 0.3s;
-    }
-    .lightbox-close:hover { background: rgba(255,0,0,0.3); }
-    .lightbox-img { width: 100%; max-height: 500px; object-fit: contain; background: #000; display: block; }
-    .lightbox-info { padding: 1.5rem; }
-    .lightbox-title { font-family: 'Orbitron', sans-serif; font-size: 1rem; margin-bottom: 0.75rem; }
-    .lightbox-tools { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
-    .lightbox-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.6rem 1.5rem;
-      background: linear-gradient(135deg, #13aff0, #1a6aff);
-      color: #fff;
-      border-radius: 4px;
-      text-decoration: none;
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 600;
-      letter-spacing: 1px;
-      transition: all 0.3s;
-    }
-    .lightbox-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(19,175,240,0.4); }
-
-    /* ═══ BADGE COLORS ═══ */
-    .badge-3d { background: rgba(0,212,255,0.1); color: var(--primary); border: 1px solid rgba(0,212,255,0.2); }
-    .badge-texture { background: rgba(123,47,255,0.1); color: #a78bfa; border: 1px solid rgba(123,47,255,0.2); }
-    .badge-engine { background: rgba(255,107,53,0.1); color: var(--accent); border: 1px solid rgba(255,107,53,0.2); }
-    .badge-other { background: rgba(255,255,255,0.05); color: var(--text-dim); border: 1px solid rgba(255,255,255,0.1); }
-
-.badge {
-  font-family: var(--font-body); /* Rajdhani au lieu d'Orbitron */
-  font-size: 0.8rem;             /* un peu plus grand */
-  font-weight: 700;
-  letter-spacing: 1.5px;        /* moins serré qu'avant */
-}
-
-    /* ═══ RESPONSIVE ═══ */
-    @media (max-width: 768px) {
-      nav { padding: 1rem 1.5rem; }
-      .nav-toggle { display: none; }
-      .nav-links { display: none; }
-      .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 2rem; }
-      .hero-visual { order: -1; }
-      .profile-frame { width: 220px; height: 220px; }
-      .hero-buttons { justify-content: center; }
-      .hero-stats { justify-content: center; }
-      section { padding: 4rem 1.5rem; }
-      .projects-grid { grid-template-columns: 1fr; }
-      .radar-container { width: 280px; height: 280px; }
-      .radar-wrapper { flex-direction: column; align-items: center; }
-    }
-  </style>
-<style>
-  .loader-msg { display: none !important; }
-  .loader-msg.active { display: block !important; }
-
-/* ═══ NAV MOBILE ═══ */
-.nav-toggle { display: none; }
-
-@media (max-width: 768px) {
-  .nav-toggle { display: flex; }
-  .nav-links { display: none; }
-}
-
-
-  .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .nav-toggle.open span:nth-child(2) { opacity: 0; }
-  .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-  .nav-toggle span { transition: all 0.3s ease; }
-}
-
-</style>
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
 
-<!-- LOADER -->
-<div id="loader">
-  <div class="loader-inner">
-    <div class="loader-glitch" data-text="H.D.">H.D.</div>
-    <div class="loader-subtitle">ENVIRONMENT ARTIST</div>
-    <div class="loader-messages">
-      <span class="loader-msg active">// Initialisation système...</span>
-      <span class="loader-msg">// Chargement des assets...</span>
-      <span class="loader-msg">// Compilation shaders...</span>
-      <span class="loader-msg">// Rendu environnement...</span>
-      <span class="loader-msg">// Prêt.</span>
-    </div>
-    <div class="loader-bar-wrap">
-      <div class="loader-bar-track">
-        <div class="loader-bar-fill" id="loaderBar"></div>
-        <div class="loader-bar-glow"></div>
+  <!-- ===== PRELOADER ===== -->
+  <div class="preloader" id="preloader">
+    <div class="preloader-inner">
+      <div class="preloader-logo">DH</div>
+      <div class="preloader-bar">
+        <div class="preloader-fill"></div>
       </div>
-      <div class="loader-pct" id="loaderPct">0%</div>
+      <p class="preloader-text">INITIALIZING ENVIRONMENT</p>
     </div>
-    <div class="loader-scanline"></div>
   </div>
-</div>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">H.D.</div>
-<button class="nav-toggle" aria-label="Menu">
-    <span></span>
-    <span></span>
-    <span></span>
-</button>
-  <ul class="nav-links">
-    <li><a href="#hero" data-i18n="nav.home">Accueil</a></li>
-    <li><a href="#portfolio" data-i18n="nav.portfolio">Portfolio</a></li>
-    <li><a href="#skills" data-i18n="nav.skills">Skills</a></li>
-    <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
-  </ul>
-  <div class="lang-toggle">
-    <button class="lang-btn active" onclick="setLang('fr')">FR</button>
-    <button class="lang-btn" onclick="setLang('en')">EN</button>
-  </div>
-</nav>
+  <!-- ===== CURSEUR ===== -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
 
-<!-- HERO -->
-<section id="hero" style="max-width:100%;padding-top:6rem;">
-  <div class="hero-grid">
+  <!-- ===== CANVAS PARTICULES ===== -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav" id="nav" aria-label="Navigation principale">
+    <div class="nav-logo">
+      <span class="nav-logo-text">DH</span>
+      <span class="nav-logo-dot"></span>
+    </div>
+
+    <ul class="nav-links" role="list">
+      <li><a href="#hero" class="nav-link active" data-num="00" data-i18n="nav.home">Accueil</a></li>
+      <li><a href="#about" class="nav-link" data-num="01" data-i18n="nav.about">À propos</a></li>
+      <li><a href="#portfolio" class="nav-link" data-num="02" data-i18n="nav.portfolio">Portfolio</a></li>
+      <li><a href="#skills" class="nav-link" data-num="03" data-i18n="nav.skills">Compétences</a></li>
+      <li><a href="#contact" class="nav-link" data-num="04" data-i18n="nav.contact">Contact</a></li>
+    </ul>
+
+    <a href="#contact" class="nav-cta" data-i18n="nav.hire">Hire me</a>
+
+    <button class="lang-toggle" id="lang-toggle" aria-label="Switch language">EN</button>
+
+    <button class="nav-burger" id="nav-burger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="hero" aria-label="Introduction">
+    <div class="hero-hud hero-hud--tl">
+      <span>ENV_ARTIST</span>
+      <span class="hud-dot"></span>
+      <span>GAME_READY</span>
+    </div>
+    <div class="hero-hud hero-hud--tr">
+      <span class="hud-counter" id="hud-counter">000</span>
+    </div>
+
     <div class="hero-content">
-      <p class="hero-eyebrow" data-i18n="hero.eyebrow">// Disponible pour missions</p>
-      <div class="hero-title">
-        <span class="line1">Dan Houdebine</span>
-        <span class="line2" data-i18n="hero.title">Environment Artist Senior</span>
+      <p class="hero-eyebrow"><span class="eyebrow-line"></span>3D ENVIRONMENT ARTIST<span class="eyebrow-line"></span></p>
+      <h1 class="hero-title">
+        <span class="hero-title-line" data-text="DAN">DAN</span>
+        <span class="hero-title-line hero-title-line--accent" data-text="HOUDEBINE">HOUDEBINE</span>
+      </h1>
+      <p class="hero-subtitle"><span data-i18n="hero.subtitle-prefix">Création d'environnements</span> <span class="typed-text" id="typed-text"></span><span class="cursor-blink">|</span></p>
+      <div class="hero-actions">
+        <a href="#portfolio" class="btn btn--primary">
+          <span data-i18n="hero.btn-portfolio">Voir le portfolio</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <a href="#contact" class="btn btn--ghost" data-i18n="hero.btn-contact">Me contacter</a>
       </div>
-      <p class="hero-subtitle" data-i18n="hero.subtitle">
-        10 ans d'expérience en création d'environnements 3D pour le jeu vidéo. Spécialisé Unreal Engine, environnements outdoor & indoor, assets photoréalistes.
-      </p>
-      <div class="hero-stats">
-        <div class="stat-item">
-          <span class="stat-number">10+</span>
-          <span class="stat-label" data-i18n="hero.stat1">Ans d'exp.</span>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="stat-num" data-target="20">0</span><span class="stat-plus">+</span>
+        <span class="stat-label" data-i18n="hero.stat-projects">Projets réalisés</span>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <span class="stat-num" data-target="7">0</span><span class="stat-plus">+</span>
+        <span class="stat-label" data-i18n="hero.stat-experience">Ans d'expérience</span>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <span class="stat-num" data-target="32">0</span>
+        <span class="stat-label" data-i18n="hero.stat-tools">Outils maîtrisés</span>
+      </div>
+    </div>
+
+    <div class="scroll-prompt" aria-hidden="true">
+      <div class="scroll-mouse">
+        <div class="scroll-wheel"></div>
+      </div>
+      <span>SCROLL</span>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section class="section about" id="about" aria-label="À propos">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <h2 class="section-title" data-i18n="section.about">À propos</h2>
+
+        <div class="section-line"></div>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-visual">
+          <div class="about-img-wrap">
+            <img src="assets/images/dan.jpg" alt="Dan Houdebine, 3D Environment Artist" loading="lazy">
+            <div class="about-img-overlay"></div>
+            <div class="about-img-border"></div>
+          </div>
+          <div class="about-badge glass">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+            <span data-i18n="about.badge">Spécialiste jeux vidéo</span>
+          </div>
         </div>
-        <div class="stat-item">
-          <span class="stat-number">25+</span>
-          <span class="stat-label" data-i18n="hero.stat2">Projets</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number">20+</span>
-          <span class="stat-label" data-i18n="hero.stat3">Logiciels</span>
-        </div>
-      </div>
-      <div class="hero-buttons">
-        <a href="#portfolio" class="btn-primary" data-i18n="hero.btn1">🎨 Voir le Portfolio</a>
-        <a href="#contact" class="btn-secondary" data-i18n="hero.btn2">✉ Me Contacter</a>
-      </div>
-    </div>
-    <div class="hero-visual">
-      <div class="profile-frame">
-        <img src="assets/img/dan.jpg" alt="Dan Houdebine" class="profile-image">
-      </div>
-    </div>
-  </div>
-  <div class="scroll-indicator">
-    <span data-i18n="hero.scroll">SCROLL</span>
-    <span>↓</span>
-  </div>
-</section>
 
-<!-- PORTFOLIO -->
-<section id="portfolio">
-  <div class="section-header">
-    <p class="section-eyebrow" data-i18n="portfolio.eyebrow">// Mes Réalisations</p>
-    <h2 class="section-title" data-i18n="portfolio.title">Portfolio</h2>
-    <div class="section-line"></div>
-  </div>
-  <div class="filter-bar">
-    <button class="filter-btn active" onclick="filterProjects('all', this)" data-i18n="portfolio.all">Tous</button>
-    <button class="filter-btn" onclick="filterProjects('environment', this)" data-i18n="portfolio.env">Environnements</button>
-    <button class="filter-btn" onclick="filterProjects('props', this)" data-i18n="portfolio.props">Props</button>
-  </div>
-  <div class="projects-grid" id="projectsGrid"></div>
-</section>
+        <div class="about-content">
+          <p class="about-intro" data-i18n="about.intro">Artiste d'environnement passionné, spécialisé dans la création de mondes immersifs et détaillés, j'allie narration visuelle et performance technique pour donner vie à des univers de jeux vidéo convaincants.</p>
+          <p class="about-body" data-i18n="about.body">Mon expertise couvre l'ensemble du pipeline : modélisation (3ds Max, Blender, ZBrush), texturing PBR (Substance 3D), photogrammétrie (RealityCapture), éclairage temps réel et optimisation sur Unreal Engine 5 et Unity HDRP. Formateur 3D Unreal depuis 2025, j'ai également reçu le prix du meilleur jeu au GameJam — jury Ubisoft Montréal.</p>
 
-<!-- SKILLS -->
-<section id="skills">
-  <div class="section-header">
-    <p class="section-eyebrow" data-i18n="skills.eyebrow">// Mon Arsenal</p>
-    <h2 class="section-title" data-i18n="skills.title">Compétences</h2>
-    <div class="section-line"></div>
-  </div>
+          <!-- Expériences clés -->
+          <div class="about-xp">
+            <div class="xp-item">
+              <span class="xp-date">2025 – 2026</span>
+              <div class="xp-content">
+                <strong data-i18n="xp.3is">Formateur Environment Artist 3D Unreal</strong>
+                <span>3IS Education, Paris</span>
+              </div>
+            </div>
+            <div class="xp-item">
+              <span class="xp-date">2024 – 2025</span>
+              <div class="xp-content">
+                <strong data-i18n="xp.rebound">Environment Artist / Lead 3D</strong>
+                <span>Rebound CG, Angoulême</span>
+              </div>
+            </div>
+            <div class="xp-item">
+              <span class="xp-date">2022 – 2023</span>
+              <div class="xp-content">
+                <strong data-i18n="xp.jhh">Artiste 3D VR</strong>
+                <span>JHH Applications, Bordeaux</span>
+              </div>
+            </div>
+            <div class="xp-item">
+              <span class="xp-date">2019 – 2024</span>
+              <div class="xp-content">
+                <strong data-i18n="xp.freelance">Artiste 3D Freelance</strong>
+                <span>Freelance</span>
+              </div>
+            </div>
+          </div>
 
-  <!-- RADAR -->
-  <div class="radar-wrapper">
-    <div class="radar-container">
-      <canvas id="radarChart"></canvas>
-    </div>
-    <div class="radar-legend" id="radarLegend"></div>
-  </div>
+          <div class="about-tags" aria-label="Spécialités">
+            <span class="tag">Game-Ready Environments</span>
+            <span class="tag">PBR Texturing</span>
+            <span class="tag">Photogrammétrie</span>
+            <span class="tag">Unreal Engine 5</span>
+            <span class="tag">IA Générative</span>
+            <span class="tag">Végétation 3D</span>
+            <span class="tag">Megascans</span>
+          </div>
 
-  <!-- FILTER SKILLS -->
-  <div id="skillsFilter"></div>
-
-  <div class="skills-grid" id="skillsGrid">
-    <div style="text-align:center;color:var(--text-dim);grid-column:1/-1;padding:3rem;" data-i18n="skills.loading">
-      Chargement des compétences...
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact">
-  <div class="section-header">
-    <p class="section-eyebrow" data-i18n="contact.eyebrow">// Me joindre</p>
-    <h2 class="section-title" data-i18n="contact.title">Contact</h2>
-    <div class="section-line"></div>
-  </div>
-  <div class="contact-grid">
-    <div class="contact-card" onclick="copyEmail(event)">
-      <div class="contact-icon">✉️</div>
-      <div class="contact-label" data-i18n="contact.email">Email</div>
-      <div class="contact-value">Danhoudebine[@]gmail.com</div>
-    </div>
-    <a class="contact-card" href="https://www.artstation.com/danhoudebine" target="_blank">
-      <div class="contact-icon">🎨</div>
-      <div class="contact-label">ArtStation</div>
-      <div class="contact-value">danhoudebine</div>
-    </a>
-    <a class="contact-card" href="https://www.linkedin.com/in/danhoudebine/" target="_blank">
-      <div class="contact-icon">💼</div>
-      <div class="contact-label">LinkedIn</div>
-      <div class="contact-value">danhoudebine</div>
-    </a>
-  </div>
-<div class="cv-section">
-  <a id="cvBtn" href="assets/CV_Dan_HoudebineFR.pdf" target="_blank" class="btn-cv">
-    ⬇ <span data-i18n="contact.cv">TÉLÉCHARGER CV</span>
-  </a>
-</div>
-
-
-
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo">H.D.</div>
-  <p data-i18n="footer.title">Dan Houdebine · Environment Artist Senior</p>
-  <p style="margin-top:0.5rem;font-size:0.75rem;">© 2025 · Danhoudebine[@]gmail.com</p>
-</footer>
-
-<!-- LIGHTBOX -->
-<div id="lightbox" onclick="closeLightbox(event)">
-  <div class="lightbox-content">
-    <button class="lightbox-close" onclick="closeLightboxBtn()">✕</button>
-    <img id="lightboxImg" class="lightbox-img" src="" alt="">
-    <div class="lightbox-info">
-      <div class="lightbox-title" id="lightboxTitle"></div>
-      <div class="lightbox-tools" id="lightboxTools"></div>
-      <a id="lightboxLink" href="#" target="_blank" class="lightbox-btn" data-i18n="lightbox.btn">🎨 Voir sur ArtStation</a>
-    </div>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script>
-
-// ═══════════════════════════════════════════
-// i18n — TRADUCTIONS
-// ═══════════════════════════════════════════
-const i18n = {
-  fr: {
-    'nav.home': 'Accueil',
-    'nav.portfolio': 'Portfolio',
-    'nav.skills': 'Skills',
-    'nav.contact': 'Contact',
-    'hero.eyebrow': '// Disponible pour missions',
-    'hero.title': 'Environment Artist Senior',
-    'hero.subtitle': "10 ans d'expérience en création d'environnements 3D pour le jeu vidéo. Spécialisé Unreal Engine, environnements outdoor & indoor, assets photoréalistes.",
-    'hero.stat1': "Ans d'exp.",
-    'hero.stat2': 'Projets',
-    'hero.stat3': 'Logiciels',
-    'hero.btn1': '🎨 Voir le Portfolio',
-    'hero.btn2': '✉ Me Contacter',
-    'hero.scroll': 'SCROLL',
-    'portfolio.eyebrow': '// Mes Réalisations',
-    'portfolio.title': 'Portfolio',
-    'portfolio.all': 'Tous',
-    'portfolio.env': 'Environnements',
-    'portfolio.props': 'Props',
-    'skills.eyebrow': '// Mon Arsenal',
-    'skills.title': 'Compétences',
-    'skills.loading': 'Chargement des compétences...',
-    'contact.eyebrow': '// Me joindre',
-    'contact.title': 'Contact',
-    'contact.email': 'Email',
-    'contact.cv': 'Télécharger mon CV',
-    'footer.title': 'Dan Houdebine · Environment Artist Senior',
-    'lightbox.btn': '🎨 Voir sur ArtStation',
-    'skills.filter.all': 'Tous',
-  },
-  en: {
-    'nav.home': 'Home',
-    'nav.portfolio': 'Portfolio',
-    'nav.skills': 'Skills',
-    'nav.contact': 'Contact',
-    'hero.eyebrow': '// Available for projects',
-    'hero.title': 'Senior Environment Artist',
-    'hero.subtitle': '10 years of experience creating 3D environments for video games. Specialized in Unreal Engine, outdoor & indoor environments, photorealistic assets.',
-    'hero.stat1': 'Yrs exp.',
-    'hero.stat2': 'Projects',
-    'hero.stat3': 'Software',
-    'hero.btn1': '🎨 View Portfolio',
-    'hero.btn2': '✉ Contact Me',
-    'hero.scroll': 'SCROLL',
-    'portfolio.eyebrow': '// My Work',
-    'portfolio.title': 'Portfolio',
-    'portfolio.all': 'All',
-    'portfolio.env': 'Environments',
-    'portfolio.props': 'Props',
-    'skills.eyebrow': '// My Toolkit',
-    'skills.title': 'Skills',
-    'skills.loading': 'Loading skills...',
-    'contact.eyebrow': '// Get in Touch',
-    'contact.title': 'Contact',
-    'contact.email': 'Email',
-    'contact.cv': 'Download Resume',
-    'footer.title': 'Dan Houdebine · Senior Environment Artist',
-    'lightbox.btn': '🎨 View on ArtStation',
-    'skills.filter.all': 'All',
-  }
-};
-
-let currentLang = 'fr';
-
-function setLang(lang) {
-  currentLang = lang;
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');s
-
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.dataset.i18n;
-    if (i18n[lang][key]) el.textContent = i18n[lang][key];
-  });
-
-  // CV selon langue
-  const cvBtn = document.getElementById('cvBtn');
-  if (cvBtn) {
-    cvBtn.href = lang === 'en' 
-      ? 'assets/CV_Dan_HoudebineEN.pdf' 
-      : 'assets/CV_Dan_HoudebineFR.pdf';
-  }
-
-  // Re-render filter buttons avec la bonne langue
-  if (allSkills.length > 0) renderSkillsFilter(allSkills);
-}
-
-// ═══════════════════════════════════════════
-// DONNÉES PROJETS
-// ═══════════════════════════════════════════
-const projects = [
-  { id:1,  title:"The Glimmers of Twilight",              category:"environment", tools:["Unreal Engine","Blender","Substance Painter"],              img:"assets/portfolio/project1",  artstation:"https://www.artstation.com/artwork/nJVWQr" },
-  { id:2,  title:"Sanctum of the Fallen",                 category:"environment", tools:["Substance 3D Painter","Unreal Engine","3ds Max","Photoshop"], img:"assets/portfolio/project2",  artstation:"https://www.artstation.com/artwork/gRQALE" },
-  { id:3,  title:"The Cursed Legacy – Vue 1",             category:"environment", tools:["Unreal Engine","Blender","Substance 3D Painter","ZBrush"],   img:"assets/portfolio/project3",  artstation:"https://www.artstation.com/artwork/K3ov1y" },
-  { id:4,  title:"The Cursed Legacy – Vue 2",             category:"environment", tools:["Unreal Engine","Blender","Substance 3D Painter","ZBrush"],   img:"assets/portfolio/project4",  artstation:"https://www.artstation.com/artwork/K3ov1y" },
-  { id:5,  title:"Dead Line – Vue 1",                     category:"environment", tools:["Unreal Engine","Photoshop","Substance 3D Painter"],           img:"assets/portfolio/project5",  artstation:"https://www.artstation.com/artwork/98aqZN" },
-  { id:6,  title:"Dead Line – Vue 2",                     category:"environment", tools:["Unreal Engine","Photoshop","Substance 3D Painter"],           img:"assets/portfolio/project6",  artstation:"https://www.artstation.com/artwork/98aqZN" },
-  { id:7,  title:"Neon District",                         category:"environment", tools:["Unreal Engine","3ds Max","Substance 3D Painter"],             img:"assets/portfolio/project7",  artstation:"https://www.artstation.com/artwork/KA0DOx" },
-  { id:8,  title:"Buried in Time",                        category:"environment", tools:["Unreal Engine","3ds Max","Substance 3D Painter","ZBrush"],   img:"assets/portfolio/project8",  artstation:"https://www.artstation.com/artwork/lxel2R" },
-  { id:9,  title:"The Temple of the Lost Deity",          category:"environment", tools:["Unreal Engine","3ds Max","Substance 3D Painter","ZBrush"],   img:"assets/portfolio/project9",  artstation:"https://www.artstation.com/artwork/3dyNmQ" },
-  { id:10, title:"The Watchtower",                        category:"environment", tools:["Unreal Engine","3ds Max","Substance 3D Painter"],             img:"assets/portfolio/project10", artstation:"https://www.artstation.com/artwork/lxe0bR" },
-  { id:11, title:"Robot Drone MK-II",                     category:"props",       tools:["3ds Max","Substance Painter","ZBrush"],                       img:"assets/portfolio/project11", artstation:"https://www.artstation.com/artwork/ZG18zw" },
-  { id:12, title:"Old Piano 1875",                        category:"props",       tools:["Blender","Substance Painter"],                                img:"assets/portfolio/project12", artstation:"https://www.artstation.com/artwork/bK1b0n" },
-  { id:13, title:"Jukebox Wurlitzer 1015",                category:"props",       tools:["3ds Max","Substance Painter"],                                img:"assets/portfolio/project13", artstation:"https://www.artstation.com/artwork/J90rxa" },
-  { id:14, title:"Jet Engine",                            category:"props",       tools:["3ds Max","Substance Painter"],                                img:"assets/portfolio/project14", artstation:"https://www.artstation.com/artwork/w0Jbzw" },
-  { id:15, title:"Exploration of Cubemaps for Level Art", category:"environment", tools:["Photoshop","3ds Max","Unreal Engine","Substance Painter"],    img:"assets/portfolio/project15", artstation:"https://www.artstation.com/artwork/Jv5Z0m", note:"Thanks to Marko Margeta" },
-];
-
-function renderProjects(cat = 'all') {
-  const grid = document.getElementById('projectsGrid');
-  const list = cat === 'all' ? projects : projects.filter(p => p.category === cat);
-  grid.innerHTML = list.map(p => `
-    <div class="project-card">
-      <div class="project-thumb" onclick="openLightbox(${p.id})">
-        <img src="${p.img}.png" alt="${p.title}" loading="lazy" onerror="this.src='${p.img}.jpg'">
-      </div>
-      <div class="project-info">
-        <div class="project-title">${p.title}</div>
-        <div class="project-tools">${p.tools.map(t => `<span class="tool-tag">${t}</span>`).join('')}</div>
-        <div class="project-actions">
-          <button class="btn-lightbox" onclick="openLightbox(${p.id})">🔍 Preview</button>
-          <a class="btn-artstation" href="${p.artstation}" target="_blank">🎨 ArtStation</a>
+          <div class="about-links">
+            <a href="#portfolio" class="btn btn--primary btn--sm">
+              <span data-i18n="about.btn-work">Voir mes travaux</span>
+            </a>
+            <a href="#" class="btn btn--outline btn--sm" data-i18n-aria="about.btn-cv-aria" aria-label="Télécharger le CV">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+              </svg>
+              <span data-i18n="about.btn-cv">CV</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  `).join('');
-}
+  </section>
 
-function filterProjects(cat, btn) {
-  document.querySelectorAll('.filter-bar .filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderProjects(cat);
-}
-
-// ═══════════════════════════════════════════
-// LIGHTBOX
-// ═══════════════════════════════════════════
-function openLightbox(id) {
-  const p = projects.find(x => x.id === id);
-  if (!p) return;
-  document.getElementById('lightboxImg').src = p.img + '.png';
-  document.getElementById('lightboxTitle').textContent = p.title;
-  document.getElementById('lightboxTools').innerHTML = p.tools.map(t => `<span class="tool-tag">${t}</span>`).join('');
-  document.getElementById('lightboxLink').href = p.artstation;
-  document.getElementById('lightbox').classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-function closeLightbox(e) {
-  if (e.target === document.getElementById('lightbox')) closeLightboxBtn();
-}
-function closeLightboxBtn() {
-  document.getElementById('lightbox').classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-// ═══════════════════════════════════════════
-// SKILLS — Google Sheet
-// ═══════════════════════════════════════════
-const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTWYv50zUGHzAXvZfTmn8f0IKEK677mOPm8LicKYlXKf86DH8BpfIpDangNrjZ22Nbgh41-B2lu7AP2/pub?gid=242366803&single=true&output=csv';
-
-
-const FALLBACK_SKILLS = [
-  { name:"Unreal Engine",        pct:90, cat:"moteur"    },
-  { name:"3ds Max",              pct:88, cat:"dcc"       },
-  { name:"Blender",              pct:80, cat:"dcc"       },
-  { name:"ZBrush",               pct:75, cat:"dcc"       },
-  { name:"Substance 3D Painter", pct:92, cat:"texturing" },
-  { name:"Photoshop",            pct:85, cat:"texturing" },
-  { name:"SpeedTree",            pct:70, cat:"végétation"},
-  { name:"Marmoset Toolbag",     pct:72, cat:"texturing" },
-];
-
-let allSkills = [];
-let radarChartInstance = null;
-
-function maitriseToPercent(val) {
-  if (!val) return 0;
-  val = val.toLowerCase().trim();
-  if (val.includes('→') || val.includes('->')) {
-    const parts = val.split(/→|->/).map(s => s.trim());
-    const map2 = {'débutant':20,'découverte':20,'notions':30,'intermédiaire':50,'avancé':70,'expert':90};
-    return Math.round(((map2[parts[0]]||0) + (map2[parts[1]]||90)) / 2);
-  }
-  const map = {'découverte':20,'débutant':30,'notions':35,'intermédiaire':60,'avancé':75,'expert':90,'maîtrise':95};
-  return map[val] || 0;
-}
-
-async function loadSkillsFromSheet() {
-  try {
-    const res = await fetch(SHEET_URL);
-    const text = await res.text();
-    const rows = text.trim().split('\n').slice(1); // slice(1) = saute la ligne header
-    const skills = rows.map(row => {
-      const cols = row.split(',').map(c => c.trim().replace(/"/g, ''));
-      return {
-        name: cols[0],
-        cat: cols[1]?.toLowerCase() || 'other',
-        pct: parseInt(cols[2]) || 0
-      };
-    }).filter(s => s.name && s.name !== 'Outil' && s.name !== '' && s.pct > 0);
-    allSkills = skills.length > 0 ? skills : FALLBACK_SKILLS;
-  } catch(e) {
-    allSkills = FALLBACK_SKILLS;
-  }
-  renderSkillsFilter(allSkills);
-  renderSkills(allSkills);
-  renderRadar(allSkills);
-}
-
-// ═══════════════════════════════════════════
-// RADAR CHART
-// ═══════════════════════════════════════════
-const CAT_COLORS = {
-  'dcc / modélisation': '#00d4ff',
-  'texturing':          '#a78bfa',
-  'moteurs de jeu':     '#ff6b35',
-  'uv / retopo':        '#00ff96',
-  'végétation':         '#64dc32',
-  'assets':             '#ffc800',
-  'photogrammétrie':    '#00c8ff',
-  'ia / génératif':     '#ff6496',
-  'pipeline & rendu':   '#c864ff',
-  'référence':          '#aaaaaa',
-};
-
-function getCatColor(cat) {
-  return CAT_COLORS[cat] || '#8899aa';
-}
-
-function renderRadar(skills) {
-  // Calcule la moyenne par catégorie
-  const catMap = {};
-  skills.forEach(s => {
-    if (!catMap[s.cat]) catMap[s.cat] = { total: 0, count: 0 };
-    catMap[s.cat].total += s.pct;
-    catMap[s.cat].count++;
-  });
-
-  const cats = Object.keys(catMap);
-  const avgs = cats.map(c => Math.round(catMap[c].total / catMap[c].count));
-  const colors = cats.map(c => getCatColor(c));
-
-  // Labels lisibles
-const catLabels = {
-  'dcc / modélisation': 'DCC / 3D',
-  'texturing':          'Texturing',
-  'moteurs de jeu':     'Game Engine',
-  'uv / retopo':        'UV / Retopo',
-  'végétation':         'Végétation',
-  'assets':             'Assets',
-  'photogrammétrie':    'Photogrammétrie',
-  'ia / génératif':     'IA / Génératif',
-  'pipeline & rendu':   'Pipeline & Rendu',
-  'référence':          'Référence',
-};
-
-  const labels = cats.map(c => catLabels[c] || c.charAt(0).toUpperCase() + c.slice(1));
-
-  // Destroy ancien chart si existe
-  if (radarChartInstance) { radarChartInstance.destroy(); radarChartInstance = null; }
-
-  const ctx = document.getElementById('radarChart').getContext('2d');
-
-  // Gradient fill
-  const gradient = ctx.createRadialGradient(190, 190, 0, 190, 190, 190);
-  gradient.addColorStop(0, 'rgba(0,212,255,0.3)');
-  gradient.addColorStop(1, 'rgba(123,47,255,0.05)');
-
-  radarChartInstance = new Chart(ctx, {
-    type: 'radar',
-    data: {
-      labels: labels,
-      datasets: [{
-        data: avgs,
-        backgroundColor: gradient,
-        borderColor: 'rgba(0,212,255,0.8)',
-        borderWidth: 2,
-        pointBackgroundColor: colors,
-        pointBorderColor: '#fff',
-        pointBorderWidth: 1,
-        pointRadius: 5,
-        pointHoverRadius: 7,
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      scales: {
-        r: {
-          min: 0,
-          max: 100,
-          ticks: {
-            stepSize: 25,
-            color: 'rgba(136,153,170,0.5)',
-            font: { size: 10 },
-            backdropColor: 'transparent',
-          },
-          grid: { color: 'rgba(0,212,255,0.1)' },
-          angleLines: { color: 'rgba(0,212,255,0.1)' },
-          pointLabels: {
-            color: '#e0e8f0',
-            font: { family: 'Rajdhani', size: 12, weight: '600' },
-          }
-        }
-      },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: ctx => ` ${ctx.raw}%`
-          },
-          backgroundColor: 'rgba(10,22,40,0.95)',
-          borderColor: 'rgba(0,212,255,0.3)',
-          borderWidth: 1,
-          titleColor: '#00d4ff',
-          bodyColor: '#e0e8f0',
-        }
-      }
-    }
-  });
-
-  // Légende custom
-  const legend = document.getElementById('radarLegend');
-  legend.innerHTML = cats.map((c, i) => `
-    <div class="radar-legend-item">
-      <div class="radar-legend-dot" style="background:${colors[i]}"></div>
-      <span class="radar-legend-label">${labels[i]}</span>
-      <span class="radar-legend-pct">${avgs[i]}%</span>
-    </div>
-  `).join('');
-}
-
-// ═══════════════════════════════════════════
-// SKILLS FILTER & RENDER
-// ═══════════════════════════════════════════
-function renderSkillsFilter(skills) {
-  const cats = [...new Set(skills.map(s => s.cat))];
-  const allLabel = i18n[currentLang]['skills.filter.all'] || 'Tous';
-  const container = document.getElementById('skillsFilter');
-  container.innerHTML = `
-    <button class="filter-btn active" onclick="filterSkills('all', this)">${allLabel}</button>
-    ${cats.map(c => `<button class="filter-btn" onclick="filterSkills('${c}', this)">${c.charAt(0).toUpperCase() + c.slice(1)}</button>`).join('')}
-  `;
-}
-
-function filterSkills(cat, btn) {
-  document.querySelectorAll('#skillsFilter .filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  const filtered = cat === 'all' ? allSkills : allSkills.filter(s => s.cat === cat);
-  renderSkills(filtered);
-}
-
-function renderSkills(skills) {
-  const grid = document.getElementById('skillsGrid');
-  if (!skills.length) { grid.innerHTML = '<div style="text-align:center;color:var(--text-dim);grid-column:1/-1;padding:2rem;">Aucune compétence trouvée.</div>'; return; }
-  grid.innerHTML = skills.map(s => {
-    const color = getCatColor(s.cat);
-    return `
-      <div class="skill-card">
-        <div class="skill-header">
-          <span class="skill-name">${s.name}</span>
-          <span class="skill-pct">${s.pct}%</span>
-        </div>
-        <div class="skill-bar-bg">
-          <div class="skill-bar-fill" style="width:${s.pct}%;background:linear-gradient(90deg,${color},${color}88)"></div>
-        </div>
-        <span class="skill-badge" style="background:${color}18;color:${color};border:1px solid ${color}44">${s.cat}</span>
+  <!-- ===== PORTFOLIO ===== -->
+  <section class="section portfolio" id="portfolio" aria-label="Portfolio">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <h2 class="section-title">Portfolio</h2>
+        <div class="section-line"></div>
       </div>
-    `;
-  }).join('');
-}
 
-function getBadgeStyle(cat) {
-  const color = getCatColor(cat);
-  return `background:${color}18;color:${color};border:1px solid ${color}44`;
-}
+      <!-- Filtres -->
+      <div class="portfolio-filters" role="tablist" aria-label="Filtrer les projets">
+        <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true" data-i18n="filter.all">Tous</button>
+        <button class="filter-btn" data-filter="scifi" role="tab" aria-selected="false">Sci-Fi</button>
+        <button class="filter-btn" data-filter="fantasy" role="tab" aria-selected="false">Fantasy</button>
+        <button class="filter-btn" data-filter="urban" role="tab" aria-selected="false">Urban</button>
+        <button class="filter-btn" data-filter="postapoc" role="tab" aria-selected="false">Post-Apoc</button>
+      </div>
 
-// ═══════════════════════════════════════════
-// COPY EMAIL
-// ═══════════════════════════════════════════
-function copyEmail(event) {
-  navigator.clipboard.writeText('Danhoudebine@gmail.com').then(() => {
-    const val = event.currentTarget.querySelector('.contact-value');
-    val.textContent = '✓ Copié !';
-    setTimeout(() => { val.textContent = 'Danhoudebine[@]gmail.com'; }, 2000);
-  });
-}
+      <!-- Grille projets -->
+      <div class="portfolio-grid" id="portfolio-grid">
 
-// ═══════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════
-document.addEventListener('DOMContentLoaded', () => {
-  // LOADER
+        <article class="project-item" data-cat="scifi" data-index="0">
+          <div class="project-thumb">
+            <img src="assets/portfolio/project1.png" alt="Neon City District — Environnement cyberpunk urbain" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-overlay-content">
+                <span class="project-cat">Sci-Fi</span>
+                <h3>Neon City District</h3>
+                <p>Unreal Engine 5 · Substance Painter</p>
+              </div>
+              <button class="project-expand" aria-label="Voir Neon City District en grand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
 
-(function() {
-  const bar = document.getElementById('loaderBar');
-  const pct = document.getElementById('loaderPct');
-  const msgs = document.querySelectorAll('.loader-msg');
-  let current = 0;
+        <article class="project-item" data-cat="fantasy" data-index="1">
+          <div class="project-thumb">
+            <img src="assets/portfolio/project2.png" alt="Ancient Temple Ruins — Ruines de temple antique" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-overlay-content">
+                <span class="project-cat">Fantasy</span>
+                <h3>Ancient Temple Ruins</h3>
+                <p>Blender · Unreal Engine 5</p>
+              </div>
+              <button class="project-expand" aria-label="Voir Ancient Temple Ruins en grand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
 
-  const steps = [
-    { at: 0,   msg: 0 },
-    { at: 20,  msg: 1 },
-    { at: 40,  msg: 2 },
-    { at: 60,  msg: 3 },
-    { at: 80,  msg: 4 },
-  ];
+        <article class="project-item" data-cat="scifi" data-index="2">
+          <div class="project-thumb">
+            <img src="assets/portfolio/project3.png" alt="Space Station Interior — Intérieur de station spatiale" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-overlay-content">
+                <span class="project-cat">Sci-Fi</span>
+                <h3>Space Station Interior</h3>
+                <p>3ds Max · Substance 3D · UE5</p>
+              </div>
+              <button class="project-expand" aria-label="Voir Space Station Interior en grand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
 
-  // Cache tous les messages au départ
-  msgs.forEach(m => m.classList.remove('active'));
-  msgs[0].classList.add('active'); // Affiche le premier
+        <article class="project-item" data-cat="fantasy" data-index="3">
+          <div class="project-thumb">
+            <img src="assets/portfolio/project4.png" alt="Dark Forest Clearing — Clairière de forêt sombre" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-overlay-content">
+                <span class="project-cat">Fantasy</span>
+                <h3>Dark Forest Clearing</h3>
+                <p>Blender · Unity · ZBrush</p>
+              </div>
+              <button class="project-expand" aria-label="Voir Dark Forest Clearing en grand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
 
-  const interval = setInterval(() => {
-    current += Math.random() * 3 + 1;
-    if (current > 100) current = 100;
+        <article class="project-item" data-cat="postapoc" data-index="4">
+          <div class="project-thumb">
+            <img src="assets/portfolio/project5.png" alt="Industrial Wasteland — Friche industrielle post-apocalyptique" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-overlay-content">
+                <span class="project-cat">Post-Apoc</span>
+                <h3>Industrial Wasteland</h3>
+                <p>Houdini · Unreal Engine 5</p>
+              </div>
+              <button class="project-expand" aria-label="Voir Industrial Wasteland en grand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
 
-    bar.style.width = current + '%';
-    pct.textContent = Math.floor(current) + '%';
+        <article class="project-item" data-cat="scifi" data-index="5">
+          <div class="project-thumb">
+            <img src="assets/portfolio/project6.png" alt="Underwater Laboratory — Laboratoire sous-marin" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-overlay-content">
+                <span class="project-cat">Sci-Fi</span>
+                <h3>Underwater Laboratory</h3>
+                <p>Blender · Substance Painter · UE5</p>
+              </div>
+              <button class="project-expand" aria-label="Voir Underwater Laboratory en grand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
 
-    // Trouve le bon message selon le pourcentage actuel
-    let currentMsg = 0;
-    steps.forEach(s => {
-      if (current >= s.at) currentMsg = s.msg;
-    });
+        <article class="project-item" data-cat="fantasy" data-index="6">
+          <div class="project-thumb">
+            <img src="assets/portfolio/project7.png" alt="Medieval Dungeon — Donjon médiéval" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-overlay-content">
+                <span class="project-cat">Fantasy</span>
+                <h3>Medieval Dungeon</h3>
+                <p>3ds Max · ZBrush · Unity HDRP</p>
+              </div>
+              <button class="project-expand" aria-label="Voir Medieval Dungeon en grand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
 
-    // Retire active de tous, met active sur le bon
-    msgs.forEach(m => m.classList.remove('active'));
-    msgs[currentMsg].classList.add('active');
+        <article class="project-item" data-cat="scifi" data-index="7">
+          <div class="project-thumb">
+            <img src="assets/portfolio/project8.png" alt="Alien Landscape — Paysage alien" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-overlay-content">
+                <span class="project-cat">Sci-Fi</span>
+                <h3>Alien Landscape</h3>
+                <p>Houdini · Unreal Engine 5</p>
+              </div>
+              <button class="project-expand" aria-label="Voir Alien Landscape en grand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
 
-    if (current >= 100) {
-      clearInterval(interval);
-      setTimeout(() => {
-        document.getElementById('loader').classList.add('hidden');
-      }, 600);
-    }
-  }, 40);
-})();
+        <article class="project-item" data-cat="urban" data-index="8">
+          <div class="project-thumb">
+            <img src="assets/portfolio/project9.png" alt="Modern Urban Rooftop — Toit urbain contemporain" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-overlay-content">
+                <span class="project-cat">Urban</span>
+                <h3>Modern Urban Rooftop</h3>
+                <p>Blender · Substance 3D · UE5</p>
+              </div>
+              <button class="project-expand" aria-label="Voir Modern Urban Rooftop en grand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
 
+        <article class="project-item" data-cat="fantasy" data-index="9">
+          <div class="project-thumb">
+            <img src="assets/portfolio/project10.png" alt="Volcanic Cavern — Caverne volcanique" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-overlay-content">
+                <span class="project-cat">Fantasy</span>
+                <h3>Volcanic Cavern</h3>
+                <p>ZBrush · Substance Painter · UE5</p>
+              </div>
+              <button class="project-expand" aria-label="Voir Volcanic Cavern en grand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
 
+        <article class="project-item" data-cat="scifi" data-index="10">
+          <div class="project-thumb">
+            <img src="assets/portfolio/project11.png" alt="Arctic Research Base — Base de recherche arctique" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-overlay-content">
+                <span class="project-cat">Sci-Fi</span>
+                <h3>Arctic Research Base</h3>
+                <p>3ds Max · Houdini · Unreal Engine 5</p>
+              </div>
+              <button class="project-expand" aria-label="Voir Arctic Research Base en grand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
 
-  renderProjects();
-  loadSkillsFromSheet();
-});
+        <article class="project-item" data-cat="urban" data-index="11">
+          <div class="project-thumb">
+            <img src="assets/portfolio/project12.png" alt="Desert Oasis Camp — Camp d'oasis désertique" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-overlay-content">
+                <span class="project-cat">Urban</span>
+                <h3>Desert Oasis Camp</h3>
+                <p>Blender · Substance 3D · Unity</p>
+              </div>
+              <button class="project-expand" aria-label="Voir Desert Oasis Camp en grand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
 
-</script>
-<script>
- const toggle = document.querySelector('.nav-toggle');
-const menu = document.querySelector('.nav-links');
-if (toggle) {
-  toggle.addEventListener('click', () => {
-    menu.classList.toggle('open');
-    toggle.classList.toggle('open');
-  });
-  menu.querySelectorAll('a').forEach(a => 
-    a.addEventListener('click', () => {
-      menu.classList.remove('open');
-      toggle.classList.remove('open');
-    })
-  );
-}
+        <article class="project-item" data-cat="scifi" data-index="12">
+          <div class="project-thumb">
+            <img src="assets/portfolio/project13.png" alt="Cyberpunk Back Alley — Ruelle cyberpunk" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-overlay-content">
+                <span class="project-cat">Sci-Fi</span>
+                <h3>Cyberpunk Back Alley</h3>
+                <p>Blender · Substance Painter · UE5</p>
+              </div>
+              <button class="project-expand" aria-label="Voir Cyberpunk Back Alley en grand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
 
-</script>
+        <article class="project-item" data-cat="fantasy" data-index="13">
+          <div class="project-thumb">
+            <img src="assets/portfolio/project14.png" alt="Enchanted Forest — Forêt enchantée" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-overlay-content">
+                <span class="project-cat">Fantasy</span>
+                <h3>Enchanted Forest</h3>
+                <p>Blender · SpeedTree · UE5</p>
+              </div>
+              <button class="project-expand" aria-label="Voir Enchanted Forest en grand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-item" data-cat="postapoc" data-index="14">
+          <div class="project-thumb">
+            <img src="assets/portfolio/project15.png" alt="Abandoned Warehouse — Entrepôt abandonné" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-overlay-content">
+                <span class="project-cat">Post-Apoc</span>
+                <h3>Abandoned Warehouse</h3>
+                <p>3ds Max · Substance 3D Painter · Unity HDRP</p>
+              </div>
+              <button class="project-expand" aria-label="Voir Abandoned Warehouse en grand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+      </div><!-- /portfolio-grid -->
+    </div><!-- /container -->
+  </section>
+
+  <!-- ===== LIGHTBOX ===== -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Vue agrandie du projet" hidden>
+    <div class="lightbox-backdrop" id="lightbox-backdrop"></div>
+    <div class="lightbox-container">
+      <button class="lightbox-close" id="lightbox-close" aria-label="Fermer">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <button class="lightbox-prev" id="lightbox-prev" aria-label="Précédent">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button class="lightbox-next" id="lightbox-next" aria-label="Suivant">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+      <div class="lightbox-img-wrap">
+        <img src="" alt="" id="lightbox-img" class="lightbox-img">
+      </div>
+      <div class="lightbox-info">
+        <span class="lightbox-cat" id="lightbox-cat"></span>
+        <h3 class="lightbox-title" id="lightbox-title"></h3>
+        <p class="lightbox-tools" id="lightbox-tools"></p>
+        <span class="lightbox-counter" id="lightbox-counter"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SKILLS ===== -->
+  <section class="section skills" id="skills" aria-label="Compétences">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <h2 class="section-title" data-i18n="section.skills">Compétences</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <!-- Top outils — barres animées issues du toolkit réel -->
+      <div class="skills-top">
+        <h3 class="skills-col-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          <span data-i18n="skills.main-tools">Outils principaux</span>
+        </h3>
+        <div class="skill-bars skill-bars--wide">
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>3ds Max</span><span class="skill-status">Expert · 95%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="95"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>Substance 3D Painter</span><span class="skill-status">Expert · 95%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="95"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>Unreal Engine 5</span><span class="skill-status">Expert · 95%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="95"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>Megascans</span><span class="skill-status">Expert · 95%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="95"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>Blender</span><span class="skill-status">Expert · 90%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="90"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>Unity HDRP</span><span class="skill-status">Expert · 90%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="90"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>RealityCapture</span><span class="skill-status">Expert · 90%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="90"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>Marmoset Toolbag</span><span class="skill-status">Expert · 90%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="90"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>ZBrush</span><span class="skill-status">Expert · 85%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="85"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-header"><span>Houdini</span><span class="skill-status">Opérationnel · 45%</span></div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="45"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Catégories complètes du toolkit -->
+      <div class="skills-categories">
+        <h3 class="skills-col-title" style="margin-bottom:1.5rem">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          Toolkit complet
+        </h3>
+        <div class="cat-grid">
+
+          <div class="cat-card glass">
+            <div class="cat-card-header">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              <span>DCC / Modélisation</span>
+            </div>
+            <div class="cat-tools">
+              <span class="cat-tool cat-tool--expert">3ds Max <em>95%</em></span>
+              <span class="cat-tool cat-tool--expert">Blender <em>90%</em></span>
+              <span class="cat-tool cat-tool--expert">ZBrush <em>85%</em></span>
+              <span class="cat-tool cat-tool--expert">Cinema 4D <em>80%</em></span>
+              <span class="cat-tool cat-tool--expert">Marvelous Designer <em>80%</em></span>
+              <span class="cat-tool cat-tool--ope">Houdini <em>45%</em></span>
+            </div>
+          </div>
+
+          <div class="cat-card glass">
+            <div class="cat-card-header">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+              <span>Texturing</span>
+            </div>
+            <div class="cat-tools">
+              <span class="cat-tool cat-tool--expert">Substance 3D Painter <em>95%</em></span>
+              <span class="cat-tool cat-tool--expert">Photoshop <em>95%</em></span>
+              <span class="cat-tool cat-tool--expert">Quixel Mixer <em>85%</em></span>
+              <span class="cat-tool cat-tool--expert">Substance 3D Designer <em>80%</em></span>
+            </div>
+          </div>
+
+          <div class="cat-card glass">
+            <div class="cat-card-header">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <span>Moteurs de jeu</span>
+            </div>
+            <div class="cat-tools">
+              <span class="cat-tool cat-tool--expert">Unreal Engine 5 <em>95%</em></span>
+              <span class="cat-tool cat-tool--expert">Unity HDRP <em>90%</em></span>
+            </div>
+          </div>
+
+          <div class="cat-card glass">
+            <div class="cat-card-header">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span>Photogrammétrie</span>
+            </div>
+            <div class="cat-tools">
+              <span class="cat-tool cat-tool--expert">RealityCapture <em>90%</em></span>
+              <span class="cat-tool cat-tool--expert">Polycam <em>90%</em></span>
+            </div>
+          </div>
+
+          <div class="cat-card glass">
+            <div class="cat-card-header">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <span>IA / Génératif</span>
+            </div>
+            <div class="cat-tools">
+              <span class="cat-tool cat-tool--expert">Midjourney <em>90%</em></span>
+              <span class="cat-tool cat-tool--expert">Meshy AI <em>90%</em></span>
+              <span class="cat-tool cat-tool--expert">Adobe Firefly <em>90%</em></span>
+              <span class="cat-tool cat-tool--expert">Leonardo AI <em>90%</em></span>
+            </div>
+          </div>
+
+          <div class="cat-card glass">
+            <div class="cat-card-header">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              <span>Végétation</span>
+            </div>
+            <div class="cat-tools">
+              <span class="cat-tool cat-tool--expert">Sapling Tree Gen <em>90%</em></span>
+              <span class="cat-tool cat-tool--ope">SpeedTree <em>80%</em></span>
+              <span class="cat-tool cat-tool--ope">Grow <em>80%</em></span>
+              <span class="cat-tool cat-tool--ope">Gaea <em>70%</em></span>
+            </div>
+          </div>
+
+          <div class="cat-card glass">
+            <div class="cat-card-header">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              <span>Pipeline & Rendu</span>
+            </div>
+            <div class="cat-tools">
+              <span class="cat-tool cat-tool--expert">Marmoset Toolbag <em>90%</em></span>
+              <span class="cat-tool cat-tool--expert">Perforce <em>80%</em></span>
+            </div>
+          </div>
+
+          <div class="cat-card glass">
+            <div class="cat-card-header">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <span>UV / Retopo</span>
+            </div>
+            <div class="cat-tools">
+              <span class="cat-tool cat-tool--expert">ZRemesher <em>80%</em></span>
+              <span class="cat-tool cat-tool--ope">Instant Meshes <em>75%</em></span>
+            </div>
+          </div>
+
+          <div class="cat-card glass">
+            <div class="cat-card-header">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              <span>Assets & Référence</span>
+            </div>
+            <div class="cat-tools">
+              <span class="cat-tool cat-tool--expert">Megascans <em>95%</em></span>
+              <span class="cat-tool cat-tool--expert">PureRef <em>95%</em></span>
+              <span class="cat-tool cat-tool--expert">ArtStation <em>95%</em></span>
+              <span class="cat-tool cat-tool--expert">80.lv <em>95%</em></span>
+              <span class="cat-tool cat-tool--ope">KitBash3D <em>80%</em></span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section class="section contact" id="contact" aria-label="Contact">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <h2 class="section-title">Contact</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="contact-layout">
+        <div class="contact-info">
+          <h3 data-i18n="contact.heading">Travaillons ensemble</h3>
+          <p data-i18n="contact.description">Disponible pour des missions freelance, des postes en studio, ou des collaborations sur des projets passionnants. N'hésitez pas à m'écrire.</p>
+
+          <div class="contact-items">
+            <a href="mailto:Danhoudebine@gmail.com" class="contact-item glass">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <span>Danhoudebine@gmail.com</span>
+            </a>
+            <a href="https://www.artstation.com/danhoudebine" target="_blank" rel="noopener noreferrer" class="contact-item glass" aria-label="ArtStation de Dan Houdebine">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M0 17.723l2.027 3.505h.001a2.424 2.424 0 0 0 2.164 1.333h13.457l-2.792-4.838H0zm24 .025c0-.484-.143-.935-.388-1.314L15.728 2.728a2.424 2.424 0 0 0-2.129-1.289H9.419L21.598 22.54l1.92-3.325c.315-.578.482-1.178.482-1.467zm-11.129-3.462L7.428 4.858l-5.444 9.428h10.887z"/></svg>
+              <span>ArtStation</span>
+            </a>
+            <a href="https://danhoudebine.github.io/portfolio/" target="_blank" rel="noopener noreferrer" class="contact-item glass" aria-label="Portfolio de Dan Houdebine">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <span data-i18n="contact.portfolio-link">Portfolio</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Formulaire → envoi réel via FormSubmit (pas de backend requis) -->
+        <form class="contact-form glass" id="contact-form" novalidate aria-label="Formulaire de contact">
+          <input type="hidden" name="_subject" value="Nouveau message — Portfolio Dan Houdebine">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <div class="form-row">
+            <div class="form-field">
+              <label for="contact-name" data-i18n="form.name">Nom</label>
+              <input type="text" id="contact-name" name="name" placeholder="Votre nom" data-i18n-ph="form.ph-name" required autocomplete="name">
+            </div>
+            <div class="form-field">
+              <label for="contact-email" data-i18n="form.email">Email</label>
+              <input type="email" id="contact-email" name="email" placeholder="votre@email.com" data-i18n-ph="form.ph-email" required autocomplete="email">
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="contact-subject" data-i18n="form.subject">Sujet</label>
+            <input type="text" id="contact-subject" name="subject" placeholder="Proposition de mission, collaboration…" data-i18n-ph="form.ph-subject">
+          </div>
+          <div class="form-field">
+            <label for="contact-message" data-i18n="form.message">Message</label>
+            <textarea id="contact-message" name="message" rows="5" placeholder="Décrivez votre projet…" data-i18n-ph="form.ph-message" required></textarea>
+          </div>
+          <button type="submit" class="btn btn--primary btn--full">
+            <span>Envoyer le message</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+          <p class="form-success" id="form-success" hidden>Message envoyé ! Je vous réponds sous 48h.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="footer-logo">DH</span>
+          <p>Dan Houdebine<br><small>3D Environment Artist</small></p>
+        </div>
+        <nav class="footer-nav" aria-label="Navigation footer">
+          <a href="#hero" data-i18n="nav.home">Accueil</a>
+          <a href="#about" data-i18n="nav.about">À propos</a>
+          <a href="#portfolio" data-i18n="nav.portfolio">Portfolio</a>
+          <a href="#skills" data-i18n="nav.skills">Compétences</a>
+          <a href="#contact" data-i18n="nav.contact">Contact</a>
+        </nav>
+        <p class="footer-copy">© 2026 Dan Houdebine. <span data-i18n="footer.rights">Tous droits réservés.</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/main.js" defer></script>
 </body>
 </html>
