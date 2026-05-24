@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --void-black: #000b1f;
+    --deep-navy: #002d62;
+    --blaze-orange: #ff7f00;
+    --solar-gold: #ffd700;
+    --midnight-indigo: #1d2b54;
+    --pure-white: #ffffff;
+    --mist: #d2d2d2;
+    --burnt-sienna: #aa5204;
+    --radius: 0px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Sora', sans-serif;
+    background-color: var(--void-black);
+    color: var(--pure-white);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+  }
+
+  ::selection {
+    background-color: var(--blaze-orange);
+    color: var(--void-black);
+  }
+}
+
+@layer components {
+  .font-heading {
+    font-family: 'Outfit', sans-serif;
+  }
+
+  .font-body {
+    font-family: 'Sora', sans-serif;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .text-display-xl {
+    font-size: clamp(3rem, 10vw, 8rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .text-display-lg {
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+  }
+
+  .text-display-md {
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 600;
+    line-height: 1.1;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--blaze-orange);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .nav-link {
+    font-family: 'Sora', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--mist);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: color 0.3s ease;
+  }
+
+  .nav-link:hover {
+    color: var(--blaze-orange);
+  }
+
+  .nav-link.active {
+    color: var(--pure-white);
+    text-decoration: underline;
+    text-decoration-color: var(--blaze-orange);
+    text-underline-offset: 6px;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--blaze-orange) rgba(255, 255, 255, 0.1);
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    height: 2px;
+    width: 2px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: var(--blaze-orange);
+  }
+}
