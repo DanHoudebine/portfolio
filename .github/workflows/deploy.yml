@@ -23,14 +23,26 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Debug versions
+      - name: Debug environment
         run: |
           echo "Node: $(node --version)"
           echo "npm: $(npm --version)"
-          npx vite --version
+          echo "Vite: $(./node_modules/.bin/vite --version)"
+          echo "esbuild: $(./node_modules/.bin/esbuild --version 2>&1 || echo MISSING)"
+          ls node_modules/@vitejs/plugin-react/package.json && echo "@vitejs/plugin-react: OK" || echo "MISSING"
+          ls node_modules/@rolldown/pluginutils/package.json && echo "@rolldown/pluginutils: OK" || echo "MISSING"
 
       - name: Build
-        run: npx vite build
+        run: |
+          set +e
+          BUILD_OUT=$(npx vite build 2>&1)
+          BUILD_CODE=$?
+          echo "$BUILD_OUT"
+          if [ $BUILD_CODE -ne 0 ]; then
+            FIRST_LINES=$(echo "$BUILD_OUT" | head -20 | tr '\n' '|')
+            echo "::error::Vite build failed (exit $BUILD_CODE): $FIRST_LINES"
+          fi
+          exit $BUILD_CODE
 
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v3
