@@ -105,7 +105,7 @@ export default function Work() {
       ref={sectionRef}
       style={{
         padding: '120px 4vw 80px',
-        background: '#000b1f',
+        background: '#060d1a',
       }}
     >
       {/* Section Label */}
@@ -169,7 +169,7 @@ export default function Work() {
             <div
               className="absolute inset-0 transition-opacity duration-500"
               style={{
-                background: 'linear-gradient(to top, rgba(0,11,31,0.9) 0%, rgba(0,11,31,0.3) 50%, transparent 100%)',
+                background: 'linear-gradient(to top, rgba(6,13,26,0.9) 0%, rgba(6,13,26,0.3) 50%, transparent 100%)',
               }}
             />
 
@@ -194,14 +194,14 @@ export default function Work() {
                   </h3>
                   <p
                     className="font-mono uppercase tracking-[0.1em] mt-2"
-                    style={{ fontSize: '12px', color: '#ff7f00' }}
+                    style={{ fontSize: '12px', color: '#c96f2e' }}
                   >
                     {project.tags}
                   </p>
                 </div>
                 <span
                   className="font-body text-white flex-shrink-0"
-                  style={{ fontSize: '14px', color: '#d2d2d2' }}
+                  style={{ fontSize: '14px', color: '#8fa3bb' }}
                 >
                   {project.year}
                 </span>
@@ -214,7 +214,7 @@ export default function Work() {
                 transform: scale(1.05);
               }
               .group:hover .absolute:first-of-type + div {
-                background: linear-gradient(to top, rgba(0,11,31,0.7) 0%, rgba(0,11,31,0.2) 50%, transparent 100%);
+                background: linear-gradient(to top, rgba(6,13,26,0.7) 0%, rgba(6,13,26,0.2) 50%, transparent 100%);
               }
             `}</style>
           </div>

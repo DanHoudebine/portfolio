@@ -20,7 +20,7 @@ export default function Footer() {
     <footer
       style={{
         padding: '60px 4vw 40px',
-        background: '#002d62',
+        background: '#0c1c36',
         borderTop: '1px solid rgba(255,255,255,0.08)',
       }}
     >
@@ -33,11 +33,11 @@ export default function Footer() {
               className="font-heading font-bold text-white tracking-[0.15em]"
               style={{ fontSize: '20px' }}
             >
-              YLÉNIA
+              DAN HOUDEBINE
             </div>
             <div
               className="font-body mt-1"
-              style={{ fontSize: '12px', color: '#d2d2d2' }}
+              style={{ fontSize: '12px', color: '#8fa3bb' }}
             >
               3D ENVIRONMENT ARTIST
             </div>
@@ -49,8 +49,8 @@ export default function Footer() {
               <button
                 key={section}
                 onClick={() => scrollTo(section)}
-                className="font-body transition-colors duration-300 hover:text-[#ff7f00]"
-                style={{ fontSize: '14px', color: '#d2d2d2' }}
+                className="font-body transition-colors duration-300 hover:text-[#c96f2e]"
+                style={{ fontSize: '14px', color: '#8fa3bb' }}
               >
                 {t(`nav.${section}`)}
               </button>
@@ -113,5 +113,4 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  );
-}
+ 

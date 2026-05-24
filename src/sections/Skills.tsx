@@ -129,7 +129,7 @@ export default function Skills() {
       className="relative overflow-hidden"
       style={{
         padding: '120px 4vw',
-        background: '#002d62',
+        background: '#0c1c36',
       }}
     >
       {/* Background Particles Canvas */}
@@ -176,7 +176,7 @@ export default function Skills() {
 
               ctx.beginPath();
               ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-              ctx.fillStyle = `rgba(255, 127, 0, ${p.opacity})`;
+              ctx.fillStyle = `rgba(201, 111, 46, ${p.opacity})`;
               ctx.fill();
             });
             animId = requestAnimationFrame(animate);
@@ -209,7 +209,7 @@ export default function Skills() {
               style={{
                 fontSize: '18px',
                 lineHeight: 1.7,
-                color: '#d2d2d2',
+                color: '#8fa3bb',
                 maxWidth: '480px',
                 marginBottom: '16px',
               }}
@@ -237,20 +237,20 @@ export default function Skills() {
                   style={{
                     fontSize: '14px',
                     padding: '10px 24px',
-                    border: `1px solid ${activeCategory === cat ? '#ff7f00' : 'rgba(255,255,255,0.2)'}`,
-                    background: activeCategory === cat ? '#ff7f00' : 'transparent',
-                    color: activeCategory === cat ? '#000b1f' : '#d2d2d2',
+                    border: `1px solid ${activeCategory === cat ? '#c96f2e' : 'rgba(255,255,255,0.2)'}`,
+                    background: activeCategory === cat ? '#c96f2e' : 'transparent',
+                    color: activeCategory === cat ? '#060d1a' : '#8fa3bb',
                   }}
                   onMouseEnter={(e) => {
                     if (activeCategory !== cat) {
-                      e.currentTarget.style.borderColor = '#ff7f00';
-                      e.currentTarget.style.color = '#ff7f00';
+                      e.currentTarget.style.borderColor = '#c96f2e';
+                      e.currentTarget.style.color = '#c96f2e';
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (activeCategory !== cat) {
                       e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
-                      e.currentTarget.style.color = '#d2d2d2';
+                      e.currentTarget.style.color = '#8fa3bb';
                     }
                   }}
                 >
@@ -295,7 +295,7 @@ export default function Skills() {
                             cy="70"
                             r={radius}
                             fill="none"
-                            stroke="#ff7f00"
+                            stroke="#c96f2e"
                             strokeWidth="3"
                             strokeLinecap="round"
                             strokeDasharray={circumference}
@@ -313,7 +313,7 @@ export default function Skills() {
                           </span>
                           <span
                             className="font-mono mt-1"
-                            style={{ fontSize: '18px', color: '#ffd700' }}
+                            style={{ fontSize: '18px', color: '#E8B830' }}
                           >
                             {Math.round(skill.level * 100)}%
                           </span>
@@ -353,14 +353,14 @@ export default function Skills() {
                         ref={(el) => { barsRef.current[i] = el; }}
                         className="h-full flex items-center justify-end"
                         style={{
-                          background: 'linear-gradient(90deg, #ff7f00, #ffd700)',
+                          background: 'linear-gradient(90deg, #c96f2e, #c8a040)',
                           width: animated ? `${skill.level * 100}%` : '0%',
                           transition: 'none',
                         }}
                       >
                         <span
                           className="font-body font-semibold px-2"
-                          style={{ fontSize: '12px', color: '#000b1f' }}
+                          style={{ fontSize: '12px', color: '#060d1a' }}
                         >
                           {Math.round(skill.level * 100)}%
                         </span>
@@ -381,13 +381,13 @@ export default function Skills() {
                         width: '8px',
                         height: '8px',
                         borderRadius: '50%',
-                        background: '#ff7f00',
+                        background: '#c96f2e',
                         flexShrink: 0,
                       }}
                     />
                     <span
                       className="font-body"
-                      style={{ fontSize: '15px', color: '#d2d2d2' }}
+                      style={{ fontSize: '15px', color: '#8fa3bb' }}
                     >
                       {skill}
                     </span>

@@ -127,7 +127,7 @@ export default function Hero3D() {
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setClearColor(new THREE.Color('#000b1f'));
+    renderer.setClearColor(new THREE.Color('#060d1a'));
 
     const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.01, 100);
     camera.position.set(0, 0, 4);
@@ -140,10 +140,10 @@ export default function Hero3D() {
       resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
     };
 
-    // ─── Title 3D Text (using box geometry blocks to form "YLÉNIA") ───
+    // ─── Title 3D Text (using box geometry blocks to form "DAN") ───
     const titleGroup = new THREE.Group();
-    const letterColors = ['#ff7f00', '#C75B12', '#C9680C', '#ffd700', '#C75B12', '#ff7f00'];
-    const letters = 'YLÉNIA';
+    const letterColors = ['#c96f2e', '#e08840', '#c96f2e'];
+    const letters = 'DAN';
     const letterSpacing = 0.45;
     const startX = -((letters.length - 1) * letterSpacing) / 2;
 
@@ -167,10 +167,10 @@ export default function Hero3D() {
     scene.add(titleGroup);
 
     // ─── Wireframe Grid ───
-    const grid = new THREE.GridHelper(20, 40, new THREE.Color('#ff7f00'), new THREE.Color('#1d2b54'));
+    const grid = new THREE.GridHelper(20, 40, new THREE.Color('#c96f2e'), new THREE.Color('#111d32'));
     grid.position.y = -1.5;
     grid.material = new THREE.LineBasicMaterial({
-      color: new THREE.Color('#ff7f00'),
+      color: new THREE.Color('#c96f2e'),
       transparent: true,
       opacity: 0.15,
     });
@@ -224,7 +224,7 @@ export default function Hero3D() {
 
     const starGeo = new THREE.ExtrudeGeometry(starShape, { depth: 0.05, bevelEnabled: false });
     const starMat = new THREE.MeshBasicMaterial({
-      color: new THREE.Color('#ffd700'),
+      color: new THREE.Color('#E8B830'),
       transparent: true,
       opacity: 0,
       side: THREE.DoubleSide,
@@ -236,7 +236,7 @@ export default function Hero3D() {
     // Ring
     const ringGeo = new THREE.RingGeometry(1.0, 1.1, 64);
     const ringMat = new THREE.MeshBasicMaterial({
-      color: new THREE.Color('#ff7f00'),
+      color: new THREE.Color('#c96f2e'),
       transparent: true,
       opacity: 0,
       side: THREE.DoubleSide,
@@ -248,7 +248,7 @@ export default function Hero3D() {
     // Center circle
     const circleGeo = new THREE.CircleGeometry(0.15, 32);
     const circleMat = new THREE.MeshBasicMaterial({
-      color: new THREE.Color('#C75B12'),
+      color: new THREE.Color('#c96f2e'),
       transparent: true,
       opacity: 0,
     });
@@ -311,7 +311,7 @@ export default function Hero3D() {
         vec4 color = texture2D(map, gl_PointCoord);
         float blink = sin(time * vOpacity * 2.0) * 0.5 + 0.5;
         color.a *= opacity * mix(0.1, 1.0, blink);
-        color.rgb = vec3(1.0, 0.5, 0.0);
+        color.rgb = vec3(0.788, 0.435, 0.180);
         if (color.a < 0.01) discard;
         gl_FragColor = color;
       }
@@ -530,7 +530,7 @@ export default function Hero3D() {
           style={{
             fontSize: '14px',
             lineHeight: 1.6,
-            color: '#d2d2d2',
+            color: '#8fa3bb',
             transition: 'opacity 0.3s ease',
           }}
         >
@@ -547,7 +547,7 @@ export default function Hero3D() {
           className="font-heading font-bold text-white uppercase"
           style={{ fontSize: '12px', letterSpacing: '0.2em', opacity: 0.5 }}
         >
-          YLÉNIA STUDIO
+          DAN HOUDEBINE
         </span>
       </div>
 
@@ -556,11 +556,11 @@ export default function Hero3D() {
         className="absolute bottom-0 left-0 right-0 z-10 flex justify-between items-center px-[4vw] py-4"
         style={{
           backdropFilter: 'blur(4px)',
-          background: 'rgba(0, 11, 31, 0.3)',
+          background: 'rgba(6, 13, 26, 0.3)',
         }}
       >
         <span className="font-mono" style={{ fontSize: '11px', color: 'rgba(255,255,255,0.4)' }}>
-          2025 YLÉNIA STUDIO
+          2026 DAN HOUDEBINE
         </span>
         <span className="font-mono" style={{ fontSize: '11px', color: 'rgba(255,255,255,0.4)' }}>
           PARIS, FRANCE

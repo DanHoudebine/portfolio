@@ -4,14 +4,22 @@
 
 @layer base {
   :root {
-    --void-black: #000b1f;
-    --deep-navy: #002d62;
-    --blaze-orange: #ff7f00;
-    --solar-gold: #ffd700;
-    --midnight-indigo: #1d2b54;
-    --pure-white: #ffffff;
-    --mist: #d2d2d2;
-    --burnt-sienna: #aa5204;
+    /* ── Backgrounds ── */
+    --void-black: #060d1a;       /* fond principal — bleu-noir profond */
+    --deep-navy: #0c1c36;        /* sections alternées — marine riche */
+    --midnight-indigo: #111d32;  /* cartes & surfaces élevées */
+
+    /* ── Accents ── */
+    --blaze-orange: #c96f2e;     /* accent primaire — terra-cotta chaleureux */
+    --accent-hover: #e08840;     /* état hover — ambre doux */
+    --solar-gold: #E8B830;       /* accent secondaire — or doré distinct de l'orange */
+    --burnt-sienna: #7a4220;     /* accent sombre / ombre */
+
+    /* ── Textes & Surfaces ── */
+    --pure-white: #f0f4fa;       /* blanc légèrement bleuté — s'harmonise avec le navy */
+    --mist: #8fa3bb;             /* texte secondaire — gris-bleu */
+    --mist-faint: rgba(143, 163, 187, 0.25); /* bordures subtiles */
+
     --radius: 0px;
   }
 
@@ -84,37 +92,4 @@
     color: var(--mist);
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    transition: color 0.3s ease;
-  }
-
-  .nav-link:hover {
-    color: var(--blaze-orange);
-  }
-
-  .nav-link.active {
-    color: var(--pure-white);
-    text-decoration: underline;
-    text-decoration-color: var(--blaze-orange);
-    text-underline-offset: 6px;
-  }
-}
-
-@layer utilities {
-  .scrollbar-thin {
-    scrollbar-width: thin;
-    scrollbar-color: var(--blaze-orange) rgba(255, 255, 255, 0.1);
-  }
-
-  .scrollbar-thin::-webkit-scrollbar {
-    height: 2px;
-    width: 2px;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: var(--blaze-orange);
-  }
-}
+    transition: color 0.3s ease
