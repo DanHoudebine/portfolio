@@ -187,4 +187,27 @@ const resources = {
           message: 'Message',
           submit: 'ENVOYER',
           success: 'Message envoyé !',
-   
+        },
+      },
+      footer: {
+        rights: '2026 DAN HOUDEBINE. TOUS DROITS RÉSERVÉS.',
+        tagline: 'CONÇU ET RÉALISÉ AVEC PASSION',
+        location: 'PARIS, FRANCE',
+        tag: 'ENVIRONNEMENTS & UNIVERS',
+      },
+    },
+  },
+};
+
+i18n
+  .use(initReactI18next)
+  .use(LanguageDetector)
+  .init({
+    resources,
+    fallbackLng: 'en',
+    interpolation: {
+      escapeValue: false,
+    },
+  });
+
+export default i18n;
