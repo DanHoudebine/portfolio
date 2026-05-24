@@ -145,10 +145,10 @@ export default function Hero3D() {
       resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
     };
 
-    // ─── Title 3D Text (using box geometry blocks to form "YLÉNIA") ───
+    // ─── Title 3D Text (abstract block composition) ───
     const titleGroup = new THREE.Group();
-    const letterColors = ['#ff7f00', '#ffa726', '#e06c00', '#ff7f00', '#ffa726', '#e06c00']; // DH palette
-    const letters = 'YLÉNIA';
+    const letterColors = ['#ff7f00', '#ffa726', '#e06c00', '#ff7f00', '#ffa726', '#e06c00'];
+    const letters = 'DANHOU'; // 6 blocks for abstract monogram composition
     const letterSpacing = 0.45;
     const startX = -((letters.length - 1) * letterSpacing) / 2;
 
@@ -479,6 +479,50 @@ export default function Hero3D() {
           zIndex: 1,
         }}
       />
+
+      {/* Center Title Overlay - fades on scroll */}
+      <div
+        className="absolute inset-0 z-5 flex flex-col items-center justify-center pointer-events-none"
+        style={{
+          opacity: 1,
+          transition: 'opacity 0.3s ease',
+        }}
+        ref={titleOverlayRef}
+      >
+        <div
+          className="font-heading font-bold text-white text-center"
+          style={{
+            fontSize: 'clamp(3rem, 8vw, 7rem)',
+            letterSpacing: '0.15em',
+            lineHeight: 1,
+            textShadow: '0 0 40px rgba(255, 127, 0, 0.3)',
+          }}
+        >
+          DAN
+        </div>
+        <div
+          className="font-heading font-bold text-center"
+          style={{
+            fontSize: 'clamp(3rem, 8vw, 7rem)',
+            letterSpacing: '0.15em',
+            lineHeight: 1,
+            color: '#ff7f00',
+            textShadow: '0 0 40px rgba(255, 127, 0, 0.5)',
+          }}
+        >
+          HOUDEBINE
+        </div>
+        <div
+          className="font-mono text-center mt-4"
+          style={{
+            fontSize: '13px',
+            color: '#d2d2d2',
+            letterSpacing: '0.3em',
+          }}
+        >
+          3D ENVIRONMENT ARTIST
+        </div>
+      </div>
 
       {/* HUD Overlay */}
       <div
