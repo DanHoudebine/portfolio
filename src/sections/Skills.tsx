@@ -129,7 +129,7 @@ export default function Skills() {
       className="relative overflow-hidden"
       style={{
         padding: '120px 4vw',
-        background: '#081530',
+        background: '#0f0f14',
       }}
     >
       {/* Background Particles Canvas */}
@@ -176,7 +176,7 @@ export default function Skills() {
 
               ctx.beginPath();
               ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-              ctx.fillStyle = `rgba(255, 127, 0, ${p.opacity})`;
+              ctx.fillStyle = `rgba(232, 84, 26, ${p.opacity})`;
               ctx.fill();
             });
             animId = requestAnimationFrame(animate);
@@ -237,14 +237,14 @@ export default function Skills() {
                   style={{
                     fontSize: '14px',
                     padding: '10px 24px',
-                    border: `1px solid ${activeCategory === cat ? '#ff7f00' : 'rgba(255,255,255,0.2)'}`,
-                    background: activeCategory === cat ? '#ff7f00' : 'transparent',
+                    border: `1px solid ${activeCategory === cat ? '#e8541a' : 'rgba(255,255,255,0.2)'}`,
+                    background: activeCategory === cat ? '#e8541a' : 'transparent',
                     color: activeCategory === cat ? '#000b1f' : '#d2d2d2',
                   }}
                   onMouseEnter={(e) => {
                     if (activeCategory !== cat) {
-                      e.currentTarget.style.borderColor = '#ff7f00';
-                      e.currentTarget.style.color = '#ff7f00';
+                      e.currentTarget.style.borderColor = '#e8541a';
+                      e.currentTarget.style.color = '#e8541a';
                     }
                   }}
                   onMouseLeave={(e) => {
@@ -295,7 +295,7 @@ export default function Skills() {
                             cy="70"
                             r={radius}
                             fill="none"
-                            stroke="#ff7f00"
+                            stroke="#e8541a"
                             strokeWidth="3"
                             strokeLinecap="round"
                             strokeDasharray={circumference}
@@ -313,7 +313,7 @@ export default function Skills() {
                           </span>
                           <span
                             className="font-mono mt-1"
-                            style={{ fontSize: '18px', color: '#ffd700' }}
+                            style={{ fontSize: '18px', color: '#ff7b3f' }}
                           >
                             {Math.round(skill.level * 100)}%
                           </span>
@@ -353,7 +353,7 @@ export default function Skills() {
                         ref={(el) => { barsRef.current[i] = el; }}
                         className="h-full flex items-center justify-end"
                         style={{
-                          background: 'linear-gradient(90deg, #ff7f00, #ffd700)',
+                          background: 'linear-gradient(90deg, #e8541a, #ff7b3f)',
                           width: animated ? `${skill.level * 100}%` : '0%',
                           transition: 'none',
                         }}
@@ -381,7 +381,7 @@ export default function Skills() {
                         width: '8px',
                         height: '8px',
                         borderRadius: '50%',
-                        background: '#ff7f00',
+                        background: '#e8541a',
                         flexShrink: 0,
                       }}
                     />

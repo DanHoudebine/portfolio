@@ -66,7 +66,7 @@ export default function Header() {
         </div>
         <div
           className="font-body font-normal tracking-[0.2em] mt-1"
-          style={{ fontSize: '11px', color: '#d2d2d2' }}
+          style={{ fontSize: '11px', color: '#7a8291' }}
         >
           3D ENVIRONMENT ARTIST
         </div>

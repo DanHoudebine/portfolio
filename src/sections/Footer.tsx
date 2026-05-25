@@ -20,7 +20,7 @@ export default function Footer() {
     <footer
       style={{
         padding: '60px 4vw 40px',
-        background: '#081530',
+        background: '#0f0f14',
         borderTop: '1px solid rgba(255,255,255,0.08)',
       }}
     >
@@ -49,7 +49,7 @@ export default function Footer() {
               <button
                 key={section}
                 onClick={() => scrollTo(section)}
-                className="font-body transition-colors duration-300 hover:text-[#ff7f00]"
+                className="font-body transition-colors duration-300 hover:text-[#e8541a]"
                 style={{ fontSize: '14px', color: '#d2d2d2' }}
               >
                 {t(`nav.${section}`)}
