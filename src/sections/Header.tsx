@@ -61,12 +61,12 @@ export default function Header() {
     >
       {/* Logo */}
       <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-left">
-        <div className="font-heading font-bold text-white tracking-[0.15em]" style={{ fontSize: '20px' }}>
+        <div className="font-heading font-bold text-white tracking-[0.15em]" style={{ fontSize: '17px' }}>
           DAN HOUDEBINE
         </div>
         <div
           className="font-body font-normal tracking-[0.2em] mt-1"
-          style={{ fontSize: '11px', color: '#8fa3bb' }}
+          style={{ fontSize: '11px', color: '#d2d2d2' }}
         >
           3D ENVIRONMENT ARTIST
         </div>

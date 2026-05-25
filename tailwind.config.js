@@ -5,15 +5,6 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        /* ── Design tokens du portfolio Dan Houdebine ── */
-        'void-black':      '#060d1a',
-        'deep-navy':       '#0c1c36',
-        'midnight-indigo': '#111d32',
-        'blaze-orange':    '#c96f2e',
-        'accent-hover':    '#e08840',
-        'solar-gold':      '#E8B830',
-        'pure-white':      '#f0f4fa',
-        'mist':            '#8fa3bb',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -90,4 +81,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-};
+}
