@@ -1,622 +1,302 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useTranslation } from 'react-i18next';
-
-gsap.registerPlugin(ScrollTrigger);
-
-// ─── Camera Path Positions ───
-const cameraPositions = new Float32Array([
-  // Phase 0: Title (0-5%)
-  0, 0, 4,
-  0, 0, 4,
-  0, 0, 4,
-  // Phase 1: Fly Through (5-20%)
-  0, 0, 3.5,
-  0, 0.2, 3.0,
-  0, 0.3, 2.5,
-  0, 0.4, 2.2,
-  0, 0.5, 2.0,
-  // Phase 2: Lateral Gallery (20-45%)
-  -2.5, 0.3, 2.0,
-  -1.5, -0.2, 2.2,
-  -0.5, 0.5, 2.0,
-  0.5, -0.3, 2.2,
-  1.5, 0.4, 2.0,
-  2.5, 0, 2.2,
-  // Phase 3: Dust Cloud (45-65%)
-  1.5, 0.5, 3.0,
-  0.5, -0.3, 3.5,
-  -0.5, 0.4, 4.0,
-  -1.0, -0.2, 4.2,
-  -0.5, 0.3, 4.0,
-  // Phase 4: Starburst (65-85%)
-  0, 0, 4.0,
-  2.0, 1.0, 3.5,
-  2.5, 0.5, 3.0,
-  2.0, -0.5, 3.5,
-  0, 0, 4.0,
-  // Phase 5: Color Sweep (85-95%)
-  0, 0, 3.5,
-  0, 0, 3.0,
-  0, 0, 2.5,
-  // Phase 6: Final Push (95-100%)
-  0, 0, 2.0,
-  0, 0, 1.0,
-  0, 0, 0.5,
-]);
-
-function getCameraPosition(progress: number): THREE.Vector3 {
-  const length = cameraPositions.length / 3;
-  const index = Math.floor(progress * (length - 1));
-  const nextIndex = Math.min(index + 1, length - 1);
-  const localProgress = progress * (length - 1) - index;
-  const result = new THREE.Vector3();
-  result.x = cameraPositions[index * 3] + (cameraPositions[nextIndex * 3] - cameraPositions[index * 3]) * localProgress;
-  result.y = cameraPositions[index * 3 + 1] + (cameraPositions[nextIndex * 3 + 1] - cameraPositions[index * 3 + 1]) * localProgress;
-  result.z = cameraPositions[index * 3 + 2] + (cameraPositions[nextIndex * 3 + 2] - cameraPositions[index * 3 + 2]) * localProgress;
-  return result;
-}
-
-// ─── Dust Particle Sprite (procedural) ───
-function createParticleTexture(): THREE.CanvasTexture {
-  const canvas = document.createElement('canvas');
-  canvas.width = 256;
-  canvas.height = 256;
-  const ctx = canvas.getContext('2d')!;
-  const gradient = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
-  gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-  gradient.addColorStop(0.3, 'rgba(255, 255, 255, 0.6)');
-  gradient.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
-  gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, 256, 256);
-  return new THREE.CanvasTexture(canvas);
-}
 
 export default function Hero3D() {
   const { t } = useTranslation();
-  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const phaseLabelRef = useRef<HTMLSpanElement>(null);
-  const bottomTextRef = useRef<HTMLParagraphElement>(null);
-  const progressBarRef = useRef<HTMLDivElement>(null);
-  const titleOverlayRef = useRef<HTMLDivElement>(null);
-  const sceneRef = useRef<{
-    renderer: THREE.WebGLRenderer;
-    scene: THREE.Scene;
-    camera: THREE.PerspectiveCamera;
-    uniforms: Record<string, { value: unknown }>;
-    particles: THREE.Points;
-    titleGroup: THREE.Group;
-    cubesGroup: THREE.Group;
-    starGroup: THREE.Group;
-    grid: THREE.GridHelper;
-    animId: number;
-  } | null>(null);
-
-  const updateHUD = useCallback((progress: number) => {
-    const labels = t('hero.labels', { returnObjects: true }) as string[];
-    const descriptions = t('hero.descriptions', { returnObjects: true }) as string[];
-
-    let phaseIndex = 0;
-    if (progress < 0.05) phaseIndex = 0;
-    else if (progress < 0.20) phaseIndex = 1;
-    else if (progress < 0.45) phaseIndex = 2;
-    else if (progress < 0.65) phaseIndex = 3;
-    else if (progress < 0.85) phaseIndex = 4;
-    else phaseIndex = 5;
-
-    if (phaseLabelRef.current && labels[phaseIndex]) {
-      phaseLabelRef.current.textContent = labels[phaseIndex];
-    }
-    if (bottomTextRef.current && descriptions[phaseIndex]) {
-      bottomTextRef.current.textContent = descriptions[phaseIndex];
-    }
-    if (progressBarRef.current) {
-      progressBarRef.current.style.width = `${progress * 100}%`;
-    }
-    if (titleOverlayRef.current) {
-      const titleOpacity = Math.max(0, 1 - progress * 30);
-      titleOverlayRef.current.style.opacity = String(titleOpacity);
-    }
-  }, [t]);
+  const lineRef = useRef<HTMLDivElement>(null);
+  const tagRef = useRef<HTMLDivElement>(null);
+  const name1Ref = useRef<HTMLDivElement>(null);
+  const name2Ref = useRef<HTMLDivElement>(null);
+  const descRef = useRef<HTMLParagraphElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const container = containerRef.current;
     const canvas = canvasRef.current;
-    if (!container || !canvas) return;
+    if (!canvas) return;
 
-    // ─── Scene Setup ───
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+    renderer.setSize(W, H);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setClearColor(new THREE.Color('#030810'));
+    renderer.setClearColor(new THREE.Color('#090909'));
 
-    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.01, 100);
-    camera.position.set(0, 0, 4);
+    const camera = new THREE.PerspectiveCamera(60, W / H, 0.1, 200);
+    camera.position.set(0, 0, 10);
 
     const scene = new THREE.Scene();
 
-    const uniforms = {
-      time: { value: 0 },
-      progress: { value: 0 },
-      resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-    };
-
-    // ─── Title 3D Text (abstract block composition) ───
-    const titleGroup = new THREE.Group();
-    const letterColors = ['#ff7f00', '#ffa726', '#e06c00', '#ff7f00', '#ffa726', '#e06c00'];
-    const letters = 'DANHOU'; // 6 blocks for abstract monogram composition
-    const letterSpacing = 0.45;
-    const startX = -((letters.length - 1) * letterSpacing) / 2;
-
-    for (let i = 0; i < letters.length; i++) {
-      const geo = new THREE.BoxGeometry(0.25, 0.35, 0.08);
-      const mat = new THREE.MeshBasicMaterial({
-        color: new THREE.Color(letterColors[i]),
-        transparent: true,
-        opacity: 1,
-      });
-      const mesh = new THREE.Mesh(geo, mat);
-      mesh.position.set(startX + i * letterSpacing, 0, 0);
-      mesh.userData = {
-        originalX: startX + i * letterSpacing,
-        letterIndex: i,
-        splitDirection: i < letters.length / 2 ? 1 : -1,
-      };
-      titleGroup.add(mesh);
+    // ── Fine silver dust (deep background) ──────────────────────────────────
+    const DUST = 3000;
+    const dPos = new Float32Array(DUST * 3);
+    const dSize = new Float32Array(DUST);
+    const dAlpha = new Float32Array(DUST);
+    for (let i = 0; i < DUST; i++) {
+      dPos[i * 3]     = (Math.random() - 0.5) * 60;
+      dPos[i * 3 + 1] = (Math.random() - 0.5) * 60;
+      dPos[i * 3 + 2] = (Math.random() - 0.5) * 40 - 10;
+      dSize[i]  = Math.random() * 0.25 + 0.08;
+      dAlpha[i] = Math.random() * 0.35 + 0.05;
     }
-    titleGroup.position.set(0, 0, -1);
-    scene.add(titleGroup);
+    const dustGeo = new THREE.BufferGeometry();
+    dustGeo.setAttribute('position', new THREE.BufferAttribute(dPos, 3));
+    dustGeo.setAttribute('aSize',    new THREE.BufferAttribute(dSize, 1));
+    dustGeo.setAttribute('aAlpha',   new THREE.BufferAttribute(dAlpha, 1));
 
-    // ─── Wireframe Grid ───
-    const grid = new THREE.GridHelper(20, 40, new THREE.Color('#ff7f00'), new THREE.Color('#152240'));
-    grid.position.y = -1.5;
-    grid.material = new THREE.LineBasicMaterial({
-      color: new THREE.Color('#ff7f00'),
-      transparent: true,
-      opacity: 0.15,
-    });
-    scene.add(grid);
-
-    // ─── Portfolio Cubes ───
-    const cubesGroup = new THREE.Group();
-    const projectImages = [
-      '/work-ruins.jpg',
-      '/work-cyberpunk.jpg',
-      '/work-nordic.jpg',
-      '/work-desert.jpg',
-      '/work-underwater.jpg',
-      '/work-spacestation.jpg',
-      '/work-forest.jpg',
-      '/work-industrial.jpg',
-    ];
-
-    const textureLoader = new THREE.TextureLoader();
-    projectImages.forEach((img, i) => {
-      const tex = textureLoader.load(img);
-      const geo = new THREE.BoxGeometry(0.6, 0.4, 0.05);
-      const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.9 });
-      const mesh = new THREE.Mesh(geo, mat);
-      const angle = (i / projectImages.length) * Math.PI * 2;
-      const radius = 2.5;
-      mesh.position.set(Math.cos(angle) * radius, (Math.random() - 0.5) * 1.5, Math.sin(angle) * radius - 2);
-      mesh.userData = {
-        originalPos: mesh.position.clone(),
-        angle,
-        radius,
-      };
-      cubesGroup.add(mesh);
-    });
-    scene.add(cubesGroup);
-
-    // ─── Starburst ───
-    const starGroup = new THREE.Group();
-    const starShape = new THREE.Shape();
-    const outerR = 0.8;
-    const innerR = 0.35;
-    const points = 12;
-    const step = Math.PI / points;
-    starShape.moveTo(0, outerR);
-    for (let i = 0; i < points * 2; i++) {
-      const r = i % 2 === 0 ? outerR : innerR;
-      const a = step * i + Math.PI / 2;
-      starShape.lineTo(Math.cos(a) * r, Math.sin(a) * r);
-    }
-    starShape.closePath();
-
-    const starGeo = new THREE.ExtrudeGeometry(starShape, { depth: 0.05, bevelEnabled: false });
-    const starMat = new THREE.MeshBasicMaterial({
-      color: new THREE.Color('#ffd700'),
-      transparent: true,
-      opacity: 0,
-      side: THREE.DoubleSide,
-    });
-    const starMesh = new THREE.Mesh(starGeo, starMat);
-    starMesh.userData = { material: starMat };
-    starGroup.add(starMesh);
-
-    // Ring
-    const ringGeo = new THREE.RingGeometry(1.0, 1.1, 64);
-    const ringMat = new THREE.MeshBasicMaterial({
-      color: new THREE.Color('#ff7f00'),
-      transparent: true,
-      opacity: 0,
-      side: THREE.DoubleSide,
-    });
-    const ringMesh = new THREE.Mesh(ringGeo, ringMat);
-    ringMesh.userData = { material: ringMat };
-    starGroup.add(ringMesh);
-
-    // Center circle
-    const circleGeo = new THREE.CircleGeometry(0.15, 32);
-    const circleMat = new THREE.MeshBasicMaterial({
-      color: new THREE.Color('#C75B12'),
-      transparent: true,
-      opacity: 0,
-    });
-    const circleMesh = new THREE.Mesh(circleGeo, circleMat);
-    circleMesh.position.z = 0.03;
-    circleMesh.userData = { material: circleMat };
-    starGroup.add(circleMesh);
-
-    starGroup.position.set(0, 0, -3);
-    scene.add(starGroup);
-
-    // ─── Dust Particles ───
-    const PARTICLE_COUNT = window.innerWidth < 768 ? 250 : 500;
-    const particleTexture = createParticleTexture();
-    const particleGeo = new THREE.BufferGeometry();
-    const positions = new Float32Array(PARTICLE_COUNT * 3);
-    const opacities = new Float32Array(PARTICLE_COUNT);
-    const sizes = new Float32Array(PARTICLE_COUNT);
-
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 20;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
-      opacities[i] = Math.random() * Math.PI * 2;
-      sizes[i] = Math.random() * 0.5 + 0.5;
-    }
-
-    particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    particleGeo.setAttribute('aOpacity', new THREE.BufferAttribute(opacities, 1));
-    particleGeo.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1));
-
-    const particleUniforms = {
-      map: { value: particleTexture },
-      size: { value: 8.0 },
-      time: { value: 0 },
-      opacity: { value: 0.6 },
-      pixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
-    };
-
-    const particleVertexShader = `
-      uniform float size;
-      uniform float pixelRatio;
-      attribute float aSize;
-      varying float vOpacity;
-      void main() {
-        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-        gl_PointSize = size * pixelRatio * aSize;
-        gl_PointSize *= (80.0 / -mvPosition.z);
-        gl_Position = projectionMatrix * mvPosition;
-        vOpacity = aSize;
-      }
-    `;
-
-    const particleFragmentShader = `
-      uniform sampler2D map;
-      uniform float time;
-      uniform float opacity;
-      varying float vOpacity;
-      void main() {
-        vec4 color = texture2D(map, gl_PointCoord);
-        float blink = sin(time * vOpacity * 2.0) * 0.5 + 0.5;
-        color.a *= opacity * mix(0.1, 1.0, blink);
-        color.rgb = vec3(1.0, 0.5, 0.0);
-        if (color.a < 0.01) discard;
-        gl_FragColor = color;
-      }
-    `;
-
-    const particleMaterial = new THREE.ShaderMaterial({
-      uniforms: particleUniforms,
-      vertexShader: particleVertexShader,
-      fragmentShader: particleFragmentShader,
+    const dustMat = new THREE.ShaderMaterial({
+      uniforms: { uTime: { value: 0 } },
+      vertexShader: `
+        attribute float aSize;
+        attribute float aAlpha;
+        varying float vA;
+        void main() {
+          vA = aAlpha;
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          gl_PointSize = aSize * 220.0 / -mv.z;
+          gl_Position  = projectionMatrix * mv;
+        }
+      `,
+      fragmentShader: `
+        varying float vA;
+        void main() {
+          float d = length(gl_PointCoord - 0.5) * 2.0;
+          if (d > 1.0) discard;
+          gl_FragColor = vec4(0.82, 0.84, 0.9, (1.0 - d * d) * vA);
+        }
+      `,
       transparent: true,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
     });
+    const dust = new THREE.Points(dustGeo, dustMat);
+    scene.add(dust);
 
-    const particles = new THREE.Points(particleGeo, particleMaterial);
-    scene.add(particles);
+    // ── Orange glow accents (mid-ground) ────────────────────────────────────
+    const GLOW = 260;
+    const gPos  = new Float32Array(GLOW * 3);
+    const gSize = new Float32Array(GLOW);
+    for (let i = 0; i < GLOW; i++) {
+      gPos[i * 3]     = (Math.random() - 0.5) * 36;
+      gPos[i * 3 + 1] = (Math.random() - 0.5) * 36;
+      gPos[i * 3 + 2] = (Math.random() - 0.5) * 18;
+      gSize[i] = Math.random() * 2.2 + 0.6;
+    }
+    const glowGeo = new THREE.BufferGeometry();
+    glowGeo.setAttribute('position', new THREE.BufferAttribute(gPos, 3));
+    glowGeo.setAttribute('aSize',    new THREE.BufferAttribute(gSize, 1));
 
-    // ─── GSAP Master Timeline ───
-    const masterTimeline = gsap.timeline({ paused: true });
-
-    // Phase 1: Title curtain opening (0-5%)
-    masterTimeline.to(titleGroup.position, { z: -1, duration: 5 }, 0);
-    masterTimeline.to(grid.material, { opacity: 0, duration: 3 }, 0);
-
-    // Phase 2: Title fly-through (5-20%)
-    titleGroup.children.forEach((child) => {
-      const mesh = child as THREE.Mesh;
-      const dir = mesh.userData.splitDirection;
-      const speed = 1 + Math.random() * 4;
-      masterTimeline.to(mesh.position, {
-        x: mesh.userData.originalX + dir * speed,
-        duration: 15,
-        ease: 'power2.in',
-      }, 5);
+    const glowMat = new THREE.ShaderMaterial({
+      uniforms: { uTime: { value: 0 } },
+      vertexShader: `
+        attribute float aSize;
+        uniform float uTime;
+        varying float vS;
+        void main() {
+          vS = aSize;
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          gl_PointSize = aSize * 200.0 / -mv.z;
+          gl_Position  = projectionMatrix * mv;
+        }
+      `,
+      fragmentShader: `
+        varying float vS;
+        void main() {
+          vec2 uv = gl_PointCoord - 0.5;
+          float d = length(uv) * 2.0;
+          if (d > 1.0) discard;
+          float core = 1.0 - smoothstep(0.0, 0.25, d);
+          float halo = pow(1.0 - d, 3.0) * (vS * 0.15);
+          float a = halo + core * 0.12;
+          gl_FragColor = vec4(0.91, 0.33, 0.10, a);
+        }
+      `,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
     });
-    masterTimeline.to(titleGroup.children.map((c) => (c as THREE.Mesh).material), {
-      opacity: 0,
-      duration: 10,
-    }, 10);
+    const glowPoints = new THREE.Points(glowGeo, glowMat);
+    scene.add(glowPoints);
 
-    // Phase 3: Lateral gallery - cubes rotate to face camera (20-45%)
-    cubesGroup.children.forEach((child, i) => {
-      const mesh = child as THREE.Mesh;
-      masterTimeline.to(mesh.rotation, {
-        y: Math.PI * 2,
-        duration: 25,
-        ease: 'none',
-      }, 20 + i * 1);
+    // ── Thin horizontal accent line ──────────────────────────────────────────
+    const lineMat = new THREE.MeshBasicMaterial({
+      color: new THREE.Color('#e8541a'),
+      transparent: true,
+      opacity: 0.12,
     });
+    const lineMesh = new THREE.Mesh(new THREE.PlaneGeometry(14, 0.003), lineMat);
+    lineMesh.position.set(0, -0.8, 0);
+    scene.add(lineMesh);
 
-    // Phase 4: Dust cloud (45-65%)
-    masterTimeline.to(particleMaterial.uniforms.opacity, { value: 0.9, duration: 20 }, 45);
-
-    // Phase 5: Starburst (65-85%)
-    masterTimeline.to(starMesh.userData.material, { opacity: 0.9, duration: 10 }, 65);
-    masterTimeline.to(ringMesh.userData.material, { opacity: 0.6, duration: 10 }, 68);
-    masterTimeline.to(circleMesh.userData.material, { opacity: 1, duration: 10 }, 70);
-    masterTimeline.to(starGroup.rotation, { z: Math.PI * 2, duration: 20 }, 65);
-
-    // Phase 6: Color sweep (85-95%)
-    masterTimeline.to(starMesh.userData.material, { opacity: 0, duration: 5 }, 85);
-    masterTimeline.to(ringMesh.userData.material, { opacity: 0, duration: 5 }, 85);
-    masterTimeline.to(circleMesh.userData.material, { opacity: 0, duration: 5 }, 85);
-    masterTimeline.to(particleMaterial.uniforms.opacity, { value: 0.3, duration: 10 }, 85);
-
-    // Phase 7: Final push (95-100%)
-    masterTimeline.to({}, { duration: 5 }, 95);
-
-    // ─── ScrollTrigger ───
-    const st = ScrollTrigger.create({
-      trigger: container,
-      pin: true,
-      start: 'top top',
-      end: '+=800%',
-      scrub: 1,
-      onUpdate: (self) => {
-        masterTimeline.progress(self.progress);
-        updateHUD(self.progress);
-      },
-    });
-
-    // ─── Render Loop ───
+    // ── Render loop ──────────────────────────────────────────────────────────
     let animId = 0;
-    const render = (time: number) => {
-      animId = requestAnimationFrame(render);
-      const t_sec = time * 0.001;
+    const animate = (time: number) => {
+      animId = requestAnimationFrame(animate);
+      const t = time * 0.001;
+      dustMat.uniforms.uTime.value = t;
+      glowMat.uniforms.uTime.value = t;
 
-      uniforms.time.value = t_sec * 0.1;
-      uniforms.progress.value = masterTimeline.progress();
-      particleUniforms.time.value = t_sec;
+      dust.rotation.y =  t * 0.018;
+      dust.rotation.x =  t * 0.007;
+      glowPoints.rotation.y = -t * 0.012;
+      glowPoints.rotation.x =  t * 0.005;
 
-      // Rotate particles slowly
-      particles.rotation.y += 0.0003;
-
-      // Animate cubes floating
-      cubesGroup.children.forEach((child, i) => {
-        const mesh = child as THREE.Mesh;
-        mesh.position.y = mesh.userData.originalPos.y + Math.sin(t_sec * 0.5 + i) * 0.1;
-      });
-
-      // Camera position from path
-      const progress = uniforms.progress.value as number;
-      camera.position.copy(getCameraPosition(progress));
+      camera.position.x = Math.sin(t * 0.11) * 0.35;
+      camera.position.y = Math.cos(t * 0.07) * 0.18;
       camera.lookAt(0, 0, 0);
-
-      // Add slight camera sway
-      camera.position.y += Math.sin(t_sec * 0.3) * 0.05;
 
       renderer.render(scene, camera);
     };
-    animId = requestAnimationFrame(render);
+    animId = requestAnimationFrame(animate);
 
-    // ─── Store refs ───
-    sceneRef.current = {
-      renderer,
-      scene,
-      camera,
-      uniforms,
-      particles,
-      titleGroup,
-      cubesGroup,
-      starGroup,
-      grid,
-      animId,
-    };
-
-    // ─── Resize ───
-    const handleResize = () => {
+    const onResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
-      uniforms.resolution.value.set(window.innerWidth, window.innerHeight);
-      particleUniforms.pixelRatio.value = Math.min(window.devicePixelRatio, 2);
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', onResize);
+
+    // ── Entrance timeline ────────────────────────────────────────────────────
+    const tl = gsap.timeline({ delay: 0.25 });
+    tl.fromTo(lineRef.current,
+      { scaleX: 0 },
+      { scaleX: 1, duration: 1.1, ease: 'power3.inOut' });
+    tl.fromTo(tagRef.current,
+      { opacity: 0, y: 10 },
+      { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, '-=0.35');
+    tl.fromTo(name1Ref.current,
+      { opacity: 0, y: 70, skewX: -6 },
+      { opacity: 1, y: 0, skewX: 0, duration: 0.9, ease: 'power3.out' }, '-=0.25');
+    tl.fromTo(name2Ref.current,
+      { opacity: 0, y: 70, skewX: -6 },
+      { opacity: 1, y: 0, skewX: 0, duration: 0.9, ease: 'power3.out' }, '-=0.65');
+    tl.fromTo(descRef.current,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.8, ease: 'power2.out' }, '-=0.25');
+    tl.fromTo(scrollRef.current,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.6 }, '-=0.1');
 
     return () => {
-      window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animId);
-      st.kill();
-      masterTimeline.kill();
+      window.removeEventListener('resize', onResize);
+      dustMat.dispose(); dustGeo.dispose();
+      glowMat.dispose(); glowGeo.dispose();
+      lineMat.dispose();
       renderer.dispose();
     };
-  }, [updateHUD]);
+  }, []);
 
   return (
-    <section
-      ref={containerRef}
-      className="hero-section relative w-full"
-      style={{ height: '100vh' }}
-    >
+    <section className="relative w-full overflow-hidden" style={{ height: '100vh' }}>
+      {/* Three.js canvas */}
       <canvas
         ref={canvasRef}
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 1 }}
+      />
+
+      {/* Radial vignette */}
+      <div
         style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          zIndex: 1,
+          position: 'absolute', inset: 0, zIndex: 2, pointerEvents: 'none',
+          background: 'radial-gradient(ellipse at center, transparent 25%, rgba(9,9,9,0.65) 100%)',
         }}
       />
 
-      {/* Center Title Overlay - fades on scroll */}
+      {/* Center text overlay */}
       <div
-        className="absolute inset-0 z-5 flex flex-col items-center justify-center pointer-events-none"
-        style={{
-          opacity: 1,
-          transition: 'opacity 0.3s ease',
-        }}
-        ref={titleOverlayRef}
+        className="absolute inset-0 flex flex-col items-center justify-center z-10 px-8"
+        style={{ pointerEvents: 'none' }}
       >
+        {/* Accent line */}
         <div
+          ref={lineRef}
+          style={{
+            width: '56px', height: '1px',
+            background: '#e8541a',
+            marginBottom: '22px',
+            transformOrigin: 'left',
+            transform: 'scaleX(0)',
+          }}
+        />
+
+        {/* Tag */}
+        <div
+          ref={tagRef}
+          className="font-mono uppercase"
+          style={{
+            fontSize: '11px', letterSpacing: '0.3em',
+            color: '#e8541a', marginBottom: '22px', opacity: 0,
+          }}
+        >
+          3D Environment Artist · Paris, France
+        </div>
+
+        {/* Name line 1 */}
+        <div
+          ref={name1Ref}
           className="font-heading font-bold text-white text-center"
           style={{
-            fontSize: 'clamp(3rem, 8vw, 7rem)',
-            letterSpacing: '0.15em',
-            lineHeight: 1,
-            textShadow: '0 0 40px rgba(255, 127, 0, 0.3)',
+            fontSize: 'clamp(3.5rem, 11vw, 9rem)',
+            lineHeight: 0.92,
+            letterSpacing: '-0.02em',
+            opacity: 0,
           }}
         >
           DAN
         </div>
+
+        {/* Name line 2 */}
         <div
+          ref={name2Ref}
           className="font-heading font-bold text-center"
           style={{
-            fontSize: 'clamp(3rem, 8vw, 7rem)',
-            letterSpacing: '0.15em',
-            lineHeight: 1,
-            color: '#ff7f00',
-            textShadow: '0 0 40px rgba(255, 127, 0, 0.5)',
+            fontSize: 'clamp(3.5rem, 11vw, 9rem)',
+            lineHeight: 0.92,
+            letterSpacing: '-0.02em',
+            color: '#e8541a',
+            opacity: 0,
+            marginBottom: '36px',
           }}
         >
           HOUDEBINE
         </div>
-        <div
-          className="font-mono text-center mt-4"
-          style={{
-            fontSize: '13px',
-            color: '#d2d2d2',
-            letterSpacing: '0.3em',
-          }}
-        >
-          3D ENVIRONMENT ARTIST
-        </div>
-      </div>
 
-      {/* HUD Overlay */}
-      <div
-        className="absolute inset-x-0 top-0 z-10 flex items-start justify-between px-[4vw] pt-8 pointer-events-none"
-        style={{ paddingTop: '100px' }}
-      >
-        {/* Phase Label */}
-        <span
-          ref={phaseLabelRef}
-          className="font-mono text-white uppercase tracking-[0.08em]"
-          style={{ fontSize: '13px' }}
-        >
-          INTRO
-        </span>
-
-        {/* Progress Bar */}
-        <div
-          className="mx-4 flex-1 max-w-[120px] mt-2"
-          style={{
-            height: '2px',
-            background: 'rgba(255,255,255,0.2)',
-          }}
-        >
-          <div
-            ref={progressBarRef}
-            style={{
-              height: '100%',
-              width: '0%',
-              background: '#ffffff',
-              transition: 'width 0.1s linear',
-            }}
-          />
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="flex items-center gap-2">
-          <span className="font-mono text-white uppercase" style={{ fontSize: '11px', letterSpacing: '0.1em' }}>
-            {t('hero.scroll')}
-          </span>
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#ffffff" strokeWidth="1.5">
-            <path d="M6 2v8M3 7l3 3 3-3" />
-          </svg>
-        </div>
-      </div>
-
-      {/* Bottom Text */}
-      <div
-        className="absolute z-10 pointer-events-none"
-        style={{ bottom: '80px', left: '4vw', maxWidth: '400px' }}
-      >
+        {/* Description */}
         <p
-          ref={bottomTextRef}
-          className="font-body"
+          ref={descRef}
+          className="font-body text-center"
           style={{
-            fontSize: '14px',
-            lineHeight: 1.6,
-            color: '#d2d2d2',
-            transition: 'opacity 0.3s ease',
+            fontSize: '15px', lineHeight: 1.75,
+            color: 'rgba(210, 210, 210, 0.6)',
+            maxWidth: '400px', opacity: 0,
           }}
         >
           {t('hero.descriptions.0')}
         </p>
       </div>
 
-      {/* Bottom Logo */}
+      {/* Scroll indicator */}
       <div
-        className="absolute z-10 pointer-events-none"
-        style={{ bottom: '80px', right: '4vw' }}
+        ref={scrollRef}
+        className="absolute bottom-8 left-1/2 z-10 flex flex-col items-center gap-3"
+        style={{ transform: 'translateX(-50%)', opacity: 0 }}
       >
         <span
-          className="font-heading font-bold text-white uppercase"
-          style={{ fontSize: '12px', letterSpacing: '0.2em', opacity: 0.5 }}
+          className="font-mono uppercase"
+          style={{ fontSize: '10px', letterSpacing: '0.25em', color: 'rgba(210,210,210,0.4)' }}
         >
-          DAN HOUDEBINE
+          {t('hero.scroll')}
         </span>
-      </div>
-
-      {/* Footer Bar */}
-      <div
-        className="absolute bottom-0 left-0 right-0 z-10 flex justify-between items-center px-[4vw] py-4"
-        style={{
-          backdropFilter: 'blur(4px)',
-          background: 'rgba(0, 11, 31, 0.3)',
-        }}
-      >
-        <span className="font-mono" style={{ fontSize: '11px', color: 'rgba(255,255,255,0.4)' }}>
-          © 2026 DAN HOUDEBINE
-        </span>
-        <span className="font-mono" style={{ fontSize: '11px', color: 'rgba(255,255,255,0.4)' }}>
-          PARIS, FRANCE
-        </span>
-        <span className="font-mono hidden sm:inline" style={{ fontSize: '11px', color: 'rgba(255,255,255,0.4)' }}>
-          ENVIRONMENTS & WORLDS
-        </span>
+        <div
+          style={{
+            width: '1px', height: '44px',
+            background: 'linear-gradient(to bottom, #e8541a, transparent)',
+          }}
+        />
       </div>
     </section>
   );

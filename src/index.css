@@ -4,13 +4,12 @@
 
 @layer base {
   :root {
-    --void-black: #000b1f;
-    --deep-navy: #081530;
-    --blaze-orange: #ff7f00;
-    --solar-gold: #ffa726;
-    --midnight-indigo: #152240;
-    --pure-white: #ffffff;
-    --mist: #d2d2d2;
+    --void-black: #080808;
+    --surface: #0f0f14;
+    --blaze-orange: #e8541a;
+    --orange-light: #ff7b3f;
+    --pure-white: #f0ece4;
+    --mist: #7a8291;
     --radius: 0px;
   }
 
@@ -91,7 +90,7 @@
   }
 
   .nav-link.active {
-    color: var(--pure-white);
+    color: var(--blaze-orange);
     text-decoration: underline;
     text-decoration-color: var(--blaze-orange);
     text-underline-offset: 6px;

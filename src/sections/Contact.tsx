@@ -68,7 +68,7 @@ export default function Contact() {
       ref={sectionRef}
       style={{
         padding: '120px 4vw',
-        background: '#000b1f',
+        background: '#0f0f14',
       }}
     >
       <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-[55%_45%] gap-16">
@@ -109,7 +109,7 @@ export default function Contact() {
             >
               Danhoudebine@gmail.com
               <span
-                className="absolute left-0 bottom-0 h-[1px] bg-[#ff7f00] transition-all duration-300 group-hover:w-[120%] group-hover:bg-[#ffd700]"
+                className="absolute left-0 bottom-0 h-[1px] bg-[#e8541a] transition-all duration-300 group-hover:w-[120%] group-hover:bg-[#ff7b3f]"
                 style={{ width: '100%', bottom: '-4px' }}
               />
             </a>
@@ -137,8 +137,8 @@ export default function Contact() {
                   color: '#d2d2d2',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = '#ff7f00';
-                  e.currentTarget.style.color = '#ff7f00';
+                  e.currentTarget.style.borderColor = '#e8541a';
+                  e.currentTarget.style.color = '#e8541a';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)';
@@ -164,7 +164,7 @@ export default function Contact() {
             <div className="h-full flex items-center justify-center">
               <p
                 className="font-heading font-semibold"
-                style={{ fontSize: '24px', color: '#ff7f00' }}
+                style={{ fontSize: '24px', color: '#e8541a' }}
               >
                 {t('contact.form.success')}
               </p>
@@ -175,7 +175,7 @@ export default function Contact() {
                 type="text"
                 placeholder={t('contact.form.name')}
                 required
-                className="bg-transparent border-b font-body text-white placeholder-white/40 focus:outline-none transition-colors duration-300 focus:border-[#ff7f00]"
+                className="bg-transparent border-b font-body text-white placeholder-white/40 focus:outline-none transition-colors duration-300 focus:border-[#e8541a]"
                 style={{
                   fontSize: '16px',
                   padding: '16px 0',
@@ -189,7 +189,7 @@ export default function Contact() {
                 type="email"
                 placeholder={t('contact.form.email')}
                 required
-                className="bg-transparent border-b font-body text-white placeholder-white/40 focus:outline-none transition-colors duration-300 focus:border-[#ff7f00]"
+                className="bg-transparent border-b font-body text-white placeholder-white/40 focus:outline-none transition-colors duration-300 focus:border-[#e8541a]"
                 style={{
                   fontSize: '16px',
                   padding: '16px 0',
@@ -203,7 +203,7 @@ export default function Contact() {
                 type="text"
                 placeholder={t('contact.form.subject')}
                 required
-                className="bg-transparent border-b font-body text-white placeholder-white/40 focus:outline-none transition-colors duration-300 focus:border-[#ff7f00]"
+                className="bg-transparent border-b font-body text-white placeholder-white/40 focus:outline-none transition-colors duration-300 focus:border-[#e8541a]"
                 style={{
                   fontSize: '16px',
                   padding: '16px 0',
@@ -217,7 +217,7 @@ export default function Contact() {
                 placeholder={t('contact.form.message')}
                 required
                 rows={5}
-                className="bg-transparent border-b font-body text-white placeholder-white/40 focus:outline-none transition-colors duration-300 focus:border-[#ff7f00] resize-none"
+                className="bg-transparent border-b font-body text-white placeholder-white/40 focus:outline-none transition-colors duration-300 focus:border-[#e8541a] resize-none"
                 style={{
                   fontSize: '16px',
                   padding: '16px 0',
@@ -230,11 +230,11 @@ export default function Contact() {
               />
               <button
                 type="submit"
-                className="font-body font-semibold uppercase tracking-[0.1em] transition-all duration-300 hover:bg-[#ffd700]"
+                className="font-body font-semibold uppercase tracking-[0.1em] transition-all duration-300 hover:bg-[#ff7b3f]"
                 style={{
                   fontSize: '15px',
                   padding: '18px',
-                  background: '#ff7f00',
+                  background: '#e8541a',
                   color: '#000b1f',
                   border: 'none',
                   marginTop: '8px',

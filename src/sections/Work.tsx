@@ -6,16 +6,16 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const projectImages = [
-  '/work-ruins.jpg',
-  '/work-cyberpunk.jpg',
-  '/work-nordic.jpg',
-  '/work-desert.jpg',
-  '/work-underwater.jpg',
-  '/work-spacestation.jpg',
-  '/work-forest.jpg',
-  '/work-industrial.jpg',
-  '/work-crystal.jpg',
-  '/work-floating.jpg',
+  `${import.meta.env.BASE_URL}work-ruins.jpg`,
+  `${import.meta.env.BASE_URL}work-cyberpunk.jpg`,
+  `${import.meta.env.BASE_URL}work-nordic.jpg`,
+  `${import.meta.env.BASE_URL}work-desert.jpg`,
+  `${import.meta.env.BASE_URL}work-underwater.jpg`,
+  `${import.meta.env.BASE_URL}work-spacestation.jpg`,
+  `${import.meta.env.BASE_URL}work-forest.jpg`,
+  `${import.meta.env.BASE_URL}work-industrial.jpg`,
+  `${import.meta.env.BASE_URL}work-crystal.jpg`,
+  `${import.meta.env.BASE_URL}work-floating.jpg`,
 ];
 
 export default function Work() {
@@ -105,7 +105,7 @@ export default function Work() {
       ref={sectionRef}
       style={{
         padding: '120px 4vw 80px',
-        background: '#000b1f',
+        background: '#0f0f14',
       }}
     >
       {/* Section Label */}
@@ -194,7 +194,7 @@ export default function Work() {
                   </h3>
                   <p
                     className="font-mono uppercase tracking-[0.1em] mt-2"
-                    style={{ fontSize: '12px', color: '#ff7f00' }}
+                    style={{ fontSize: '12px', color: '#e8541a' }}
                   >
                     {project.tags}
                   </p>
