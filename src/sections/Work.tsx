@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import SectionHeader from '../components/futuristic/SectionHeader';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -104,27 +105,15 @@ export default function Work() {
       id="work"
       ref={sectionRef}
       style={{
-        padding: '120px 4vw 80px',
-        background: '#0f0f14',
+        padding: '140px 4vw 100px',
+        background: 'rgba(4,6,13,0.55)',
+        backdropFilter: 'blur(2px)',
+        WebkitBackdropFilter: 'blur(2px)',
+        position: 'relative',
+        zIndex: 10,
       }}
     >
-      {/* Section Label */}
-      <div className="reveal-item section-label mb-4">
-        {t('work.label')}
-      </div>
-
-      {/* Section Heading */}
-      <h2
-        className="reveal-item font-heading font-bold text-white"
-        style={{
-          fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-          maxWidth: '600px',
-          marginBottom: '60px',
-          lineHeight: 1.1,
-        }}
-      >
-        {t('work.heading')}
-      </h2>
+      <SectionHeader num="01" label={t('work.label')} heading={t('work.heading')} />
 
       {/* Horizontal Scroll Gallery */}
       <div

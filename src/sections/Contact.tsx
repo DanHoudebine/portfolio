@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import SectionHeader from '../components/futuristic/SectionHeader';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -67,26 +68,20 @@ export default function Contact() {
       id="contact"
       ref={sectionRef}
       style={{
-        padding: '120px 4vw',
-        background: '#0f0f14',
+        padding: '140px 4vw',
+        background: 'rgba(4,6,13,0.55)',
+        backdropFilter: 'blur(2px)',
+        WebkitBackdropFilter: 'blur(2px)',
+        position: 'relative',
+        zIndex: 10,
       }}
     >
+      <div className="max-w-[1400px] mx-auto">
+        <SectionHeader num="03" label={t('contact.label')} heading={t('contact.heading')} />
+      </div>
       <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-[55%_45%] gap-16">
         {/* Left Column */}
         <div>
-          <div className="reveal-item section-label mb-4">
-            {t('contact.label')}
-          </div>
-          <h2
-            className="reveal-item font-heading font-bold text-white"
-            style={{
-              fontSize: 'clamp(2rem, 5vw, 3rem)',
-              marginBottom: '24px',
-              lineHeight: 1.1,
-            }}
-          >
-            {t('contact.heading')}
-          </h2>
           <p
             className="reveal-item font-body"
             style={{

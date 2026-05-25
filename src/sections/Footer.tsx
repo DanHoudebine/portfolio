@@ -19,9 +19,13 @@ export default function Footer() {
   return (
     <footer
       style={{
-        padding: '60px 4vw 40px',
-        background: '#0f0f14',
-        borderTop: '1px solid rgba(255,255,255,0.08)',
+        padding: '60px 4vw 80px',
+        background: 'rgba(4,6,13,0.7)',
+        backdropFilter: 'blur(2px)',
+        WebkitBackdropFilter: 'blur(2px)',
+        borderTop: '1px solid rgba(59,130,246,0.18)',
+        position: 'relative',
+        zIndex: 10,
       }}
     >
       <div className="max-w-[1400px] mx-auto">

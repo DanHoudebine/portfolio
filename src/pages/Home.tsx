@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
 import Header from '../sections/Header';
 import Hero3D from '../sections/Hero3D';
 import Work from '../sections/Work';
@@ -8,83 +9,60 @@ import Skills from '../sections/Skills';
 import Contact from '../sections/Contact';
 import Footer from '../sections/Footer';
 
+import SceneBackground from '../components/futuristic/SceneBackground';
+import HUD from '../components/futuristic/HUD';
+import Loader from '../components/futuristic/Loader';
+import Cursor from '../components/futuristic/Cursor';
+import useSmoothScroll from '../lib/useSmoothScroll';
+
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
+  const [activeSection, setActiveSection] = useState('hero');
+
+  // Lenis smooth scroll for the whole page
+  useSmoothScroll();
+
+  // Track which section is in view → updates HUD
   useEffect(() => {
-    // Wait for hero ScrollTrigger to be created
-    const timer = setTimeout(() => {
-      const heroST = ScrollTrigger.getAll().find(
-        (st) => st.vars.trigger === '.hero-section'
-      );
-
-      if (!heroST) return;
-
-      // Get all content sections
-      const contentSections = ['#work', '#skills', '#contact'];
-      const maxScroll = ScrollTrigger.maxScroll(window);
-
-      if (!maxScroll) return;
-
-      // Create snap points
-      const pinnedHeight = heroST.end! - heroST.start!;
-      const contentStart = pinnedHeight;
-
-      // Build snap targets
-      const snapTargets: number[] = [];
-
-      // Add hero snap at start of content (after pin)
-      snapTargets.push(contentStart / maxScroll);
-
-      // Add snaps for each content section
-      contentSections.forEach((selector) => {
-        const el = document.querySelector(selector);
-        if (el) {
-          const top = el.getBoundingClientRect().top + window.scrollY;
-          snapTargets.push(top / maxScroll);
-        }
-      });
-
-      // Global snap configuration
+    const sections = ['hero', 'work', 'skills', 'contact'];
+    const triggers = sections.map((id) =>
       ScrollTrigger.create({
-        snap: {
-          snapTo: (progress: number) => {
-            // Don't snap during hero pin
-            if (progress * maxScroll < pinnedHeight - 50) {
-              return progress;
-            }
-
-            // Find nearest snap target
-            const target = snapTargets.reduce((closest, curr) => {
-              return Math.abs(curr - progress) < Math.abs(closest - progress)
-                ? curr
-                : closest;
-            }, snapTargets[0]);
-
-            return target;
-          },
-          duration: { min: 0.3, max: 0.8 },
-          delay: 0.1,
-          ease: 'power2.inOut',
-        },
-      });
-    }, 500);
-
-    return () => {
-      clearTimeout(timer);
-    };
+        trigger: `#${id}`,
+        start: 'top center',
+        end: 'bottom center',
+        onEnter: () => setActiveSection(id),
+        onEnterBack: () => setActiveSection(id),
+      }),
+    );
+    return () => triggers.forEach((t) => t.kill());
   }, []);
 
   return (
-    <div className="relative">
-      <Header />
-      <main>
-        <Hero3D />
-        <Work />
-        <Skills />
-        <Contact />
-      </main>
-      <Footer />
-    </div>
+    <>
+      {/* Boot-up loader (fades out after ~2s) */}
+      <Loader />
+
+      {/* Custom cursor (auto-disables on touch) */}
+      <Cursor />
+
+      {/* Persistent 3D scene behind everything */}
+      <SceneBackground />
+
+      {/* Fixed HUD overlay (section, scroll %, time, coords) */}
+      <HUD activeSection={activeSection} />
+
+      {/* Page content above the scene (zIndex layering set per-section) */}
+      <div className="relative" style={{ zIndex: 5 }}>
+        <Header />
+        <main>
+          <Hero3D />
+          <Work />
+          <Skills />
+          <Contact />
+        </main>
+        <Footer />
+      </div>
+    </>
   );
 }
