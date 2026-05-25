@@ -12,6 +12,8 @@ export default function Hero3D() {
   const name2Ref = useRef<HTMLDivElement>(null);
   const descRef = useRef<HTMLParagraphElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const cornersRef = useRef<HTMLDivElement>(null);
+  const metaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -23,12 +25,13 @@ export default function Hero3D() {
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
     renderer.setSize(W, H);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setClearColor(new THREE.Color('#090909'));
+    renderer.setClearColor(new THREE.Color('#06080f'));
 
     const camera = new THREE.PerspectiveCamera(60, W / H, 0.1, 200);
     camera.position.set(0, 0, 10);
 
     const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x06080f, 0.025);
 
     // ── Fine silver dust (deep background) ──────────────────────────────────
     const DUST = 3000;
@@ -65,7 +68,8 @@ export default function Hero3D() {
         void main() {
           float d = length(gl_PointCoord - 0.5) * 2.0;
           if (d > 1.0) discard;
-          gl_FragColor = vec4(0.82, 0.84, 0.9, (1.0 - d * d) * vA);
+          // soft round, slight bluish-white tint
+          gl_FragColor = vec4(0.78, 0.85, 0.98, (1.0 - d * d) * vA);
         }
       `,
       transparent: true,
@@ -75,7 +79,7 @@ export default function Hero3D() {
     const dust = new THREE.Points(dustGeo, dustMat);
     scene.add(dust);
 
-    // ── Orange glow accents (mid-ground) ────────────────────────────────────
+    // ── Blue glow accents (mid-ground) ──────────────────────────────────────
     const GLOW = 260;
     const gPos  = new Float32Array(GLOW * 3);
     const gSize = new Float32Array(GLOW);
@@ -108,10 +112,12 @@ export default function Hero3D() {
           vec2 uv = gl_PointCoord - 0.5;
           float d = length(uv) * 2.0;
           if (d > 1.0) discard;
-          float core = 1.0 - smoothstep(0.0, 0.25, d);
-          float halo = pow(1.0 - d, 3.0) * (vS * 0.15);
-          float a = halo + core * 0.12;
-          gl_FragColor = vec4(0.91, 0.33, 0.10, a);
+          // perfectly round, smooth halo — no hard edges
+          float core = 1.0 - smoothstep(0.0, 0.35, d);
+          float halo = pow(1.0 - d, 3.5) * (vS * 0.18);
+          float a = (halo + core * 0.18);
+          // soft cyan-blue glow rgb(96,165,250) ≈ vec3(0.376, 0.647, 0.980)
+          gl_FragColor = vec4(0.376, 0.647, 0.980, a);
         }
       `,
       transparent: true,
@@ -123,9 +129,9 @@ export default function Hero3D() {
 
     // ── Thin horizontal accent line ──────────────────────────────────────────
     const lineMat = new THREE.MeshBasicMaterial({
-      color: new THREE.Color('#e8541a'),
+      color: new THREE.Color('#3b82f6'),
       transparent: true,
-      opacity: 0.12,
+      opacity: 0.14,
     });
     const lineMesh = new THREE.Mesh(new THREE.PlaneGeometry(14, 0.003), lineMat);
     lineMesh.position.set(0, -0.8, 0);
@@ -161,9 +167,12 @@ export default function Hero3D() {
 
     // ── Entrance timeline ────────────────────────────────────────────────────
     const tl = gsap.timeline({ delay: 0.25 });
+    tl.fromTo(cornersRef.current?.children || [],
+      { opacity: 0, scale: 0.6 },
+      { opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out', stagger: 0.08 });
     tl.fromTo(lineRef.current,
       { scaleX: 0 },
-      { scaleX: 1, duration: 1.1, ease: 'power3.inOut' });
+      { scaleX: 1, duration: 1.1, ease: 'power3.inOut' }, '-=0.5');
     tl.fromTo(tagRef.current,
       { opacity: 0, y: 10 },
       { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, '-=0.35');
@@ -176,6 +185,9 @@ export default function Hero3D() {
     tl.fromTo(descRef.current,
       { opacity: 0 },
       { opacity: 1, duration: 0.8, ease: 'power2.out' }, '-=0.25');
+    tl.fromTo(metaRef.current?.children || [],
+      { opacity: 0, y: 6 },
+      { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out', stagger: 0.08 }, '-=0.4');
     tl.fromTo(scrollRef.current,
       { opacity: 0 },
       { opacity: 1, duration: 0.6 }, '-=0.1');
@@ -190,8 +202,16 @@ export default function Hero3D() {
     };
   }, []);
 
+  const cornerStyle: React.CSSProperties = {
+    position: 'absolute',
+    width: '22px',
+    height: '22px',
+    borderColor: '#3b82f6',
+    opacity: 0,
+  };
+
   return (
-    <section className="relative w-full overflow-hidden" style={{ height: '100vh' }}>
+    <section className="hero-section relative w-full overflow-hidden" style={{ height: '100vh' }}>
       {/* Three.js canvas */}
       <canvas
         ref={canvasRef}
@@ -202,9 +222,21 @@ export default function Hero3D() {
       <div
         style={{
           position: 'absolute', inset: 0, zIndex: 2, pointerEvents: 'none',
-          background: 'radial-gradient(ellipse at center, transparent 25%, rgba(9,9,9,0.65) 100%)',
+          background: 'radial-gradient(ellipse at center, transparent 25%, rgba(6,8,15,0.7) 100%)',
         }}
       />
+
+      {/* Corner brackets — give the hero a "framed shot" feel */}
+      <div ref={cornersRef} className="absolute inset-0 pointer-events-none" style={{ zIndex: 5 }}>
+        <div style={{ ...cornerStyle, top: '36px', left: '36px',
+          borderTop: '1px solid #3b82f6', borderLeft: '1px solid #3b82f6' }} />
+        <div style={{ ...cornerStyle, top: '36px', right: '36px',
+          borderTop: '1px solid #3b82f6', borderRight: '1px solid #3b82f6' }} />
+        <div style={{ ...cornerStyle, bottom: '36px', left: '36px',
+          borderBottom: '1px solid #3b82f6', borderLeft: '1px solid #3b82f6' }} />
+        <div style={{ ...cornerStyle, bottom: '36px', right: '36px',
+          borderBottom: '1px solid #3b82f6', borderRight: '1px solid #3b82f6' }} />
+      </div>
 
       {/* Center text overlay */}
       <div
@@ -216,7 +248,7 @@ export default function Hero3D() {
           ref={lineRef}
           style={{
             width: '56px', height: '1px',
-            background: '#e8541a',
+            background: '#3b82f6',
             marginBottom: '22px',
             transformOrigin: 'left',
             transform: 'scaleX(0)',
@@ -229,7 +261,7 @@ export default function Hero3D() {
           className="font-mono uppercase"
           style={{
             fontSize: '11px', letterSpacing: '0.3em',
-            color: '#e8541a', marginBottom: '22px', opacity: 0,
+            color: '#3b82f6', marginBottom: '22px', opacity: 0,
           }}
         >
           3D Environment Artist · Paris, France
@@ -244,6 +276,7 @@ export default function Hero3D() {
             lineHeight: 0.92,
             letterSpacing: '-0.02em',
             opacity: 0,
+            textShadow: '0 0 60px rgba(59,130,246,0.18)',
           }}
         >
           DAN
@@ -257,9 +290,10 @@ export default function Hero3D() {
             fontSize: 'clamp(3.5rem, 11vw, 9rem)',
             lineHeight: 0.92,
             letterSpacing: '-0.02em',
-            color: '#e8541a',
+            color: '#3b82f6',
             opacity: 0,
             marginBottom: '36px',
+            textShadow: '0 0 80px rgba(59,130,246,0.35)',
           }}
         >
           HOUDEBINE
@@ -271,12 +305,58 @@ export default function Hero3D() {
           className="font-body text-center"
           style={{
             fontSize: '15px', lineHeight: 1.75,
-            color: 'rgba(210, 210, 210, 0.6)',
-            maxWidth: '400px', opacity: 0,
+            color: 'rgba(210, 220, 240, 0.7)',
+            maxWidth: '440px', opacity: 0,
+            marginBottom: '36px',
           }}
         >
           {t('hero.descriptions.0')}
         </p>
+
+        {/* Meta row — gives the hero structural weight */}
+        <div
+          ref={metaRef}
+          className="font-mono flex items-center gap-6"
+          style={{ fontSize: '10px', letterSpacing: '0.25em', color: 'rgba(180,200,230,0.55)' }}
+        >
+          <span style={{ opacity: 0 }}>EST. 2018</span>
+          <span style={{ opacity: 0, color: '#3b82f6' }}>•</span>
+          <span style={{ opacity: 0 }}>UE5 / BLENDER</span>
+          <span style={{ opacity: 0, color: '#3b82f6' }}>•</span>
+          <span style={{ opacity: 0 }}>OPEN TO WORK</span>
+        </div>
+      </div>
+
+      {/* Left edge — vertical label */}
+      <div
+        className="absolute font-mono uppercase z-10 hidden md:block"
+        style={{
+          left: '36px',
+          top: '50%',
+          transform: 'translateY(-50%) rotate(-90deg)',
+          transformOrigin: 'left center',
+          fontSize: '10px',
+          letterSpacing: '0.4em',
+          color: 'rgba(180,200,230,0.4)',
+        }}
+      >
+        PORTFOLIO · 2026
+      </div>
+
+      {/* Right edge — vertical label */}
+      <div
+        className="absolute font-mono uppercase z-10 hidden md:block"
+        style={{
+          right: '36px',
+          top: '50%',
+          transform: 'translateY(-50%) rotate(90deg)',
+          transformOrigin: 'right center',
+          fontSize: '10px',
+          letterSpacing: '0.4em',
+          color: 'rgba(180,200,230,0.4)',
+        }}
+      >
+        REEL · ENVIRONMENT
       </div>
 
       {/* Scroll indicator */}
@@ -287,14 +367,14 @@ export default function Hero3D() {
       >
         <span
           className="font-mono uppercase"
-          style={{ fontSize: '10px', letterSpacing: '0.25em', color: 'rgba(210,210,210,0.4)' }}
+          style={{ fontSize: '10px', letterSpacing: '0.25em', color: 'rgba(180,200,230,0.5)' }}
         >
           {t('hero.scroll')}
         </span>
         <div
           style={{
             width: '1px', height: '44px',
-            background: 'linear-gradient(to bottom, #e8541a, transparent)',
+            background: 'linear-gradient(to bottom, #3b82f6, transparent)',
           }}
         />
       </div>

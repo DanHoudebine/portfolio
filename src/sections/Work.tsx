@@ -194,7 +194,7 @@ export default function Work() {
                   </h3>
                   <p
                     className="font-mono uppercase tracking-[0.1em] mt-2"
-                    style={{ fontSize: '12px', color: '#e8541a' }}
+                    style={{ fontSize: '12px', color: '#3b82f6' }}
                   >
                     {project.tags}
                   </p>
