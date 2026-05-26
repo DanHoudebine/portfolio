@@ -9,6 +9,7 @@ import Skills from '../sections/Skills';
 import Contact from '../sections/Contact';
 import Footer from '../sections/Footer';
 
+import VideoBackground from '../components/futuristic/VideoBackground';
 import SceneBackground from '../components/futuristic/SceneBackground';
 import HUD from '../components/futuristic/HUD';
 import Loader from '../components/futuristic/Loader';
@@ -46,7 +47,10 @@ export default function Home() {
       {/* Custom cursor (auto-disables on touch) */}
       <Cursor />
 
-      {/* Persistent 3D scene behind everything */}
+      {/* Blender-rendered cinematic reel (fixed video bg, z-index 0) */}
+      <VideoBackground />
+
+      {/* WebGL overlay: floating wireframes + particles for mouse parallax (z-index 1) */}
       <SceneBackground />
 
       {/* Fixed HUD overlay (section, scroll %, time, coords) */}

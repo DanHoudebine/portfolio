@@ -2,16 +2,16 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 /**
- * Persistent fixed-position WebGL scene that lives behind ALL sections.
- * The camera position is driven by the global scroll progress (0 → 1)
- * via the CSS variable `--scroll-progress` set by Home.tsx, so as the
- * visitor scrolls down they "fly through" the environment.
+ * Lightweight transparent overlay scene that sits above the <VideoBackground />.
  *
- * Scene composition:
- *   • infinite shader-grid floor (Tron-style scroll)
- *   • horizon sun + glow band
- *   • drifting low-poly wireframe shapes
+ * The Blender-rendered video provides the rich environment (terrain, sun,
+ * volumetric fog). This canvas only adds:
+ *   • drifting low-poly wireframe shapes (mouse-reactive)
  *   • two particle layers (silver dust + blue glow)
+ *
+ * Camera position is still scroll-driven via the `--scroll-progress` CSS
+ * variable so the overlay shapes "fly past" as you scroll, in sync with the
+ * video below.
  */
 export default function SceneBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -23,133 +23,23 @@ export default function SceneBackground() {
     let W = window.innerWidth;
     let H = window.innerHeight;
 
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+    // alpha:true so the canvas composites on top of the video element
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setSize(W, H);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setClearColor(new THREE.Color('#04060d'));
+    renderer.setClearColor(new THREE.Color(0x000000), 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     const camera = new THREE.PerspectiveCamera(55, W / H, 0.1, 500);
     camera.position.set(0, 1.6, 12);
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x04060d, 0.022);
+    // mild fog only for depth fade
+    scene.fog = new THREE.FogExp2(0x04060d, 0.018);
 
     const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
 
-    // ── Grid floor ───────────────────────────────────────────────────────────
-    const gridGeo = new THREE.PlaneGeometry(220, 220, 1, 1);
-    const gridMat = new THREE.ShaderMaterial({
-      uniforms: {
-        uTime: { value: 0 },
-        uColor: { value: new THREE.Color(0x3b82f6) },
-      },
-      vertexShader: `
-        varying vec2 vUv;
-        varying vec3 vWorld;
-        void main() {
-          vUv = uv * 90.0;
-          vec4 wp = modelMatrix * vec4(position, 1.0);
-          vWorld = wp.xyz;
-          gl_Position = projectionMatrix * viewMatrix * wp;
-        }
-      `,
-      fragmentShader: `
-        uniform float uTime;
-        uniform vec3 uColor;
-        varying vec2 vUv;
-        varying vec3 vWorld;
-
-        float gridLine(vec2 uv, float w) {
-          vec2 g = abs(fract(uv - 0.5) - 0.5) / fwidth(uv);
-          return 1.0 - smoothstep(0.0, w, min(g.x, g.y));
-        }
-
-        void main() {
-          vec2 uv = vec2(vUv.x, vUv.y + uTime * 0.35);
-          float fine = gridLine(uv, 1.2) * 0.5;
-          float bold = gridLine(uv / 10.0, 1.5) * 1.0;
-          float grid = max(fine, bold);
-
-          float dist = length(vWorld.xz);
-          float distFade = smoothstep(110.0, 6.0, dist);
-          float nearFade = smoothstep(0.0, 2.0, dist);
-          float fade = distFade * nearFade;
-
-          if (grid < 0.01 && fade < 0.01) discard;
-          gl_FragColor = vec4(uColor * grid * fade, grid * fade);
-        }
-      `,
-      transparent: true,
-      depthWrite: false,
-      side: THREE.DoubleSide,
-    });
-    const grid = new THREE.Mesh(gridGeo, gridMat);
-    grid.rotation.x = -Math.PI / 2;
-    grid.position.y = -2.5;
-    scene.add(grid);
-
-    // ── Horizon sun ──────────────────────────────────────────────────────────
-    const sunGeo = new THREE.CircleGeometry(8, 64);
-    const sunMat = new THREE.ShaderMaterial({
-      uniforms: { uTime: { value: 0 } },
-      vertexShader: `
-        varying vec2 vUv;
-        void main() {
-          vUv = uv;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragmentShader: `
-        uniform float uTime;
-        varying vec2 vUv;
-        void main() {
-          vec2 p = vUv - 0.5;
-          float d = length(p) * 2.0;
-          if (d > 1.0) discard;
-          float core = 1.0 - smoothstep(0.0, 0.32, d);
-          float halo = pow(1.0 - d, 2.8);
-          float pulse = 0.85 + 0.15 * sin(uTime * 0.6);
-          vec3 col = mix(vec3(0.376, 0.647, 0.980), vec3(0.114, 0.310, 0.918), d);
-          gl_FragColor = vec4(col, (core * 0.9 + halo * 0.45) * pulse);
-        }
-      `,
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
-    });
-    const sun = new THREE.Mesh(sunGeo, sunMat);
-    sun.position.set(0, -0.5, -55);
-    scene.add(sun);
-
-    // ── Horizon band ─────────────────────────────────────────────────────────
-    const horizGeo = new THREE.PlaneGeometry(140, 1.5);
-    const horizMat = new THREE.ShaderMaterial({
-      uniforms: { uTime: { value: 0 } },
-      vertexShader: `
-        varying vec2 vUv;
-        void main() {
-          vUv = uv;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragmentShader: `
-        varying vec2 vUv;
-        void main() {
-          float v = pow(1.0 - abs(vUv.y - 0.5) * 2.0, 4.0);
-          float h = smoothstep(0.0, 0.15, vUv.x) * smoothstep(0.0, 0.15, 1.0 - vUv.x);
-          gl_FragColor = vec4(0.376, 0.647, 0.980, v * h * 0.85);
-        }
-      `,
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
-    });
-    const horizon = new THREE.Mesh(horizGeo, horizMat);
-    horizon.position.set(0, -2.4, -54.5);
-    scene.add(horizon);
-
-    // ── Floating geometry ────────────────────────────────────────────────────
+    // ── Floating wireframe geometry ──────────────────────────────────────────
     type FloatingObj = {
       mesh: THREE.Mesh;
       rotSpeed: THREE.Vector3;
@@ -159,7 +49,12 @@ export default function SceneBackground() {
     const floaters: FloatingObj[] = [];
     const accentColor = new THREE.Color(0x3b82f6);
     const wireMat = (op = 0.55) =>
-      new THREE.MeshBasicMaterial({ color: accentColor, wireframe: true, transparent: true, opacity: op });
+      new THREE.MeshBasicMaterial({
+        color: accentColor,
+        wireframe: true,
+        transparent: true,
+        opacity: op,
+      });
 
     const shapes: Array<{
       geo: THREE.BufferGeometry;
@@ -167,19 +62,16 @@ export default function SceneBackground() {
       scale: number;
       op: number;
     }> = [
-      { geo: new THREE.IcosahedronGeometry(1.1, 0), pos: [-6, 1.5, -8],  scale: 1.0, op: 0.7 },
-      { geo: new THREE.IcosahedronGeometry(0.7, 0), pos: [7, 2.2, -10],  scale: 0.9, op: 0.55 },
-      { geo: new THREE.IcosahedronGeometry(0.5, 0), pos: [-9, 3.8, -16], scale: 0.7, op: 0.4 },
-      { geo: new THREE.IcosahedronGeometry(0.4, 0), pos: [10, 4.2, -20], scale: 0.6, op: 0.35 },
+      { geo: new THREE.IcosahedronGeometry(1.1, 0), pos: [-6, 1.5, -8],  scale: 1.0, op: 0.6 },
+      { geo: new THREE.IcosahedronGeometry(0.7, 0), pos: [7, 2.2, -10],  scale: 0.9, op: 0.5 },
+      { geo: new THREE.IcosahedronGeometry(0.5, 0), pos: [-9, 3.8, -16], scale: 0.7, op: 0.35 },
+      { geo: new THREE.IcosahedronGeometry(0.4, 0), pos: [10, 4.2, -20], scale: 0.6, op: 0.3 },
       { geo: new THREE.IcosahedronGeometry(0.9, 0), pos: [0, 6.0, -28],  scale: 0.8, op: 0.3 },
-      { geo: new THREE.BoxGeometry(1, 1, 1),        pos: [-4, -0.5, -6], scale: 0.8, op: 0.55 },
+      { geo: new THREE.BoxGeometry(1, 1, 1),        pos: [-4, -0.5, -6], scale: 0.7, op: 0.5 },
       { geo: new THREE.BoxGeometry(0.7, 0.7, 0.7),  pos: [5, 0.2, -7],   scale: 0.7, op: 0.45 },
-      { geo: new THREE.OctahedronGeometry(0.8, 0),  pos: [-2, 4.5, -12], scale: 0.9, op: 0.5 },
-      // Extra deep shapes for the scroll fly-through
-      { geo: new THREE.IcosahedronGeometry(1.3, 0), pos: [-8, 2.0, -45], scale: 1.2, op: 0.45 },
-      { geo: new THREE.BoxGeometry(1.2, 1.2, 1.2),  pos: [8, 1.5, -50],  scale: 1.0, op: 0.4 },
-      { geo: new THREE.OctahedronGeometry(1.0, 0),  pos: [3, 5.0, -65],  scale: 1.0, op: 0.35 },
-      { geo: new THREE.IcosahedronGeometry(0.8, 0), pos: [-12, 1.0, -75],scale: 1.0, op: 0.3 },
+      { geo: new THREE.OctahedronGeometry(0.8, 0),  pos: [-2, 4.5, -12], scale: 0.9, op: 0.45 },
+      { geo: new THREE.IcosahedronGeometry(1.3, 0), pos: [-8, 2.0, -45], scale: 1.2, op: 0.35 },
+      { geo: new THREE.BoxGeometry(1.2, 1.2, 1.2),  pos: [8, 1.5, -50],  scale: 1.0, op: 0.3 },
     ];
 
     shapes.forEach((s) => {
@@ -199,17 +91,17 @@ export default function SceneBackground() {
       });
     });
 
-    // ── Particle layers ──────────────────────────────────────────────────────
-    const DUST = 3000;
+    // ── Particles (silver dust) ──────────────────────────────────────────────
+    const DUST = 1800;
     const dPos = new Float32Array(DUST * 3);
     const dSize = new Float32Array(DUST);
     const dAlpha = new Float32Array(DUST);
     for (let i = 0; i < DUST; i++) {
-      dPos[i * 3]     = (Math.random() - 0.5) * 120;
-      dPos[i * 3 + 1] = Math.random() * 60 - 10;
-      dPos[i * 3 + 2] = -Math.random() * 120;
-      dSize[i] = Math.random() * 0.3 + 0.1;
-      dAlpha[i] = Math.random() * 0.5 + 0.1;
+      dPos[i * 3]     = (Math.random() - 0.5) * 100;
+      dPos[i * 3 + 1] = Math.random() * 50 - 5;
+      dPos[i * 3 + 2] = -Math.random() * 100;
+      dSize[i] = Math.random() * 0.25 + 0.08;
+      dAlpha[i] = Math.random() * 0.4 + 0.1;
     }
     const dustGeo = new THREE.BufferGeometry();
     dustGeo.setAttribute('position', new THREE.BufferAttribute(dPos, 3));
@@ -234,7 +126,7 @@ export default function SceneBackground() {
         void main() {
           float d = length(gl_PointCoord - 0.5) * 2.0;
           if (d > 1.0) discard;
-          gl_FragColor = vec4(0.78, 0.86, 0.99, (1.0 - d * d) * vA);
+          gl_FragColor = vec4(0.82, 0.88, 1.0, (1.0 - d * d) * vA);
         }
       `,
       transparent: true,
@@ -244,14 +136,15 @@ export default function SceneBackground() {
     const dust = new THREE.Points(dustGeo, dustMat);
     scene.add(dust);
 
-    const GLOW = 200;
+    // ── Particles (blue glow accents) ────────────────────────────────────────
+    const GLOW = 140;
     const gPos = new Float32Array(GLOW * 3);
     const gSize = new Float32Array(GLOW);
     for (let i = 0; i < GLOW; i++) {
-      gPos[i * 3]     = (Math.random() - 0.5) * 60;
-      gPos[i * 3 + 1] = Math.random() * 30 - 5;
-      gPos[i * 3 + 2] = -Math.random() * 60;
-      gSize[i] = Math.random() * 2.5 + 0.8;
+      gPos[i * 3]     = (Math.random() - 0.5) * 50;
+      gPos[i * 3 + 1] = Math.random() * 25 - 4;
+      gPos[i * 3 + 2] = -Math.random() * 50;
+      gSize[i] = Math.random() * 2.0 + 0.7;
     }
     const glowGeo = new THREE.BufferGeometry();
     glowGeo.setAttribute('position', new THREE.BufferAttribute(gPos, 3));
@@ -275,8 +168,8 @@ export default function SceneBackground() {
           float d = length(uv) * 2.0;
           if (d > 1.0) discard;
           float core = 1.0 - smoothstep(0.0, 0.35, d);
-          float halo = pow(1.0 - d, 3.5) * (vS * 0.20);
-          gl_FragColor = vec4(0.376, 0.647, 0.980, halo + core * 0.18);
+          float halo = pow(1.0 - d, 3.5) * (vS * 0.18);
+          gl_FragColor = vec4(0.376, 0.647, 0.980, halo + core * 0.16);
         }
       `,
       transparent: true,
@@ -286,46 +179,37 @@ export default function SceneBackground() {
     const glow = new THREE.Points(glowGeo, glowMat);
     scene.add(glow);
 
-    // ── Animation loop ───────────────────────────────────────────────────────
+    // ── Render loop ──────────────────────────────────────────────────────────
     let animId = 0;
     const clock = new THREE.Clock();
     let elapsed = 0;
+    let smoothScroll = 0;
 
-    // Read scroll progress 0→1 from CSS custom property on documentElement
     const getScrollProgress = () => {
       const v = getComputedStyle(document.documentElement).getPropertyValue('--scroll-progress').trim();
       return parseFloat(v) || 0;
     };
-
-    let smoothScroll = 0; // smoothed scroll value
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
       const dt = Math.min(clock.getDelta(), 0.05);
       elapsed += dt;
 
-      gridMat.uniforms.uTime.value  = elapsed;
-      sunMat.uniforms.uTime.value   = elapsed;
-      horizMat.uniforms.uTime.value = elapsed;
-      dustMat.uniforms.uTime.value  = elapsed;
-      glowMat.uniforms.uTime.value  = elapsed;
+      dustMat.uniforms.uTime.value = elapsed;
+      glowMat.uniforms.uTime.value = elapsed;
 
-      // Smooth scroll-driven camera fly-through
-      const targetScroll = getScrollProgress();
-      smoothScroll += (targetScroll - smoothScroll) * 0.06;
+      const target = getScrollProgress();
+      smoothScroll += (target - smoothScroll) * 0.06;
 
-      // Mouse parallax target
       mouse.tx += (mouse.x - mouse.tx) * 0.04;
       mouse.ty += (mouse.y - mouse.ty) * 0.04;
 
-      // As scroll advances, camera flies forward (z decreases), rises, and tilts down slightly
-      const camZ = 12 - smoothScroll * 50;     // 12 → -38
-      const camY = 1.6 + smoothScroll * 4;     // 1.6 → 5.6
-      const camPitchTarget = 0.5 - smoothScroll * 3.0;
+      const camZ = 12 - smoothScroll * 50;
+      const camY = 1.6 + smoothScroll * 4;
+      const pitchTarget = 0.5 - smoothScroll * 3.0;
       camera.position.set(mouse.tx * 1.4, camY + mouse.ty * 0.5, camZ);
-      camera.lookAt(0, camPitchTarget, camZ - 20);
+      camera.lookAt(0, pitchTarget, camZ - 20);
 
-      // Floating shapes
       floaters.forEach((f, i) => {
         f.mesh.rotation.x += f.rotSpeed.x * dt;
         f.mesh.rotation.y += f.rotSpeed.y * dt;
@@ -341,7 +225,6 @@ export default function SceneBackground() {
     };
     animId = requestAnimationFrame(animate);
 
-    // ── Interaction ──────────────────────────────────────────────────────────
     const onResize = () => {
       W = window.innerWidth; H = window.innerHeight;
       camera.aspect = W / H;
@@ -359,9 +242,6 @@ export default function SceneBackground() {
       cancelAnimationFrame(animId);
       window.removeEventListener('resize', onResize);
       window.removeEventListener('mousemove', onMouseMove);
-      gridGeo.dispose();  gridMat.dispose();
-      sunGeo.dispose();   sunMat.dispose();
-      horizGeo.dispose(); horizMat.dispose();
       dustGeo.dispose();  dustMat.dispose();
       glowGeo.dispose();  glowMat.dispose();
       floaters.forEach((f) => {
@@ -380,7 +260,7 @@ export default function SceneBackground() {
         inset: 0,
         width: '100%',
         height: '100%',
-        zIndex: 0,
+        zIndex: 1,
         pointerEvents: 'none',
       }}
     />
