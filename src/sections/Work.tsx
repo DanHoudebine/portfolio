@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SectionHeader from '../components/futuristic/SectionHeader';
+import ProjectLightbox from '../components/futuristic/ProjectLightbox';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,12 +20,26 @@ export default function Work() {
   const isDragging = useRef(false);
   const startX = useRef(0);
   const scrollLeft = useRef(0);
+  const dragMoved = useRef(false);  // distinguishes a click from a drag-release
+
+  const [lightboxIndex, setLightboxIndex] = useState<number>(-1);
 
   const projects = t('work.projects', { returnObjects: true }) as Array<{
     title: string;
     tags: string;
     year: string;
   }>;
+
+  const openLightbox = useCallback((i: number) => setLightboxIndex(i), []);
+  const closeLightbox = useCallback(() => setLightboxIndex(-1), []);
+  const prevImage = useCallback(
+    () => setLightboxIndex((i) => (i <= 0 ? projectImages.length - 1 : i - 1)),
+    [],
+  );
+  const nextImage = useCallback(
+    () => setLightboxIndex((i) => (i >= projectImages.length - 1 ? 0 : i + 1)),
+    [],
+  );
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -77,6 +92,7 @@ export default function Work() {
   // Drag to scroll
   const handleMouseDown = (e: React.MouseEvent) => {
     isDragging.current = true;
+    dragMoved.current = false;
     startX.current = e.pageX - (galleryRef.current?.offsetLeft || 0);
     scrollLeft.current = galleryRef.current?.scrollLeft || 0;
   };
@@ -86,11 +102,21 @@ export default function Work() {
     e.preventDefault();
     const x = e.pageX - (galleryRef.current.offsetLeft || 0);
     const walk = (x - startX.current) * 1.5;
+    if (Math.abs(walk) > 5) dragMoved.current = true;  // real drag, not a click
     galleryRef.current.scrollLeft = scrollLeft.current - walk;
   };
 
   const handleMouseUp = () => {
     isDragging.current = false;
+  };
+
+  // Click on a card → open lightbox (unless we were dragging)
+  const handleCardClick = (i: number) => {
+    if (dragMoved.current) {
+      dragMoved.current = false;  // consume the drag flag, don't open lightbox
+      return;
+    }
+    openLightbox(i);
   };
 
   return (
@@ -127,15 +153,23 @@ export default function Work() {
         {projects.map((project, i) => (
           <div
             key={i}
-            className="project-card reveal-item flex-shrink-0 relative overflow-hidden group"
+            data-cursor="hover"
+            onClick={() => handleCardClick(i)}
+            className="project-card reveal-item flex-shrink-0 relative overflow-hidden group cursor-pointer"
             style={{
               width: '70vw',
               maxWidth: '900px',
               height: '500px',
               scrollSnapAlign: 'start',
               border: '1px solid rgba(255,255,255,0.08)',
-              transition: 'transform 0.3s ease',
+              transition: 'transform 0.3s ease, border-color 0.3s ease',
               transformOrigin: 'center center',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(59,130,246,0.5)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
             }}
           >
             {/* Background Image */}
@@ -202,6 +236,17 @@ export default function Work() {
           </div>
         ))}
       </div>
+
+      {/* Full-screen lightbox modal — opens on card click */}
+      <ProjectLightbox
+        open={lightboxIndex >= 0}
+        index={lightboxIndex}
+        images={projectImages}
+        projects={projects}
+        onClose={closeLightbox}
+        onPrev={prevImage}
+        onNext={nextImage}
+      />
     </section>
   );
 }
