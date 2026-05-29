@@ -176,7 +176,7 @@ export default function About() {
               </div>
               <div className="flex flex-wrap gap-3">
                 <a
-                  href={`${base}cv/CV_Dan_Houdebine_EN_2026.pdf`}
+                  href={`${base}cv/CV_Dan_HoudebineUS_2026.pdf`}
                   download
                   className="font-body font-medium uppercase tracking-[0.12em] transition-all duration-300"
                   style={{
