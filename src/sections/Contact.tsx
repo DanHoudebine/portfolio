@@ -77,7 +77,7 @@ export default function Contact() {
       }}
     >
       <div className="max-w-[1400px] mx-auto">
-        <SectionHeader num="03" label={t('contact.label')} heading={t('contact.heading')} />
+        <SectionHeader num="04" label={t('contact.label')} heading={t('contact.heading')} />
       </div>
       <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-[55%_45%] gap-16">
         {/* Left Column */}

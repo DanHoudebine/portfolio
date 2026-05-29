@@ -25,7 +25,7 @@ export default function Header() {
       },
     });
 
-    const sections = ['work', 'skills', 'contact'];
+    const sections = ['about', 'work', 'skills', 'contact'];
     sections.forEach((section) => {
       ScrollTrigger.create({
         trigger: `#${section}`,
@@ -74,7 +74,7 @@ export default function Header() {
 
       {/* Navigation */}
       <nav className="hidden md:flex items-center gap-8">
-        {(['work', 'skills', 'contact'] as const).map((section) => (
+        {(['about', 'work', 'skills', 'contact'] as const).map((section) => (
           <button
             key={section}
             onClick={() => scrollTo(section)}

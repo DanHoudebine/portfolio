@@ -198,7 +198,7 @@ export default function Skills() {
               <span className="font-mono" style={{
                 fontSize: '13px', color: '#3b82f6', letterSpacing: '0.15em',
                 fontWeight: 600, textShadow: '0 0 10px rgba(59,130,246,0.4)',
-              }}>02</span>
+              }}>03</span>
               <span className="section-label" style={{ marginBottom: 0 }}>/ {t('skills.label')}</span>
             </div>
             <h2

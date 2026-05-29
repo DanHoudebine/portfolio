@@ -49,7 +49,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div className="flex gap-6">
-            {(['work', 'skills', 'contact'] as const).map((section) => (
+            {(['about', 'work', 'skills', 'contact'] as const).map((section) => (
               <button
                 key={section}
                 onClick={() => scrollTo(section)}

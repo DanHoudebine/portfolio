@@ -6,18 +6,11 @@ import SectionHeader from '../components/futuristic/SectionHeader';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const projectImages = [
-  `${import.meta.env.BASE_URL}work-ruins.jpg`,
-  `${import.meta.env.BASE_URL}work-cyberpunk.jpg`,
-  `${import.meta.env.BASE_URL}work-nordic.jpg`,
-  `${import.meta.env.BASE_URL}work-desert.jpg`,
-  `${import.meta.env.BASE_URL}work-underwater.jpg`,
-  `${import.meta.env.BASE_URL}work-spacestation.jpg`,
-  `${import.meta.env.BASE_URL}work-forest.jpg`,
-  `${import.meta.env.BASE_URL}work-industrial.jpg`,
-  `${import.meta.env.BASE_URL}work-crystal.jpg`,
-  `${import.meta.env.BASE_URL}work-floating.jpg`,
-];
+// Mapped 1:1 with i18n work.projects order (15 projects from real portfolio)
+const projectImages = Array.from(
+  { length: 15 },
+  (_, i) => `${import.meta.env.BASE_URL}projects/project${i + 1}.png`,
+);
 
 export default function Work() {
   const { t } = useTranslation();
@@ -113,7 +106,7 @@ export default function Work() {
         zIndex: 10,
       }}
     >
-      <SectionHeader num="01" label={t('work.label')} heading={t('work.heading')} />
+      <SectionHeader num="02" label={t('work.label')} heading={t('work.heading')} />
 
       {/* Horizontal Scroll Gallery */}
       <div

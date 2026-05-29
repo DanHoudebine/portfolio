@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import Header from '../sections/Header';
 import Hero3D from '../sections/Hero3D';
+import About from '../sections/About';
 import Work from '../sections/Work';
 import Skills from '../sections/Skills';
 import Contact from '../sections/Contact';
@@ -25,7 +26,7 @@ export default function Home() {
 
   // Track which section is in view → updates HUD
   useEffect(() => {
-    const sections = ['hero', 'work', 'skills', 'contact'];
+    const sections = ['hero', 'about', 'work', 'skills', 'contact'];
     const triggers = sections.map((id) =>
       ScrollTrigger.create({
         trigger: `#${id}`,
@@ -57,6 +58,7 @@ export default function Home() {
         <Header />
         <main>
           <Hero3D />
+          <About />
           <Work />
           <Skills />
           <Contact />

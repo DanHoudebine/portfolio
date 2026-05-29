@@ -6,9 +6,10 @@ interface HUDProps {
 
 const SECTIONS = [
   { id: 'hero',    num: '00', label: 'INTRO' },
-  { id: 'work',    num: '01', label: 'WORK' },
-  { id: 'skills',  num: '02', label: 'SKILLS' },
-  { id: 'contact', num: '03', label: 'CONTACT' },
+  { id: 'about',   num: '01', label: 'ABOUT' },
+  { id: 'work',    num: '02', label: 'WORK' },
+  { id: 'skills',  num: '03', label: 'SKILLS' },
+  { id: 'contact', num: '04', label: 'CONTACT' },
 ];
 
 /**
