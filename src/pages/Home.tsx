@@ -13,7 +13,6 @@ import VideoBackground from '../components/futuristic/VideoBackground';
 import SceneBackground from '../components/futuristic/SceneBackground';
 import HUD from '../components/futuristic/HUD';
 import Loader from '../components/futuristic/Loader';
-import Cursor from '../components/futuristic/Cursor';
 import useSmoothScroll from '../lib/useSmoothScroll';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -43,9 +42,6 @@ export default function Home() {
     <>
       {/* Boot-up loader (fades out after ~2s) */}
       <Loader />
-
-      {/* Custom cursor (auto-disables on touch) */}
-      <Cursor />
 
       {/* Blender-rendered cinematic reel (fixed video bg, z-index 0) */}
       <VideoBackground />

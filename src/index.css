@@ -27,18 +27,6 @@
     overflow-x: hidden;
   }
 
-  /* Hide native cursor when custom cursor is active (desktop only) */
-  body.custom-cursor-active,
-  body.custom-cursor-active * {
-    cursor: none !important;
-  }
-  @media (pointer: coarse) {
-    body.custom-cursor-active,
-    body.custom-cursor-active * {
-      cursor: auto !important;
-    }
-  }
-
   html {
     scrollbar-width: thin;
     scrollbar-color: var(--accent) rgba(255,255,255,0.05);
