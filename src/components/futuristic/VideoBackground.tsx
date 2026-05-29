@@ -52,22 +52,30 @@ export default function VideoBackground() {
           transition: 'opacity 1.2s ease-out',
         }}
       />
-      {/* Subtle blue tint + slight vignette to keep cohesion with UI palette */}
+      {/* Neutral vignette only — keep the warm UE5 palette intact */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
           background:
-            'radial-gradient(ellipse at center, rgba(4,6,13,0.0) 0%, rgba(4,6,13,0.55) 90%)',
+            'radial-gradient(ellipse at center, rgba(0,0,0,0.0) 30%, rgba(0,0,0,0.55) 95%)',
           mixBlendMode: 'multiply',
         }}
       />
+      {/* Soft darken at top for header readability */}
       <div
         style={{
           position: 'absolute',
-          inset: 0,
-          background: 'rgba(15,30,70,0.18)',
-          mixBlendMode: 'overlay',
+          top: 0, left: 0, right: 0, height: '25%',
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 100%)',
+        }}
+      />
+      {/* Soft darken at bottom for HUD readability */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 0, left: 0, right: 0, height: '20%',
+          background: 'linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 100%)',
         }}
       />
     </div>
