@@ -128,7 +128,7 @@ export default function Skills() {
       ref={sectionRef}
       className="relative overflow-hidden"
       style={{
-        padding: '140px 4vw',
+        padding: 'clamp(80px, 14vw, 140px) clamp(20px, 5vw, 60px)',
         background: 'rgba(4,6,13,0.55)',
         backdropFilter: 'blur(2px)',
         WebkitBackdropFilter: 'blur(2px)',

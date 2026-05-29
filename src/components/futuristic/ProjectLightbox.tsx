@@ -82,7 +82,7 @@ export default function ProjectLightbox({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '60px 80px',
+        padding: 'clamp(12px, 4vw, 60px) clamp(12px, 5vw, 80px)',
         animation: 'lb-fade-in 0.25s ease-out',
       }}
     >
@@ -91,13 +91,13 @@ export default function ProjectLightbox({
         className="font-mono uppercase"
         style={{
           position: 'absolute',
-          top: '28px',
-          left: '32px',
-          right: '32px',
+          top: 'clamp(14px, 3vw, 28px)',
+          left: 'clamp(14px, 4vw, 32px)',
+          right: 'clamp(14px, 4vw, 32px)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          fontSize: '11px',
+          fontSize: 'clamp(9px, 1.6vw, 11px)',
           letterSpacing: '0.25em',
           color: 'rgba(180,200,230,0.6)',
         }}
@@ -115,13 +115,14 @@ export default function ProjectLightbox({
           onClick={onClose}
           aria-label="Close"
           style={{
-            width: '40px', height: '40px',
+            width: '44px', height: '44px',
             display: 'grid', placeItems: 'center',
             border: '1px solid rgba(59,130,246,0.4)',
             background: 'rgba(59,130,246,0.06)',
             color: '#e5edff',
             cursor: 'pointer',
-            fontSize: '18px',
+            fontSize: '20px',
+            flexShrink: 0,
             fontFamily: 'JetBrains Mono, monospace',
             transition: 'all 0.25s ease',
           }}
@@ -144,11 +145,11 @@ export default function ProjectLightbox({
         aria-label="Previous"
         style={{
           position: 'absolute',
-          left: '24px',
+          left: 'clamp(8px, 2vw, 24px)',
           top: '50%',
           transform: 'translateY(-50%)',
-          width: '52px',
-          height: '52px',
+          width: 'clamp(44px, 5vw, 52px)',
+          height: 'clamp(44px, 5vw, 52px)',
           display: 'grid',
           placeItems: 'center',
           border: '1px solid rgba(59,130,246,0.4)',
@@ -158,6 +159,7 @@ export default function ProjectLightbox({
           transition: 'all 0.25s ease',
           fontSize: '20px',
           fontFamily: 'JetBrains Mono, monospace',
+          zIndex: 5,
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.background = '#3b82f6';
@@ -179,11 +181,11 @@ export default function ProjectLightbox({
         aria-label="Next"
         style={{
           position: 'absolute',
-          right: '24px',
+          right: 'clamp(8px, 2vw, 24px)',
           top: '50%',
           transform: 'translateY(-50%)',
-          width: '52px',
-          height: '52px',
+          width: 'clamp(44px, 5vw, 52px)',
+          height: 'clamp(44px, 5vw, 52px)',
           display: 'grid',
           placeItems: 'center',
           border: '1px solid rgba(59,130,246,0.4)',
@@ -193,6 +195,7 @@ export default function ProjectLightbox({
           transition: 'all 0.25s ease',
           fontSize: '20px',
           fontFamily: 'JetBrains Mono, monospace',
+          zIndex: 5,
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.background = '#3b82f6';

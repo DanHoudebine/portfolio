@@ -1,11 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 
 /**
- * Cinematic Blender-rendered reel used as a fixed background video.
+ * Cinematic UE5/Blender reel as a fixed background video.
  * Lives at z-index 0; Three.js overlay sits at z-index 1.
  *
- * Renders muted, looping, autoplay, playsInline (required for iOS).
- * Fades in once `canplay` fires so the page never shows a black flash.
+ * Two encodings shipped:
+ *   - portfolio-reel.mp4        960×540, 7.58 MB → desktop / wide screens
+ *   - portfolio-reel-mobile.mp4 640×360, 3.11 MB → < 768px
+ *
+ * The mobile source is chosen via <source media> so a phone never downloads
+ * the 7.6 MB version. Autoplay/loop/muted/playsInline for iOS-friendly bg.
  */
 export default function VideoBackground() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -16,7 +20,7 @@ export default function VideoBackground() {
     if (!v) return;
     const onCanPlay = () => setReady(true);
     v.addEventListener('canplay', onCanPlay);
-    // Some browsers (Safari) need an explicit play() call after metadata
+    // Safari needs explicit play() after metadata is loaded
     v.play().catch(() => { /* autoplay blocked; will start on first user gesture */ });
     return () => v.removeEventListener('canplay', onCanPlay);
   }, []);
@@ -36,7 +40,6 @@ export default function VideoBackground() {
     >
       <video
         ref={videoRef}
-        src={`${base}portfolio-reel.mp4`}
         autoPlay
         loop
         muted
@@ -51,7 +54,12 @@ export default function VideoBackground() {
           opacity: ready ? 1 : 0,
           transition: 'opacity 1.2s ease-out',
         }}
-      />
+      >
+        {/* Mobile-first source: small phones get the 3 MB version */}
+        <source src={`${base}portfolio-reel-mobile.mp4`} type="video/mp4" media="(max-width: 767px)" />
+        {/* Desktop fallback */}
+        <source src={`${base}portfolio-reel.mp4`} type="video/mp4" />
+      </video>
       {/* Neutral vignette only — keep the warm UE5 palette intact */}
       <div
         style={{

@@ -124,7 +124,7 @@ export default function Work() {
       id="work"
       ref={sectionRef}
       style={{
-        padding: '140px 4vw 100px',
+        padding: 'clamp(80px, 14vw, 140px) clamp(16px, 4vw, 60px) clamp(60px, 10vw, 100px)',
         background: 'rgba(4,6,13,0.55)',
         backdropFilter: 'blur(2px)',
         WebkitBackdropFilter: 'blur(2px)',
@@ -157,9 +157,9 @@ export default function Work() {
             onClick={() => handleCardClick(i)}
             className="project-card reveal-item flex-shrink-0 relative overflow-hidden group cursor-pointer"
             style={{
-              width: '70vw',
+              width: 'clamp(280px, 80vw, 900px)',
               maxWidth: '900px',
-              height: '500px',
+              height: 'clamp(360px, 55vh, 500px)',
               scrollSnapAlign: 'start',
               border: '1px solid rgba(255,255,255,0.08)',
               transition: 'transform 0.3s ease, border-color 0.3s ease',

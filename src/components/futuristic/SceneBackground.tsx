@@ -20,6 +20,12 @@ export default function SceneBackground() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    // Skip WebGL on small / low-power screens: drains battery, eats fillrate,
+    // and the video bg alone already provides enough visual depth on mobile.
+    const isMobile = window.matchMedia('(max-width: 767px)').matches
+                   || window.matchMedia('(pointer: coarse)').matches;
+    if (isMobile) return;
+
     let W = window.innerWidth;
     let H = window.innerHeight;
 

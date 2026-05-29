@@ -54,14 +54,14 @@ export default function HUD({ activeSection }: HUDProps) {
       <div
         className="fixed font-mono uppercase pointer-events-none"
         style={{
-          top: '92px', left: '32px', zIndex: 30,
-          fontSize: '10px', letterSpacing: '0.25em',
+          top: 'clamp(80px, 12vw, 92px)', left: 'clamp(16px, 4vw, 32px)', zIndex: 30,
+          fontSize: 'clamp(9px, 1.5vw, 10px)', letterSpacing: '0.25em',
           color: 'rgba(180,200,230,0.6)',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 'clamp(8px, 2vw, 12px)' }}>
           <span style={{
-            fontSize: '32px',
+            fontSize: 'clamp(22px, 5vw, 32px)',
             color: '#3b82f6',
             fontWeight: 600,
             letterSpacing: '0',
