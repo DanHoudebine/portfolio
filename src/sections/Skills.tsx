@@ -128,7 +128,7 @@ export default function Skills() {
       ref={sectionRef}
       className="relative overflow-hidden"
       style={{
-        padding: '140px 4vw',
+        padding: 'clamp(80px, 14vw, 140px) clamp(20px, 5vw, 60px)',
         background: 'rgba(4,6,13,0.55)',
         backdropFilter: 'blur(2px)',
         WebkitBackdropFilter: 'blur(2px)',
@@ -271,7 +271,7 @@ export default function Skills() {
           <div>
             {/* Software - Radial Meters */}
             {activeCategory === 'software' && (
-              <div className="grid grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6">
                 {softwareSkills.map((skill, i) => {
                   const radius = 65;
                   const circumference = 2 * Math.PI * radius;
@@ -279,10 +279,10 @@ export default function Skills() {
 
                   return (
                     <div key={skill.name} className="flex flex-col items-center">
-                      <div className="relative" style={{ width: '140px', height: '140px' }}>
+                      <div className="relative" style={{ width: 'min(140px, 30vw)', aspectRatio: '1' }}>
                         <svg
-                          width="140"
-                          height="140"
+                          width="100%"
+                          height="100%"
                           viewBox="0 0 140 140"
                           className="transform -rotate-90"
                         >
@@ -313,14 +313,14 @@ export default function Skills() {
                         {/* Center text */}
                         <div className="absolute inset-0 flex flex-col items-center justify-center">
                           <span
-                            className="font-body font-medium text-white text-center px-2"
-                            style={{ fontSize: '12px', lineHeight: 1.2 }}
+                            className="font-body font-medium text-white text-center px-1"
+                            style={{ fontSize: 'clamp(9px, 2.4vw, 12px)', lineHeight: 1.15 }}
                           >
                             {skill.name}
                           </span>
                           <span
                             className="font-mono mt-1"
-                            style={{ fontSize: '18px', color: '#60a5fa' }}
+                            style={{ fontSize: 'clamp(13px, 3.6vw, 18px)', color: '#60a5fa' }}
                           >
                             {Math.round(skill.level * 100)}%
                           </span>

@@ -82,7 +82,7 @@ export default function ProjectLightbox({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '60px 80px',
+        padding: 'clamp(12px, 4vw, 60px) clamp(12px, 5vw, 80px)',
         animation: 'lb-fade-in 0.25s ease-out',
       }}
     >
@@ -91,15 +91,16 @@ export default function ProjectLightbox({
         className="font-mono uppercase"
         style={{
           position: 'absolute',
-          top: '28px',
-          left: '32px',
-          right: '32px',
+          top: 'clamp(14px, 3vw, 28px)',
+          left: 'clamp(14px, 4vw, 32px)',
+          right: 'clamp(14px, 4vw, 32px)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          fontSize: '11px',
+          fontSize: 'clamp(9px, 1.6vw, 11px)',
           letterSpacing: '0.25em',
           color: 'rgba(180,200,230,0.6)',
+          zIndex: 10,            // keep above the (tall) image so the × is always tappable
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -115,13 +116,14 @@ export default function ProjectLightbox({
           onClick={onClose}
           aria-label="Close"
           style={{
-            width: '40px', height: '40px',
+            width: '44px', height: '44px',
             display: 'grid', placeItems: 'center',
             border: '1px solid rgba(59,130,246,0.4)',
             background: 'rgba(59,130,246,0.06)',
             color: '#e5edff',
             cursor: 'pointer',
-            fontSize: '18px',
+            fontSize: '20px',
+            flexShrink: 0,
             fontFamily: 'JetBrains Mono, monospace',
             transition: 'all 0.25s ease',
           }}
@@ -144,11 +146,11 @@ export default function ProjectLightbox({
         aria-label="Previous"
         style={{
           position: 'absolute',
-          left: '24px',
+          left: 'clamp(8px, 2vw, 24px)',
           top: '50%',
           transform: 'translateY(-50%)',
-          width: '52px',
-          height: '52px',
+          width: 'clamp(44px, 5vw, 52px)',
+          height: 'clamp(44px, 5vw, 52px)',
           display: 'grid',
           placeItems: 'center',
           border: '1px solid rgba(59,130,246,0.4)',
@@ -158,6 +160,7 @@ export default function ProjectLightbox({
           transition: 'all 0.25s ease',
           fontSize: '20px',
           fontFamily: 'JetBrains Mono, monospace',
+          zIndex: 5,
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.background = '#3b82f6';
@@ -179,11 +182,11 @@ export default function ProjectLightbox({
         aria-label="Next"
         style={{
           position: 'absolute',
-          right: '24px',
+          right: 'clamp(8px, 2vw, 24px)',
           top: '50%',
           transform: 'translateY(-50%)',
-          width: '52px',
-          height: '52px',
+          width: 'clamp(44px, 5vw, 52px)',
+          height: 'clamp(44px, 5vw, 52px)',
           display: 'grid',
           placeItems: 'center',
           border: '1px solid rgba(59,130,246,0.4)',
@@ -193,6 +196,7 @@ export default function ProjectLightbox({
           transition: 'all 0.25s ease',
           fontSize: '20px',
           fontFamily: 'JetBrains Mono, monospace',
+          zIndex: 5,
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.background = '#3b82f6';
@@ -222,15 +226,17 @@ export default function ProjectLightbox({
           animation: 'lb-scale-in 0.3s cubic-bezier(0.16,1,0.3,1)',
         }}
       >
-        {/* Image wrapper with corner brackets */}
-        <div style={{ position: 'relative', maxHeight: 'calc(85vh - 100px)' }}>
+        {/* Image wrapper with corner brackets.
+            maxHeight leaves clear space at top (close button) and bottom (metadata)
+            so on phones the image never overlaps the controls. */}
+        <div style={{ position: 'relative', maxHeight: 'min(68vh, calc(85vh - 120px))' }}>
           <img
             key={index /* force fade-in on swap */}
             src={images[index]}
             alt={project.title}
             style={{
               maxWidth: '100%',
-              maxHeight: 'calc(85vh - 100px)',
+              maxHeight: 'min(68vh, calc(85vh - 120px))',
               objectFit: 'contain',
               display: 'block',
               boxShadow: '0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(59,130,246,0.18)',
@@ -307,9 +313,9 @@ export default function ProjectLightbox({
           </div>
         </div>
 
-        {/* Helper hint */}
+        {/* Helper hint — desktop only (mentions keyboard) */}
         <div
-          className="font-mono uppercase"
+          className="font-mono uppercase hidden md:block"
           style={{
             fontSize: '9px',
             letterSpacing: '0.3em',
@@ -319,6 +325,24 @@ export default function ProjectLightbox({
         >
           ← → NAVIGATE · ESC TO CLOSE
         </div>
+
+        {/* Mobile-only close button — big, obvious, always reachable below the image */}
+        <button
+          onClick={onClose}
+          className="md:hidden font-mono uppercase"
+          style={{
+            marginTop: '8px',
+            padding: '12px 28px',
+            fontSize: '12px',
+            letterSpacing: '0.2em',
+            border: '1px solid rgba(59,130,246,0.5)',
+            background: 'rgba(59,130,246,0.1)',
+            color: '#e5edff',
+            borderRadius: '2px',
+          }}
+        >
+          ✕ CLOSE
+        </button>
       </div>
 
       <style>{`
