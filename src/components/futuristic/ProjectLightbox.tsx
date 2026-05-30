@@ -299,17 +299,37 @@ export default function ProjectLightbox({
               {project.tags}
             </p>
           </div>
-          <div
-            className="font-mono"
-            style={{
-              fontSize: '14px',
-              letterSpacing: '0.15em',
-              color: 'rgba(210,210,210,0.85)',
-              fontVariantNumeric: 'tabular-nums',
-              flexShrink: 0,
-            }}
-          >
-            {project.year}
+          <div className="flex flex-col items-end gap-3 flex-shrink-0">
+            <div
+              className="font-mono"
+              style={{
+                fontSize: '14px',
+                letterSpacing: '0.15em',
+                color: 'rgba(210,210,210,0.85)',
+                fontVariantNumeric: 'tabular-nums',
+              }}
+            >
+              {project.year}
+            </div>
+            <a
+              href="https://www.artstation.com/danhoudebine"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="font-mono uppercase whitespace-nowrap transition-all duration-300"
+              style={{
+                fontSize: '10px',
+                letterSpacing: '0.15em',
+                padding: '8px 16px',
+                border: '1px solid rgba(59,130,246,0.45)',
+                background: 'rgba(59,130,246,0.08)',
+                color: '#e5edff',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = '#3b82f6'; e.currentTarget.style.color = '#04060d'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(59,130,246,0.08)'; e.currentTarget.style.color = '#e5edff'; }}
+            >
+              ↗ ARTSTATION
+            </a>
           </div>
         </div>
 

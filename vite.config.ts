@@ -13,4 +13,16 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    chunkSizeWarningLimit: 1100,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          three: ['three'],
+          gsap: ['gsap'],
+          vendor: ['react', 'react-dom', 'react-router', 'react-i18next', 'i18next', 'lenis'],
+        },
+      },
+    },
+  },
 });
