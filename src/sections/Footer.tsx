@@ -1,120 +1,32 @@
 import { useTranslation } from 'react-i18next';
+import Marquee from '../components/site/Marquee';
 
 export default function Footer() {
-  const { t, i18n } = useTranslation();
-  const currentLang = i18n.language === 'fr' ? 'fr' : 'en';
-
-  const scrollTo = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const toggleLang = () => {
-    const next = currentLang === 'en' ? 'fr' : 'en';
-    i18n.changeLanguage(next);
-  };
+  const { t } = useTranslation();
+  const marqueeItems = t('footer.marquee', { returnObjects: true }) as string[];
 
   return (
-    <footer
-      style={{
-        padding: '60px 4vw 80px',
-        background: 'rgba(4,6,13,0.7)',
-        backdropFilter: 'blur(2px)',
-        WebkitBackdropFilter: 'blur(2px)',
-        borderTop: '1px solid rgba(59,130,246,0.18)',
-        position: 'relative',
-        zIndex: 10,
-      }}
-    >
-      <div className="max-w-[1400px] mx-auto">
-        {/* Top Row */}
-        <div className="flex flex-col md:flex-row justify-between items-start gap-8">
-          {/* Logo */}
-          <div>
-            <div
-              className="font-heading font-bold text-white tracking-[0.15em]"
-              style={{ fontSize: '20px' }}
-            >
-              DAN HOUDEBINE
-            </div>
-            <div
-              className="font-body mt-1"
-              style={{ fontSize: '12px', color: '#d2d2d2' }}
-            >
-              3D ENVIRONMENT ARTIST
-            </div>
-          </div>
+    <footer style={{ background: 'var(--bg)' }}>
+      {/* Display-size skill band */}
+      <Marquee items={marqueeItems} size="big" />
 
-          {/* Quick Links */}
-          <div className="flex gap-6">
-            {(['about', 'work', 'skills', 'contact'] as const).map((section) => (
-              <button
-                key={section}
-                onClick={() => scrollTo(section)}
-                className="font-body transition-colors duration-300 hover:text-[#3b82f6]"
-                style={{ fontSize: '14px', color: '#d2d2d2' }}
-              >
-                {t(`nav.${section}`)}
-              </button>
-            ))}
-          </div>
-
-          {/* Language Toggle */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={toggleLang}
-              className="font-mono transition-opacity duration-300"
-              style={{
-                fontSize: '12px',
-                color: currentLang === 'en' ? '#ffffff' : '#d2d2d2',
-                opacity: currentLang === 'en' ? 1 : 0.5,
-              }}
-            >
-              EN
-            </button>
-            <span className="font-mono" style={{ fontSize: '12px', color: '#d2d2d2', opacity: 0.3 }}>
-              |
-            </span>
-            <button
-              onClick={toggleLang}
-              className="font-mono transition-opacity duration-300"
-              style={{
-                fontSize: '12px',
-                color: currentLang === 'fr' ? '#ffffff' : '#d2d2d2',
-                opacity: currentLang === 'fr' ? 1 : 0.5,
-              }}
-            >
-              FR
-            </button>
-          </div>
-        </div>
-
-        {/* Divider */}
-        <div
-          style={{
-            margin: '40px 0',
-            height: '1px',
-            background: 'rgba(255,255,255,0.08)',
-          }}
-        />
-
-        {/* Bottom Row */}
-        <div className="flex flex-col sm:flex-row justify-between gap-4">
-          <span
-            className="font-mono"
-            style={{ fontSize: '11px', color: 'rgba(210,210,210,0.5)' }}
-          >
-            {t('footer.rights')}
-          </span>
-          <span
-            className="font-mono"
-            style={{ fontSize: '11px', color: 'rgba(210,210,210,0.5)' }}
-          >
-            {t('footer.tagline')}
-          </span>
-        </div>
+      <div
+        className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center"
+        style={{ padding: '28px clamp(20px, 4vw, 48px)' }}
+      >
+        <span className="font-mono text-[10px] tracking-[0.2em]" style={{ color: 'var(--text-faint)' }}>
+          {t('footer.rights')}
+        </span>
+        <span className="font-mono hidden text-[10px] tracking-[0.2em] md:block" style={{ color: 'var(--text-faint)' }}>
+          {t('footer.tagline')} — {t('footer.location')}
+        </span>
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="link-line font-mono -my-3 py-3 text-[10px] tracking-[0.3em] transition-colors duration-300 hover:text-[var(--ember)]"
+          style={{ color: 'var(--text-dim)', minHeight: 44 }}
+        >
+          {t('footer.backToTop')} ↑
+        </button>
       </div>
     </footer>
   );

@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# visual QA screenshots (scripts/shoot.mjs)
+.shots
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -22,3 +25,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# local Claude Code settings
+.claude/settings.local.json

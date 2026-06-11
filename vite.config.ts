@@ -18,7 +18,6 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          three: ['three'],
           gsap: ['gsap'],
           vendor: ['react', 'react-dom', 'react-router', 'react-i18next', 'i18next', 'lenis'],
         },

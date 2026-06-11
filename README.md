@@ -1,73 +1,41 @@
-# React + TypeScript + Vite
+# Dan Houdebine — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Site vitrine de **Dan Houdebine**, Artiste d'Environnement 3D (jeu vidéo) — [danhoudebine.com](https://danhoudebine.com).
 
-Currently, two official plugins are available:
+Direction artistique « cinématique AAA » : noir charbon, accent braise, typographie monumentale (Bebas Neue) relevée d'un italique éditorial (Fraunces).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Sections
 
-## React Compiler
+- **Hero** — reel UE5/Blender en fond, barres letterbox, intro animée
+- **Mondes choisis** — 6 environnements en mise en page éditoriale (parallax) + grille props & études, lightbox plein écran (clavier : `←` `→` `Esc`)
+- **À propos** — bio, stats, parcours, téléchargement des CV (FR/EN)
+- **Réglages graphiques** — les compétences présentées comme un menu de paramètres de jeu (ULTRA / ÉLEVÉ / MOYEN / EN COURS)
+- **Contact** — email, réseaux, horloge de Paris en direct
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Bilingue **FR/EN** (détection navigateur + bascule manuelle), smooth scroll (Lenis), animations GSAP ScrollTrigger, curseur custom, grain cinématique.
 
-## Expanding the ESLint configuration
+## Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+React 19 · TypeScript · Vite 7 · Tailwind CSS 3 · GSAP · Lenis · i18next
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Développement
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # typecheck + build de production
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### QA visuelle (optionnel)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Avec le serveur dev lancé, capture des screenshots de toutes les sections (desktop + mobile) via le Chrome installé :
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+node scripts/shoot.mjs      # → .shots/
+node scripts/interact.mjs   # lightbox, onglets, menu mobile
+node scripts/og.mjs         # régénère public/og-image.jpg
 ```
+
+## Déploiement
+
+GitHub Pages via `.github/workflows/deploy.yml` — domaine custom `danhoudebine.com` (CNAME).

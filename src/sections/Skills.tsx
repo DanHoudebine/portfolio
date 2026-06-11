@@ -2,406 +2,191 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import SectionHeading from '../components/site/SectionHeading';
+import useReveal from '../lib/useReveal';
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface SkillData {
-  name: string;
-  level: number;
-  label?: string;
+interface SkillData { name: string; level: number }
+type Category = 'software' | 'technical' | 'artistic';
+
+const SEGMENTS = 12;
+
+/** Map a 0–1 proficiency onto a game-style quality preset. */
+function presetKey(level: number): 'ultra' | 'high' | 'medium' | 'learning' {
+  if (level >= 0.95) return 'ultra';
+  if (level >= 0.85) return 'high';
+  if (level >= 0.7) return 'medium';
+  return 'learning';
 }
 
-type CategoryType = 'software' | 'technical' | 'artistic';
+const presetColor: Record<string, string> = {
+  ultra: 'var(--ember)',
+  high: 'var(--ember-soft)',
+  medium: 'var(--text-dim)',
+  learning: 'var(--text-faint)',
+};
 
 export default function Skills() {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
-  const [activeCategory, setActiveCategory] = useState<CategoryType>('software');
-  const [animated, setAnimated] = useState(false);
-  const metersRef = useRef<(SVGCircleElement | null)[]>([]);
-  const barsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState<Category>('software');
+  const [inView, setInView] = useState(false);
 
-  const categories: CategoryType[] = ['software', 'technical', 'artistic'];
+  useReveal(sectionRef);
+
+  const categories: Category[] = ['software', 'technical', 'artistic'];
   const categoryLabels = t('skills.categories', { returnObjects: true }) as string[];
+  const software = t('skills.softwareSkills', { returnObjects: true }) as SkillData[];
+  const technical = t('skills.technicalSkills', { returnObjects: true }) as SkillData[];
+  const artistic = t('skills.artisticSkills', { returnObjects: true }) as string[];
 
-  const softwareSkills = t('skills.softwareSkills', { returnObjects: true }) as SkillData[];
-  const technicalSkills = t('skills.technicalSkills', { returnObjects: true }) as SkillData[];
-  const artisticSkills = t('skills.artisticSkills', { returnObjects: true }) as string[];
-
-  // Animate on scroll enter
+  // Fire the segment fill once the panel scrolls into view
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
-
-    // Section entrance
-    const elements = section.querySelectorAll('.reveal-item');
-    gsap.fromTo(
-      elements,
-      { opacity: 0, y: 40 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: 'power2.out',
-        stagger: 0.12,
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 85%',
-          once: true,
-        },
-      }
-    );
-
-    // Trigger skill animations
-    ScrollTrigger.create({
+    const st = ScrollTrigger.create({
       trigger: section,
-      start: 'top 60%',
+      start: 'top 65%',
       once: true,
-      onEnter: () => setAnimated(true),
+      onEnter: () => setInView(true),
     });
+    return () => st.kill();
   }, []);
 
-  // Animate radial meters
+  // Stagger-fill the segments whenever the tab changes (or first reveal)
   useEffect(() => {
-    if (!animated) return;
+    if (!inView || !panelRef.current) return;
+    const segs = panelRef.current.querySelectorAll('.seg-on');
+    gsap.fromTo(
+      segs,
+      { opacity: 0, scaleY: 0.2 },
+      { opacity: 1, scaleY: 1, duration: 0.35, ease: 'power2.out', stagger: 0.012 },
+    );
+  }, [inView, active]);
 
-    if (activeCategory === 'software') {
-      metersRef.current.forEach((circle, i) => {
-        if (!circle) return;
-        const skill = softwareSkills[i];
-        if (!skill) return;
-
-        const radius = 65;
-        const circumference = 2 * Math.PI * radius;
-        const offset = circumference * (1 - skill.level);
-
-        gsap.fromTo(
-          circle,
-          { strokeDashoffset: circumference },
-          {
-            strokeDashoffset: offset,
-            duration: 1.2,
-            ease: 'power2.out',
-            delay: i * 0.1,
-          }
-        );
-      });
-    }
-  }, [animated, activeCategory, softwareSkills]);
-
-  // Animate bars
-  useEffect(() => {
-    if (!animated) return;
-
-    if (activeCategory === 'technical') {
-      barsRef.current.forEach((bar, i) => {
-        if (!bar) return;
-        const skill = technicalSkills[i];
-        if (!skill) return;
-
-        gsap.fromTo(
-          bar,
-          { width: '0%' },
-          {
-            width: `${skill.level * 100}%`,
-            duration: 1,
-            ease: 'power2.out',
-            delay: i * 0.08,
-          }
-        );
-      });
-    }
-  }, [animated, activeCategory, technicalSkills]);
-
-  const handleCategoryChange = (cat: CategoryType) => {
-    setActiveCategory(cat);
-    setAnimated(false);
-    // Re-trigger animation
-    requestAnimationFrame(() => {
-      setAnimated(true);
-    });
-  };
+  const rows = active === 'software' ? software : active === 'technical' ? technical : null;
 
   return (
     <section
       id="skills"
       ref={sectionRef}
-      className="relative overflow-hidden"
-      style={{
-        padding: 'clamp(80px, 14vw, 140px) clamp(20px, 5vw, 60px)',
-        background: 'rgba(4,6,13,0.55)',
-        backdropFilter: 'blur(2px)',
-        WebkitBackdropFilter: 'blur(2px)',
-        zIndex: 10,
-      }}
+      style={{ padding: 'clamp(90px, 12vw, 160px) clamp(20px, 4vw, 48px)', background: 'var(--bg)' }}
     >
-      {/* Background Particles Canvas */}
-      <canvas
-        className="absolute inset-0 pointer-events-none"
-        style={{ zIndex: 0, opacity: 0.3 }}
-        ref={(canvas) => {
-          if (!canvas) return;
-          const ctx = canvas.getContext('2d');
-          if (!ctx) return;
-          canvas.width = canvas.offsetWidth;
-          canvas.height = canvas.offsetHeight;
+      <div className="mx-auto max-w-[1500px]">
+        <SectionHeading num="03" label={t('skills.label')} titleA={t('skills.titleA')} titleB={t('skills.titleB')} />
 
-          const particles: Array<{
-            x: number;
-            y: number;
-            size: number;
-            speedX: number;
-            speedY: number;
-            opacity: number;
-          }> = [];
-
-          for (let i = 0; i < 50; i++) {
-            particles.push({
-              x: Math.random() * canvas.width,
-              y: Math.random() * canvas.height,
-              size: Math.random() * 2 + 0.5,
-              speedX: (Math.random() - 0.5) * 0.3,
-              speedY: (Math.random() - 0.5) * 0.3,
-              opacity: Math.random() * 0.5 + 0.1,
-            });
-          }
-
-          let animId: number;
-          const animate = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach((p) => {
-              p.x += p.speedX;
-              p.y += p.speedY;
-              if (p.x < 0) p.x = canvas.width;
-              if (p.x > canvas.width) p.x = 0;
-              if (p.y < 0) p.y = canvas.height;
-              if (p.y > canvas.height) p.y = 0;
-
-              ctx.beginPath();
-              ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-              ctx.fillStyle = `rgba(59, 130, 246, ${p.opacity})`;
-              ctx.fill();
-            });
-            animId = requestAnimationFrame(animate);
-          };
-          animate();
-
-          return () => cancelAnimationFrame(animId);
-        }}
-      />
-
-      <div className="relative z-10 max-w-[1400px] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Left Column */}
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(280px,420px)_1fr] lg:gap-20">
+          {/* Left — copy */}
           <div>
-            <div className="reveal-item flex items-center gap-4 mb-4">
-              <span className="font-mono" style={{
-                fontSize: '13px', color: '#3b82f6', letterSpacing: '0.15em',
-                fontWeight: 600, textShadow: '0 0 10px rgba(59,130,246,0.4)',
-              }}>03</span>
-              <span className="section-label" style={{ marginBottom: 0 }}>/ {t('skills.label')}</span>
-            </div>
-            <h2
-              className="reveal-item font-heading font-bold text-white"
-              style={{
-                fontSize: 'clamp(2rem, 5vw, 3rem)',
-                marginBottom: '24px',
-                lineHeight: 1.1,
-              }}
-            >
-              {t('skills.heading')}
-            </h2>
-            <p
-              className="reveal-item font-body"
-              style={{
-                fontSize: '18px',
-                lineHeight: 1.7,
-                color: '#d2d2d2',
-                maxWidth: '480px',
-                marginBottom: '16px',
-              }}
-            >
+            <p data-reveal className="font-body text-[15px] leading-relaxed" style={{ color: 'var(--text-dim)' }}>
               {t('skills.description')}
             </p>
-            <p
-              className="reveal-item font-body"
-              style={{
-                fontSize: '15px',
-                lineHeight: 1.6,
-                color: 'rgba(210, 210, 210, 0.7)',
-              }}
-            >
-              {t('skills.secondaryDescription')}
+            <p data-reveal className="font-mono mt-6 text-[11px] leading-relaxed tracking-[0.05em]" style={{ color: 'var(--ember)' }}>
+              {t('skills.hint')}
             </p>
+          </div>
 
-            {/* Category Tabs */}
-            <div className="reveal-item flex flex-wrap gap-3 mt-10">
+          {/* Right — settings panel */}
+          <div data-reveal ref={panelRef} style={{ border: '1px solid var(--line-strong)', background: 'var(--bg-panel)' }}>
+            {/* Panel title bar */}
+            <div
+              className="flex items-center justify-between"
+              style={{ padding: '14px 20px', borderBottom: '1px solid var(--line)' }}
+            >
+              <span className="font-mono text-[10px] tracking-[0.3em]" style={{ color: 'var(--text-dim)' }}>
+                SETTINGS / {t('skills.label')}
+              </span>
+              <span className="flex gap-2">
+                {[0, 1, 2].map((d) => (
+                  <span key={d} style={{ width: 6, height: 6, borderRadius: '50%', background: d === 0 ? 'var(--ember)' : 'var(--line-strong)' }} />
+                ))}
+              </span>
+            </div>
+
+            {/* Tabs */}
+            <div className="flex" style={{ borderBottom: '1px solid var(--line)' }}>
               {categories.map((cat, i) => (
                 <button
                   key={cat}
-                  onClick={() => handleCategoryChange(cat)}
-                  className="font-body font-medium uppercase tracking-[0.08em] transition-all duration-300"
+                  onClick={() => setActive(cat)}
+                  className="font-mono flex-1 text-[10px] tracking-[0.25em] transition-colors duration-300"
                   style={{
-                    fontSize: '14px',
-                    padding: '10px 24px',
-                    border: `1px solid ${activeCategory === cat ? '#3b82f6' : 'rgba(255,255,255,0.2)'}`,
-                    background: activeCategory === cat ? '#3b82f6' : 'transparent',
-                    color: activeCategory === cat ? '#000b1f' : '#d2d2d2',
-                  }}
-                  onMouseEnter={(e) => {
-                    if (activeCategory !== cat) {
-                      e.currentTarget.style.borderColor = '#3b82f6';
-                      e.currentTarget.style.color = '#3b82f6';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (activeCategory !== cat) {
-                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
-                      e.currentTarget.style.color = '#d2d2d2';
-                    }
+                    padding: '14px 8px',
+                    color: active === cat ? '#0a0907' : 'var(--text-dim)',
+                    background: active === cat ? 'var(--ember)' : 'transparent',
+                    borderRight: i < 2 ? '1px solid var(--line)' : undefined,
                   }}
                 >
                   {categoryLabels[i]}
                 </button>
               ))}
             </div>
-          </div>
 
-          {/* Right Column - Skill Visualizations */}
-          <div>
-            {/* Software - Radial Meters */}
-            {activeCategory === 'software' && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6">
-                {softwareSkills.map((skill, i) => {
-                  const radius = 65;
-                  const circumference = 2 * Math.PI * radius;
-                  const offset = circumference * (1 - skill.level);
-
+            {/* Rows */}
+            <div style={{ padding: 'clamp(16px, 2.5vw, 28px)' }}>
+              {rows ? (
+                rows.map((skill) => {
+                  const key = presetKey(skill.level);
+                  const filled = Math.round(skill.level * SEGMENTS);
                   return (
-                    <div key={skill.name} className="flex flex-col items-center">
-                      <div className="relative" style={{ width: 'min(140px, 30vw)', aspectRatio: '1' }}>
-                        <svg
-                          width="100%"
-                          height="100%"
-                          viewBox="0 0 140 140"
-                          className="transform -rotate-90"
-                        >
-                          {/* Track circle */}
-                          <circle
-                            cx="70"
-                            cy="70"
-                            r={radius}
-                            fill="none"
-                            stroke="rgba(255,255,255,0.1)"
-                            strokeWidth="3"
-                          />
-                          {/* Fill circle */}
-                          <circle
-                            ref={(el) => { metersRef.current[i] = el; }}
-                            cx="70"
-                            cy="70"
-                            r={radius}
-                            fill="none"
-                            stroke="#3b82f6"
-                            strokeWidth="3"
-                            strokeLinecap="round"
-                            strokeDasharray={circumference}
-                            strokeDashoffset={animated ? offset : circumference}
-                            style={{ transition: 'none' }}
-                          />
-                        </svg>
-                        {/* Center text */}
-                        <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <div
+                      key={skill.name}
+                      className="grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-2 py-3 sm:grid-cols-[180px_1fr_72px] sm:gap-6"
+                      style={{ borderBottom: '1px solid var(--line)' }}
+                    >
+                      <span className="font-body col-start-1 row-start-1 text-[13px] font-semibold" style={{ color: 'var(--text)' }}>
+                        {skill.name}
+                      </span>
+                      <div className="col-span-2 col-start-1 row-start-2 flex gap-[5px] sm:col-span-1 sm:col-start-2 sm:row-start-1">
+                        {Array.from({ length: SEGMENTS }, (_, s) => (
                           <span
-                            className="font-body font-medium text-white text-center px-1"
-                            style={{ fontSize: 'clamp(9px, 2.4vw, 12px)', lineHeight: 1.15 }}
-                          >
-                            {skill.name}
-                          </span>
-                          <span
-                            className="font-mono mt-1"
-                            style={{ fontSize: 'clamp(13px, 3.6vw, 18px)', color: '#60a5fa' }}
-                          >
-                            {Math.round(skill.level * 100)}%
-                          </span>
-                        </div>
+                            key={s}
+                            className={s < filled ? 'seg-on' : ''}
+                            style={{
+                              height: 16,
+                              flex: 1,
+                              background: s < filled ? presetColor[key] : 'rgba(236,230,218,0.07)',
+                              boxShadow: s < filled && key === 'ultra' ? '0 0 8px rgba(255,122,47,0.45)' : undefined,
+                            }}
+                          />
+                        ))}
                       </div>
                       <span
-                        className="font-body uppercase mt-2"
-                        style={{ fontSize: '11px', color: 'rgba(210,210,210,0.6)' }}
+                        className="font-mono col-start-2 row-start-1 text-right text-[10px] tracking-[0.15em] sm:col-start-3"
+                        style={{ color: presetColor[key] }}
                       >
-                        {skill.label}
+                        {t(`skills.levels.${key}`)}
                       </span>
                     </div>
                   );
-                })}
-              </div>
-            )}
-
-            {/* Technical - Bar Chart */}
-            {activeCategory === 'technical' && (
-              <div className="flex flex-col gap-5">
-                {technicalSkills.map((skill, i) => (
-                  <div key={skill.name} className="flex items-center gap-4">
+                })
+              ) : (
+                /* Artistic — perk chips */
+                <div className="flex flex-wrap gap-3 py-2">
+                  {artistic.map((skill) => (
                     <span
-                      className="font-body font-medium text-white flex-shrink-0"
-                      style={{ fontSize: '14px', width: '180px', textAlign: 'right' }}
+                      key={skill}
+                      className="font-mono text-[11px] tracking-[0.1em] transition-colors duration-300 hover:border-[var(--ember)] hover:text-[var(--ember)]"
+                      style={{ padding: '11px 18px', border: '1px solid var(--line-strong)', color: 'var(--text)' }}
                     >
-                      {skill.name}
+                      ✦ {skill}
                     </span>
-                    <div
-                      className="flex-1 relative"
-                      style={{
-                        height: '32px',
-                        background: 'rgba(255,255,255,0.05)',
-                      }}
-                    >
-                      <div
-                        ref={(el) => { barsRef.current[i] = el; }}
-                        className="h-full flex items-center justify-end"
-                        style={{
-                          background: 'linear-gradient(90deg, #3b82f6, #60a5fa)',
-                          width: animated ? `${skill.level * 100}%` : '0%',
-                          transition: 'none',
-                        }}
-                      >
-                        <span
-                          className="font-body font-semibold px-2"
-                          style={{ fontSize: '12px', color: '#000b1f' }}
-                        >
-                          {Math.round(skill.level * 100)}%
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              )}
 
-            {/* Artistic - List View */}
-            {activeCategory === 'artistic' && (
-              <div className="grid grid-cols-2 gap-4">
-                {artisticSkills.map((skill) => (
-                  <div key={skill} className="flex items-center gap-3">
-                    <div
-                      style={{
-                        width: '8px',
-                        height: '8px',
-                        borderRadius: '50%',
-                        background: '#3b82f6',
-                        flexShrink: 0,
-                      }}
-                    />
-                    <span
-                      className="font-body"
-                      style={{ fontSize: '15px', color: '#d2d2d2' }}
-                    >
-                      {skill}
-                    </span>
-                  </div>
-                ))}
+              {/* Panel footer */}
+              <div className="mt-5 flex items-center justify-between">
+                <span className="font-mono text-[10px] tracking-[0.25em]" style={{ color: 'var(--text-faint)' }}>
+                  PRESET: CUSTOM
+                </span>
+                <span className="font-mono text-[10px] tracking-[0.25em]" style={{ color: 'var(--text-faint)' }}>
+                  VSYNC: ON — 60 FPS
+                </span>
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>

@@ -1,118 +1,148 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTrigger);
+const NAV = ['work', 'about', 'skills', 'contact'] as const;
 
 export default function Header() {
   const { t, i18n } = useTranslation();
-  const headerRef = useRef<HTMLElement>(null);
-  const [activeSection, setActiveSection] = useState('');
-  const currentLang = i18n.language === 'fr' ? 'fr' : 'en';
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  // navigator-detected languages come back as 'fr-FR', 'en-US', …
+  const currentLang = i18n.language?.toLowerCase().startsWith('fr') ? 'fr' : 'en';
 
   useEffect(() => {
-    const header = headerRef.current;
-    if (!header) return;
-
-    gsap.to(header, {
-      opacity: 0.8,
-      scrollTrigger: {
-        trigger: document.body,
-        start: '200px top',
-        end: '201px top',
-        toggleActions: 'play none reverse none',
-      },
-    });
-
-    const sections = ['about', 'work', 'skills', 'contact'];
-    sections.forEach((section) => {
-      ScrollTrigger.create({
-        trigger: `#${section}`,
-        start: 'top center',
-        end: 'bottom center',
-        onEnter: () => setActiveSection(section),
-        onEnterBack: () => setActiveSection(section),
-      });
-    });
-
-    return () => {
-      ScrollTrigger.getAll().forEach((st) => st.kill());
-    };
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    document.documentElement.style.overflow = menuOpen ? 'hidden' : '';
+    return () => { document.documentElement.style.overflow = ''; };
+  }, [menuOpen]);
+
   const scrollTo = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    setMenuOpen(false);
+    // wait for the overlay to release the scroll lock
+    requestAnimationFrame(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    });
   };
 
-  const toggleLang = () => {
-    const next = currentLang === 'en' ? 'fr' : 'en';
-    i18n.changeLanguage(next);
-  };
+  const toggleLang = () => i18n.changeLanguage(currentLang === 'en' ? 'fr' : 'en');
 
   return (
-    <header
-      ref={headerRef}
-      className="fixed top-0 left-0 w-full z-50 px-[4vw] py-8 flex justify-between items-center"
-      style={{ background: 'transparent' }}
-    >
-      {/* Logo */}
-      <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-left">
-        <div className="font-heading font-bold text-white tracking-[0.15em]" style={{ fontSize: '17px' }}>
-          DAN HOUDEBINE
-        </div>
-        <div
-          className="font-body font-normal tracking-[0.2em] mt-1"
-          style={{ fontSize: '11px', color: '#7a8291' }}
+    <>
+      <header
+        className="fixed left-0 top-0 z-[60] flex w-full items-center justify-between transition-all duration-500"
+        style={{
+          padding: scrolled ? '14px clamp(20px, 4vw, 48px)' : '24px clamp(20px, 4vw, 48px)',
+          background: scrolled ? 'rgba(10, 9, 7, 0.82)' : 'transparent',
+          backdropFilter: scrolled ? 'blur(12px)' : 'none',
+          WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
+          borderBottom: scrolled ? '1px solid var(--line)' : '1px solid transparent',
+        }}
+      >
+        {/* Wordmark */}
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="-my-2 py-2 text-left"
+          style={{ minHeight: 44 }}
+          aria-label="Back to top"
         >
-          3D ENVIRONMENT ARTIST
-        </div>
-      </button>
+          <span className="font-display text-[20px] tracking-[0.06em]" style={{ color: 'var(--text)' }}>
+            DAN HOUDEBINE
+            <span style={{ color: 'var(--ember)' }}>.</span>
+          </span>
+        </button>
 
-      {/* Navigation */}
-      <nav className="hidden md:flex items-center gap-8">
-        {(['about', 'work', 'skills', 'contact'] as const).map((section) => (
+        {/* Desktop nav */}
+        <nav className="hidden items-center gap-8 md:flex">
+          {NAV.map((id) => (
+            <button
+              key={id}
+              onClick={() => scrollTo(id)}
+              className="link-line font-mono text-[11px] tracking-[0.25em] transition-colors duration-300 hover:text-[var(--text)]"
+              style={{ color: 'var(--text-dim)' }}
+            >
+              {t(`nav.${id}`)}
+            </button>
+          ))}
           <button
-            key={section}
-            onClick={() => scrollTo(section)}
-            className={`nav-link ${activeSection === section ? 'active' : ''}`}
+            onClick={toggleLang}
+            className="font-mono text-[11px] tracking-[0.2em] transition-colors duration-300"
+            style={{
+              color: 'var(--text)',
+              border: '1px solid var(--line-strong)',
+              padding: '7px 12px',
+            }}
+            aria-label="Switch language"
           >
-            {t(`nav.${section}`)}
+            <span style={{ color: currentLang === 'en' ? 'var(--ember)' : 'var(--text-faint)' }}>EN</span>
+            <span style={{ color: 'var(--text-faint)' }}> / </span>
+            <span style={{ color: currentLang === 'fr' ? 'var(--ember)' : 'var(--text-faint)' }}>FR</span>
+          </button>
+        </nav>
+
+        {/* Mobile burger — generous padding for a ≥44px touch target */}
+        <button
+          className="-m-3 flex flex-col justify-center gap-[6px] p-4 md:hidden"
+          style={{ minWidth: 44, minHeight: 44 }}
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-label="Menu"
+        >
+          <span
+            className="block h-px w-7 transition-transform duration-300"
+            style={{
+              background: 'var(--text)',
+              transform: menuOpen ? 'translateY(3.5px) rotate(45deg)' : 'none',
+            }}
+          />
+          <span
+            className="block h-px w-7 transition-transform duration-300"
+            style={{
+              background: 'var(--text)',
+              transform: menuOpen ? 'translateY(-3.5px) rotate(-45deg)' : 'none',
+            }}
+          />
+        </button>
+      </header>
+
+      {/* Mobile fullscreen menu */}
+      <div
+        className="fixed inset-0 z-[55] flex flex-col justify-center transition-opacity duration-500 md:hidden"
+        style={{
+          background: 'rgba(10, 9, 7, 0.97)',
+          backdropFilter: 'blur(10px)',
+          opacity: menuOpen ? 1 : 0,
+          pointerEvents: menuOpen ? 'auto' : 'none',
+          padding: '0 clamp(24px, 8vw, 60px)',
+        }}
+      >
+        {NAV.map((id, i) => (
+          <button
+            key={id}
+            onClick={() => scrollTo(id)}
+            className="font-display flex items-baseline gap-4 py-3 text-left"
+            style={{ fontSize: 'clamp(2.6rem, 12vw, 4.5rem)', lineHeight: 1, color: 'var(--text)' }}
+          >
+            <span className="font-mono text-[12px]" style={{ color: 'var(--ember)' }}>
+              0{i + 1}
+            </span>
+            {t(`nav.${id}`)}
           </button>
         ))}
-
-        {/* Language Toggle */}
-        <div className="flex items-center gap-2 ml-4">
-          <button
-            onClick={toggleLang}
-            className="font-mono transition-opacity duration-300"
-            style={{
-              fontSize: '12px',
-              color: currentLang === 'en' ? '#ffffff' : '#d2d2d2',
-              opacity: currentLang === 'en' ? 1 : 0.5,
-            }}
-          >
-            EN
-          </button>
-          <span className="font-mono" style={{ fontSize: '12px', color: '#d2d2d2', opacity: 0.3 }}>
-            |
-          </span>
-          <button
-            onClick={toggleLang}
-            className="font-mono transition-opacity duration-300"
-            style={{
-              fontSize: '12px',
-              color: currentLang === 'fr' ? '#ffffff' : '#d2d2d2',
-              opacity: currentLang === 'fr' ? 1 : 0.5,
-            }}
-          >
-            FR
-          </button>
-        </div>
-      </nav>
-    </header>
+        <button
+          onClick={toggleLang}
+          className="font-mono mt-10 w-max text-[12px] tracking-[0.25em]"
+          style={{ color: 'var(--text)', border: '1px solid var(--line-strong)', padding: '10px 16px' }}
+        >
+          <span style={{ color: currentLang === 'en' ? 'var(--ember)' : 'var(--text-faint)' }}>EN</span>
+          <span style={{ color: 'var(--text-faint)' }}> / </span>
+          <span style={{ color: currentLang === 'fr' ? 'var(--ember)' : 'var(--text-faint)' }}>FR</span>
+        </button>
+      </div>
+    </>
   );
 }

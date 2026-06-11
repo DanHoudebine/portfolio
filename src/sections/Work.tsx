@@ -1,252 +1,196 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import SectionHeader from '../components/futuristic/SectionHeader';
-import ProjectLightbox from '../components/futuristic/ProjectLightbox';
+import SectionHeading from '../components/site/SectionHeading';
+import Lightbox from '../components/site/Lightbox';
+import useReveal from '../lib/useReveal';
+import { projects, projectSrc, type Project } from '../data/projects';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Mapped 1:1 with i18n work.projects order (15 projects from real portfolio)
-const projectImages = Array.from(
-  { length: 15 },
-  (_, i) => `${import.meta.env.BASE_URL}projects/project${i + 1}.png`,
-);
+const featured = projects.filter((p) => p.featured);
+const archive = projects.filter((p) => !p.featured);
+const globalIndex = (p: Project) => projects.indexOf(p);
 
 export default function Work() {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
-  const galleryRef = useRef<HTMLDivElement>(null);
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const scrollLeft = useRef(0);
-  const dragMoved = useRef(false);  // distinguishes a click from a drag-release
+  const [lightbox, setLightbox] = useState(-1);
 
-  const [lightboxIndex, setLightboxIndex] = useState<number>(-1);
+  useReveal(sectionRef);
 
-  const projects = t('work.projects', { returnObjects: true }) as Array<{
-    title: string;
-    tags: string;
-    year: string;
-  }>;
-
-  const openLightbox = useCallback((i: number) => setLightboxIndex(i), []);
-  const closeLightbox = useCallback(() => setLightboxIndex(-1), []);
-  const prevImage = useCallback(
-    () => setLightboxIndex((i) => (i <= 0 ? projectImages.length - 1 : i - 1)),
-    [],
-  );
-  const nextImage = useCallback(
-    () => setLightboxIndex((i) => (i >= projectImages.length - 1 ? 0 : i + 1)),
-    [],
-  );
-
+  // Parallax drift inside each featured frame
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
-    // Entrance animations
-    const elements = section.querySelectorAll('.reveal-item');
-    gsap.fromTo(
-      elements,
-      { opacity: 0, y: 40 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: 'power2.out',
-        stagger: 0.12,
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 85%',
-          once: true,
-        },
-      }
-    );
-
-    // 3D perspective effect on scroll
-    const gallery = galleryRef.current;
-    if (!gallery) return;
-
-    const handleScroll = () => {
-      const cards = gallery.querySelectorAll('.project-card');
-      const galleryCenter = gallery.getBoundingClientRect().left + gallery.clientWidth / 2;
-
-      cards.forEach((card) => {
-        const rect = (card as HTMLElement).getBoundingClientRect();
-        const cardCenter = rect.left + rect.width / 2;
-        const dist = (cardCenter - galleryCenter) / gallery.clientWidth;
-        const rotateY = dist * 6;
-        (card as HTMLElement).style.transform = `perspective(1000px) rotateY(${rotateY}deg)`;
+    const ctx = gsap.context(() => {
+      section.querySelectorAll<HTMLElement>('.feature-img').forEach((img) => {
+        gsap.fromTo(
+          img,
+          { yPercent: -8 },
+          {
+            yPercent: 8,
+            ease: 'none',
+            scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true },
+          },
+        );
       });
-    };
+    }, section);
 
-    gallery.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-
-    return () => {
-      gallery.removeEventListener('scroll', handleScroll);
-    };
+    return () => ctx.revert();
   }, []);
-
-  // Drag to scroll
-  const handleMouseDown = (e: React.MouseEvent) => {
-    isDragging.current = true;
-    dragMoved.current = false;
-    startX.current = e.pageX - (galleryRef.current?.offsetLeft || 0);
-    scrollLeft.current = galleryRef.current?.scrollLeft || 0;
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging.current || !galleryRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - (galleryRef.current.offsetLeft || 0);
-    const walk = (x - startX.current) * 1.5;
-    if (Math.abs(walk) > 5) dragMoved.current = true;  // real drag, not a click
-    galleryRef.current.scrollLeft = scrollLeft.current - walk;
-  };
-
-  const handleMouseUp = () => {
-    isDragging.current = false;
-  };
-
-  // Click on a card → open lightbox (unless we were dragging)
-  const handleCardClick = (i: number) => {
-    if (dragMoved.current) {
-      dragMoved.current = false;  // consume the drag flag, don't open lightbox
-      return;
-    }
-    openLightbox(i);
-  };
 
   return (
     <section
       id="work"
       ref={sectionRef}
-      style={{
-        padding: 'clamp(80px, 14vw, 140px) clamp(16px, 4vw, 60px) clamp(60px, 10vw, 100px)',
-        background: 'rgba(4,6,13,0.55)',
-        backdropFilter: 'blur(2px)',
-        WebkitBackdropFilter: 'blur(2px)',
-        position: 'relative',
-        zIndex: 10,
-      }}
+      style={{ padding: 'clamp(90px, 12vw, 160px) clamp(20px, 4vw, 48px)', background: 'var(--bg)' }}
     >
-      <SectionHeader num="02" label={t('work.label')} heading={t('work.heading')} />
+      <div className="mx-auto max-w-[1500px]">
+        <SectionHeading num="01" label={t('work.label')} titleA={t('work.titleA')} titleB={t('work.titleB')} />
 
-      {/* Horizontal Scroll Gallery */}
-      <div
-        ref={galleryRef}
-        className="scrollbar-thin flex gap-6 overflow-x-auto cursor-grab active:cursor-grabbing pb-4"
-        style={{
-          scrollSnapType: 'x mandatory',
-          scrollBehavior: 'smooth',
-          WebkitOverflowScrolling: 'touch',
-          paddingLeft: '0',
-          paddingRight: '4vw',
-        }}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
-      >
-        {projects.map((project, i) => (
-          <div
-            key={i}
-            data-cursor="hover"
-            onClick={() => handleCardClick(i)}
-            className="project-card reveal-item flex-shrink-0 relative overflow-hidden group cursor-pointer"
-            style={{
-              width: 'clamp(280px, 80vw, 900px)',
-              maxWidth: '900px',
-              height: 'clamp(360px, 55vh, 500px)',
-              scrollSnapAlign: 'start',
-              border: '1px solid rgba(255,255,255,0.08)',
-              transition: 'transform 0.3s ease, border-color 0.3s ease',
-              transformOrigin: 'center center',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(59,130,246,0.5)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
-            }}
-          >
-            {/* Background Image */}
-            <img
-              src={projectImages[i]}
-              alt={project.title}
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700"
-              style={{ transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)' }}
-              draggable={false}
-            />
+        {/* Intro + counter */}
+        <div data-reveal className="mb-16 flex flex-wrap items-end justify-between gap-8">
+          <p className="font-body max-w-[520px] text-[15px] leading-relaxed" style={{ color: 'var(--text-dim)' }}>
+            {t('work.intro')}
+          </p>
+          <div className="flex items-baseline gap-3">
+            <span className="font-display" style={{ fontSize: 'clamp(3rem, 6vw, 5rem)', lineHeight: 1, color: 'var(--ember)' }}>
+              {projects.length}
+            </span>
+            <span className="font-mono text-[10px] tracking-[0.35em]" style={{ color: 'var(--text-faint)' }}>
+              {t('work.counter')}
+            </span>
+          </div>
+        </div>
 
-            {/* Gradient Overlay */}
-            <div
-              className="absolute inset-0 transition-opacity duration-500"
-              style={{
-                background: 'linear-gradient(to top, rgba(0,11,31,0.9) 0%, rgba(0,11,31,0.3) 50%, transparent 100%)',
-              }}
-            />
-
-            {/* Hover View Label */}
-            <div
-              className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
-            >
-              <span
-                className="font-body font-medium text-white uppercase tracking-[0.1em]"
-                style={{ fontSize: '14px' }}
+        {/* ——— Featured environments — editorial rows ——— */}
+        <div className="flex flex-col" style={{ gap: 'clamp(70px, 9vw, 130px)' }}>
+          {featured.map((project, i) => {
+            const flipped = i % 2 === 1;
+            return (
+              <article
+                key={project.img}
+                data-reveal
+                className={`group grid cursor-pointer grid-cols-1 items-end gap-6 lg:grid-cols-12 ${flipped ? '' : ''}`}
+                data-cursor="hover"
+                onClick={() => setLightbox(globalIndex(project))}
               >
-                {t('work.viewProject')}
-              </span>
-            </div>
+                {/* Image frame */}
+                <div
+                  className={`relative overflow-hidden lg:col-span-8 ${flipped ? 'lg:order-2' : ''}`}
+                  style={{ aspectRatio: '16/9', border: '1px solid var(--line)' }}
+                >
+                  <img
+                    src={projectSrc(project)}
+                    alt={project.title}
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                    className="feature-img absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                    style={{ scale: '1.18' }}
+                    draggable={false}
+                  />
+                  {/* Hover veil + OPEN tag */}
+                  <div
+                    className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                    style={{ background: 'rgba(10,9,7,0.35)' }}
+                  >
+                    <span
+                      className="font-mono text-[11px] tracking-[0.4em]"
+                      style={{ color: 'var(--text)', border: '1px solid var(--ember)', padding: '12px 22px', background: 'rgba(10,9,7,0.55)' }}
+                    >
+                      {t('work.viewProject')} ↗
+                    </span>
+                  </div>
+                  {/* Frame index chip */}
+                  <span
+                    className="font-mono absolute left-4 top-4 text-[10px] tracking-[0.3em]"
+                    style={{ color: 'var(--text)', background: 'rgba(10,9,7,0.6)', padding: '6px 10px', border: '1px solid var(--line)' }}
+                  >
+                    ENV_{String(i + 1).padStart(2, '0')}
+                  </span>
+                </div>
 
-            {/* Card Content */}
-            <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
-              <div className="flex justify-between items-end">
-                <div>
-                  <h3 className="font-heading font-semibold text-white" style={{ fontSize: '24px' }}>
+                {/* Caption column */}
+                <div className={`lg:col-span-4 ${flipped ? 'lg:order-1 lg:text-right' : ''}`}>
+                  <div
+                    className="font-display text-hollow select-none"
+                    style={{ fontSize: 'clamp(3.4rem, 7vw, 6rem)', lineHeight: 0.9 }}
+                  >
+                    {String(i + 1).padStart(2, '0')}
+                  </div>
+                  <h3
+                    className="font-display mt-3 transition-colors duration-300 group-hover:text-[var(--ember)]"
+                    style={{ fontSize: 'clamp(1.7rem, 3vw, 2.5rem)', lineHeight: 0.95, color: 'var(--text)' }}
+                  >
                     {project.title}
                   </h3>
-                  <p
-                    className="font-mono uppercase tracking-[0.1em] mt-2"
-                    style={{ fontSize: '12px', color: '#3b82f6' }}
-                  >
+                  <div className="font-mono mt-3 text-[10px] tracking-[0.25em]" style={{ color: 'var(--ember)' }}>
                     {project.tags}
-                  </p>
+                  </div>
+                  <div className="font-mono mt-1 text-[11px]" style={{ color: 'var(--text-faint)' }}>
+                    {project.year}
+                  </div>
                 </div>
-                <span
-                  className="font-body text-white flex-shrink-0"
-                  style={{ fontSize: '14px', color: '#d2d2d2' }}
-                >
-                  {project.year}
-                </span>
-              </div>
-            </div>
+              </article>
+            );
+          })}
+        </div>
 
-            {/* Hover scale on image */}
-            <style>{`
-              .group:hover img {
-                transform: scale(1.05);
-              }
-              .group:hover .absolute:first-of-type + div {
-                background: linear-gradient(to top, rgba(0,11,31,0.7) 0%, rgba(0,11,31,0.2) 50%, transparent 100%);
-              }
-            `}</style>
+        {/* ——— Props & studies — archive grid ——— */}
+        <div className="mt-28">
+          <div data-reveal className="mb-10 flex items-center gap-4">
+            <span className="eyebrow">+</span>
+            <span className="eyebrow" style={{ color: 'var(--text-dim)' }}>{t('work.archiveLabel')}</span>
+            <span className="h-px flex-1" style={{ background: 'var(--line)' }} />
           </div>
-        ))}
+
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {archive.map((project) => (
+              <article
+                key={project.img}
+                data-reveal
+                data-cursor="hover"
+                className="group cursor-pointer"
+                onClick={() => setLightbox(globalIndex(project))}
+              >
+                <div className="relative overflow-hidden" style={{ aspectRatio: '16/10', border: '1px solid var(--line)' }}>
+                  <img
+                    src={projectSrc(project)}
+                    alt={project.title}
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full object-cover transition-all duration-700 ease-out group-hover:scale-[1.06]"
+                    style={{ filter: 'saturate(0.85)' }}
+                    onMouseEnter={(e) => { e.currentTarget.style.filter = 'saturate(1)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.filter = 'saturate(0.85)'; }}
+                    draggable={false}
+                  />
+                  <div
+                    className="absolute inset-x-0 bottom-0 h-1/2 opacity-80"
+                    style={{ background: 'linear-gradient(to top, rgba(10,9,7,0.85), transparent)' }}
+                  />
+                </div>
+                <div className="mt-3 flex items-start justify-between gap-4">
+                  <div>
+                    <h3 className="font-body text-[14px] font-semibold transition-colors duration-300 group-hover:text-[var(--ember)]" style={{ color: 'var(--text)' }}>
+                      {project.title}
+                    </h3>
+                    <div className="font-mono mt-1 text-[10px] tracking-[0.2em]" style={{ color: 'var(--text-dim)' }}>
+                      {project.tags}
+                    </div>
+                  </div>
+                  <span className="font-mono shrink-0 text-[11px]" style={{ color: 'var(--text-dim)' }}>
+                    {project.year}
+                  </span>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* Full-screen lightbox modal — opens on card click */}
-      <ProjectLightbox
-        open={lightboxIndex >= 0}
-        index={lightboxIndex}
-        images={projectImages}
-        projects={projects}
-        onClose={closeLightbox}
-        onPrev={prevImage}
-        onNext={nextImage}
-      />
+      <Lightbox index={lightbox} onClose={() => setLightbox(-1)} onNavigate={setLightbox} />
     </section>
   );
 }

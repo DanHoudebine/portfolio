@@ -1,229 +1,165 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import SectionHeader from '../components/futuristic/SectionHeader';
-
-gsap.registerPlugin(ScrollTrigger);
+import SectionHeading from '../components/site/SectionHeading';
+import useReveal from '../lib/useReveal';
 
 interface ExperienceItem { years: string; role: string; place: string }
+interface Stat { value: string; label: string }
 
 export default function About() {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
+  const base = import.meta.env.BASE_URL;
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-    const elements = section.querySelectorAll('.reveal-item');
-    gsap.fromTo(
-      elements,
-      { opacity: 0, y: 40 },
-      {
-        opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.1,
-        scrollTrigger: { trigger: section, start: 'top 85%', once: true },
-      },
-    );
-  }, []);
+  useReveal(sectionRef);
 
   const experience = t('about.experience', { returnObjects: true }) as ExperienceItem[];
-  const base = import.meta.env.BASE_URL;
+  const stats = t('about.stats', { returnObjects: true }) as Stat[];
 
   return (
     <section
       id="about"
       ref={sectionRef}
       style={{
-        padding: 'clamp(80px, 14vw, 140px) clamp(20px, 5vw, 60px)',
-        background: 'rgba(4,6,13,0.55)',
-        backdropFilter: 'blur(2px)',
-        WebkitBackdropFilter: 'blur(2px)',
-        position: 'relative',
-        zIndex: 10,
+        padding: 'clamp(90px, 12vw, 160px) clamp(20px, 4vw, 48px)',
+        background: 'var(--bg-panel)',
+        borderTop: '1px solid var(--line)',
+        borderBottom: '1px solid var(--line)',
       }}
     >
-      <div className="max-w-[1400px] mx-auto">
-        <SectionHeader num="01" label={t('about.label')} heading={t('about.heading')} />
+      <div className="mx-auto max-w-[1500px]">
+        <SectionHeading num="02" label={t('about.label')} titleA={t('about.titleA')} titleB={t('about.titleB')} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-12 lg:gap-16">
-          {/* Left — Portrait */}
-          <div className="reveal-item">
+        <div className="grid grid-cols-1 gap-14 lg:grid-cols-[340px_1fr] lg:gap-20">
+          {/* ——— Portrait ——— */}
+          <div data-reveal>
             <div
-              style={{
-                position: 'relative',
-                width: '100%',
-                aspectRatio: '3/4',
-                overflow: 'hidden',
-                border: '1px solid rgba(59,130,246,0.25)',
-                boxShadow: '0 0 0 1px rgba(59,130,246,0.08), 0 20px 60px rgba(0,0,0,0.4)',
-              }}
+              className="group relative overflow-hidden"
+              style={{ aspectRatio: '3/4', border: '1px solid var(--line-strong)' }}
             >
               <img
                 src={`${base}dan.jpg`}
                 alt="Dan Houdebine"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  filter: 'saturate(0.95) contrast(1.02)',
-                }}
+                className="h-full w-full object-cover transition-all duration-700"
+                style={{ filter: 'grayscale(1) contrast(1.05)' }}
+                onMouseEnter={(e) => { e.currentTarget.style.filter = 'grayscale(0) contrast(1)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.filter = 'grayscale(1) contrast(1.05)'; }}
               />
-              {/* HUD-style frame corners */}
-              <div style={{ position: 'absolute', top: 8, left: 8, width: 16, height: 16,
-                borderTop: '1px solid #3b82f6', borderLeft: '1px solid #3b82f6' }} />
-              <div style={{ position: 'absolute', top: 8, right: 8, width: 16, height: 16,
-                borderTop: '1px solid #3b82f6', borderRight: '1px solid #3b82f6' }} />
-              <div style={{ position: 'absolute', bottom: 8, left: 8, width: 16, height: 16,
-                borderBottom: '1px solid #3b82f6', borderLeft: '1px solid #3b82f6' }} />
-              <div style={{ position: 'absolute', bottom: 8, right: 8, width: 16, height: 16,
-                borderBottom: '1px solid #3b82f6', borderRight: '1px solid #3b82f6' }} />
+              {/* Ember wash */}
+              <div
+                className="pointer-events-none absolute inset-0 transition-opacity duration-700 group-hover:opacity-0"
+                style={{ background: 'linear-gradient(160deg, rgba(255,122,47,0.16), transparent 55%)', mixBlendMode: 'overlay' }}
+              />
+              <span
+                className="font-mono absolute bottom-4 left-4 text-[10px] tracking-[0.3em]"
+                style={{ color: 'var(--text)', background: 'rgba(10,9,7,0.65)', padding: '6px 10px', border: '1px solid var(--line)' }}
+              >
+                PARIS · FR — EST. 2019
+              </span>
             </div>
 
-            {/* Quick stats */}
-            <div className="mt-6 font-mono uppercase" style={{ fontSize: '10px', letterSpacing: '0.25em', color: 'rgba(180,200,230,0.6)' }}>
-              <div className="flex items-center gap-2 mb-2">
-                <span style={{
-                  width: 7, height: 7, borderRadius: '50%',
-                  background: '#3b82f6', boxShadow: '0 0 10px #3b82f6',
-                  animation: 'pulse-dot 2s ease-in-out infinite',
-                }} />
-                <span>AVAILABLE</span>
-              </div>
-              <div style={{ color: 'rgba(180,200,230,0.45)' }}>PARIS · FR</div>
-              <div style={{ color: 'rgba(180,200,230,0.45)', marginTop: 4 }}>EST. 2018</div>
+            {/* Availability */}
+            <div className="mt-5 flex items-center gap-2">
+              <span className="animate-pulse-dot inline-block" style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--ember)' }} />
+              <span className="font-mono text-[10px] tracking-[0.25em]" style={{ color: 'var(--text-dim)' }}>
+                {t('hero.status')}
+              </span>
             </div>
+            <p className="font-body mt-2 text-[12px] leading-relaxed" style={{ color: 'var(--text-faint)' }}>
+              {t('about.availability')}
+            </p>
           </div>
 
-          {/* Right — Bio + Experience + CV */}
+          {/* ——— Bio + stats + experience + CV ——— */}
           <div>
-            {/* Bio */}
             <p
-              className="reveal-item font-body"
-              style={{
-                fontSize: '17px',
-                lineHeight: 1.75,
-                color: '#e5edff',
-                marginBottom: '24px',
-                maxWidth: '720px',
-              }}
+              data-reveal
+              className="font-serif-i max-w-[780px]"
+              style={{ fontSize: 'clamp(1.3rem, 2.4vw, 1.8rem)', lineHeight: 1.45, color: 'var(--text)' }}
             >
               {t('about.bio')}
             </p>
-            <p
-              className="reveal-item font-body"
-              style={{
-                fontSize: '15px',
-                lineHeight: 1.75,
-                color: 'rgba(210, 220, 240, 0.72)',
-                marginBottom: '48px',
-                maxWidth: '720px',
-              }}
-            >
+            <p data-reveal className="font-body mt-6 max-w-[720px] text-[14px] leading-relaxed" style={{ color: 'var(--text-dim)' }}>
               {t('about.bio2')}
             </p>
 
-            {/* Experience timeline */}
-            <div className="reveal-item">
-              <div
-                className="font-mono uppercase"
-                style={{
-                  fontSize: '11px',
-                  letterSpacing: '0.3em',
-                  color: '#3b82f6',
-                  marginBottom: '20px',
-                }}
-              >
-                {t('about.experienceHeading')}
+            {/* Stats */}
+            <div data-reveal className="mt-12 grid grid-cols-2 lg:grid-cols-4" style={{ border: '1px solid var(--line)' }}>
+              {stats.map((stat, i) => (
+                <div
+                  key={i}
+                  className="flex flex-col justify-between p-5"
+                  style={{
+                    borderRight: i % 2 === 0 ? '1px solid var(--line)' : undefined,
+                    borderBottom: i < 2 ? '1px solid var(--line)' : undefined,
+                    minHeight: 120,
+                  }}
+                >
+                  <span className="font-display" style={{ fontSize: 'clamp(1.7rem, 3vw, 2.4rem)', lineHeight: 1, color: 'var(--ember)' }}>
+                    {stat.value}
+                  </span>
+                  <span className="font-mono mt-3 text-[10px] uppercase leading-relaxed tracking-[0.15em]" style={{ color: 'var(--text-dim)' }}>
+                    {stat.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Experience */}
+            <div className="mt-14">
+              <div data-reveal className="mb-6 flex items-center gap-4">
+                <span className="eyebrow">{t('about.experienceHeading')}</span>
+                <span className="h-px flex-1" style={{ background: 'var(--line)' }} />
               </div>
-              <div className="space-y-5" style={{ maxWidth: '720px' }}>
-                {experience.map((exp, i) => (
-                  <div
-                    key={i}
-                    className="reveal-item grid grid-cols-[140px_1fr] gap-6 pb-5"
-                    style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}
-                  >
-                    <div
-                      className="font-mono"
-                      style={{ fontSize: '12px', letterSpacing: '0.12em', color: '#60a5fa', fontVariantNumeric: 'tabular-nums', paddingTop: 2 }}
-                    >
-                      {exp.years}
-                    </div>
-                    <div>
-                      <div className="font-heading font-semibold" style={{ fontSize: '16px', color: '#ffffff' }}>
-                        {exp.role}
-                      </div>
-                      <div className="font-body" style={{ fontSize: '13px', color: 'rgba(210,220,240,0.6)', marginTop: 4 }}>
-                        {exp.place}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              {experience.map((exp, i) => (
+                <div
+                  key={i}
+                  data-reveal
+                  className="group grid grid-cols-1 gap-1 py-5 sm:grid-cols-[150px_1fr_auto] sm:items-baseline sm:gap-6"
+                  style={{ borderBottom: '1px solid var(--line)' }}
+                >
+                  <span className="font-mono text-[11px] tracking-[0.12em]" style={{ color: 'var(--ember)', fontVariantNumeric: 'tabular-nums' }}>
+                    {exp.years}
+                  </span>
+                  <span className="font-display transition-colors duration-300 group-hover:text-[var(--ember-soft)]" style={{ fontSize: 'clamp(1.3rem, 2.2vw, 1.8rem)', lineHeight: 1, color: 'var(--text)' }}>
+                    {exp.role}
+                  </span>
+                  <span className="font-mono text-[11px]" style={{ color: 'var(--text-faint)' }}>
+                    {exp.place}
+                  </span>
+                </div>
+              ))}
             </div>
 
             {/* CV download */}
-            <div className="reveal-item mt-12">
-              <div
-                className="font-mono uppercase"
-                style={{
-                  fontSize: '11px',
-                  letterSpacing: '0.3em',
-                  color: '#3b82f6',
-                  marginBottom: '16px',
-                }}
-              >
-                {t('about.cvHeading')}
-              </div>
-              <div className="flex flex-wrap gap-3">
+            <div data-reveal className="mt-12 flex flex-wrap gap-4">
+              {[
+                { href: `${base}cv/CV_Dan_HoudebineUS_2026.pdf`, label: t('about.cvEnglish') },
+                { href: `${base}cv/CV_Dan_HoudebineFR_2026.pdf`, label: t('about.cvFrench') },
+              ].map((cv) => (
                 <a
-                  href={`${base}cv/CV_Dan_HoudebineUS_2026.pdf`}
+                  key={cv.href}
+                  href={cv.href}
                   download
-                  className="font-body font-medium uppercase tracking-[0.12em] transition-all duration-300"
+                  className="font-mono text-[11px] tracking-[0.25em] transition-all duration-300"
                   style={{
-                    fontSize: '12px',
-                    padding: '14px 24px',
-                    border: '1px solid rgba(59,130,246,0.5)',
-                    color: '#e5edff',
-                    background: 'rgba(59,130,246,0.06)',
+                    padding: '15px 26px',
+                    border: '1px solid var(--ember-deep)',
+                    color: 'var(--text)',
+                    background: 'rgba(255,122,47,0.06)',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = '#3b82f6';
-                    e.currentTarget.style.color = '#04060d';
-                    e.currentTarget.style.borderColor = '#3b82f6';
+                    e.currentTarget.style.background = 'var(--ember)';
+                    e.currentTarget.style.color = '#0a0907';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'rgba(59,130,246,0.06)';
-                    e.currentTarget.style.color = '#e5edff';
-                    e.currentTarget.style.borderColor = 'rgba(59,130,246,0.5)';
+                    e.currentTarget.style.background = 'rgba(255,122,47,0.06)';
+                    e.currentTarget.style.color = 'var(--text)';
                   }}
                 >
-                  ↓ CV · {t('about.cvEnglish')}
+                  ↓ {cv.label}
                 </a>
-                <a
-                  href={`${base}cv/CV_Dan_HoudebineFR_2026.pdf`}
-                  download
-                  className="font-body font-medium uppercase tracking-[0.12em] transition-all duration-300"
-                  style={{
-                    fontSize: '12px',
-                    padding: '14px 24px',
-                    border: '1px solid rgba(59,130,246,0.5)',
-                    color: '#e5edff',
-                    background: 'rgba(59,130,246,0.06)',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = '#3b82f6';
-                    e.currentTarget.style.color = '#04060d';
-                    e.currentTarget.style.borderColor = '#3b82f6';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'rgba(59,130,246,0.06)';
-                    e.currentTarget.style.color = '#e5edff';
-                    e.currentTarget.style.borderColor = 'rgba(59,130,246,0.5)';
-                  }}
-                >
-                  ↓ CV · {t('about.cvFrench')}
-                </a>
-              </div>
+              ))}
             </div>
           </div>
         </div>
