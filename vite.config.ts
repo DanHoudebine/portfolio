@@ -19,6 +19,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           gsap: ['gsap'],
+          three: ['three'],
           vendor: ['react', 'react-dom', 'react-router', 'react-i18next', 'i18next', 'lenis'],
         },
       },

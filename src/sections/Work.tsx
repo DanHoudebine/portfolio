@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SectionHeading from '../components/site/SectionHeading';
 import Lightbox from '../components/site/Lightbox';
+import DistortImage from '../components/site/DistortImage';
 import useReveal from '../lib/useReveal';
 import { projects, projectSrc, type Project } from '../data/projects';
 
@@ -362,18 +363,13 @@ export default function Work() {
                   className="relative overflow-hidden"
                   style={{ aspectRatio: '16/10', border: '1px solid var(--line)' }}
                 >
-                  <img
+                  <DistortImage
                     src={projectSrc(project)}
                     alt={project.title}
-                    loading="lazy"
-                    className="absolute inset-0 h-full w-full object-cover transition-all duration-700 ease-out group-hover:scale-[1.06]"
-                    style={{ filter: 'saturate(0.85)' }}
-                    onMouseEnter={(e) => { e.currentTarget.style.filter = 'saturate(1)'; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.filter = 'saturate(0.85)'; }}
-                    draggable={false}
+                    className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.05]"
                   />
                   <div
-                    className="absolute inset-x-0 bottom-0 h-1/2 opacity-80"
+                    className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 opacity-80"
                     style={{ background: 'linear-gradient(to top, rgba(10,9,7,0.85), transparent)' }}
                   />
                 </div>
