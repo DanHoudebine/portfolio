@@ -7,7 +7,6 @@ import Contact from '../sections/Contact';
 import Footer from '../sections/Footer';
 
 import Preloader from '../components/site/Preloader';
-import Cursor from '../components/site/Cursor';
 import Grain from '../components/site/Grain';
 import Marquee from '../components/site/Marquee';
 import useSmoothScroll from '../lib/useSmoothScroll';
@@ -31,7 +30,6 @@ export default function Home() {
   return (
     <>
       <Preloader />
-      <Cursor />
       <Grain />
       <Header />
       <main>

@@ -36,13 +36,6 @@
     color: var(--text);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
-    cursor: none;
-  }
-
-  /* Restore native cursor on touch / coarse-pointer devices */
-  @media (pointer: coarse) {
-    body { cursor: auto; }
-    a, button { cursor: pointer; }
   }
 
   ::selection {
