@@ -172,7 +172,7 @@ const resources = {
         titleB: 'graphiques',
         description:
           "Plus de 6 ans d'expérience professionnelle dans l'art environnemental 3D, du sculptage de terrains à l'éclairage des scènes finales — actuellement formateur 3D UE5 à la 3IS Paris.",
-        hint: '// Fiche technique présentée comme un menu de réglages graphiques. La plupart des presets sont au maximum.',
+        hint: '// Fiche technique présentée comme un menu de réglages graphiques.',
         categories: ['LOGICIELS', 'TECHNIQUE', 'ARTISTIQUE'],
         levels: { ultra: 'ULTRA', high: 'ÉLEVÉ', medium: 'MOYEN', learning: 'EN COURS' },
         softwareSkills: [
