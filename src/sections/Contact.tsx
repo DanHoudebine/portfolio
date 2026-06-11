@@ -1,7 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SectionHeading from '../components/site/SectionHeading';
 import useReveal from '../lib/useReveal';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const EMAIL = 'danhoudebine@gmail.com';
 
@@ -14,6 +18,7 @@ const SOCIALS = [
 export default function Contact() {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
+  const emailRef = useRef<HTMLAnchorElement>(null);
   const [time, setTime] = useState('');
 
   useReveal(sectionRef);
@@ -23,15 +28,61 @@ export default function Contact() {
     const update = () =>
       setTime(
         new Intl.DateTimeFormat('fr-FR', {
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
+          hour: '2-digit', minute: '2-digit', second: '2-digit',
           timeZone: 'Europe/Paris',
         }).format(new Date()),
       );
     update();
     const id = setInterval(update, 1000);
     return () => clearInterval(id);
+  }, []);
+
+  // Email char-by-char fade-in stagger on scroll
+  useEffect(() => {
+    const el = emailRef.current;
+    if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const chars = el.querySelectorAll<HTMLElement>('.email-char');
+
+    const tl = gsap.timeline({
+      scrollTrigger: { trigger: el, start: 'top 82%', once: true },
+    });
+
+    tl.fromTo(chars,
+      { opacity: 0, y: 14 },
+      { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out', stagger: 0.028 },
+    );
+
+    return () => { tl.scrollTrigger?.kill(); tl.kill(); };
+  }, []);
+
+  // Magnetic hover on email link
+  useEffect(() => {
+    const el = emailRef.current;
+    if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const qx = gsap.quickTo(el, 'x', { duration: 0.5, ease: 'power2.out' });
+    const qy = gsap.quickTo(el, 'y', { duration: 0.5, ease: 'power2.out' });
+
+    const onMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dx = (e.clientX - cx) / (rect.width / 2);
+      const dy = (e.clientY - cy) / (rect.height / 2);
+      qx(dx * 14);
+      qy(dy * 10);
+    };
+    const onLeave = () => { qx(0); qy(0); };
+
+    el.addEventListener('mousemove', onMove);
+    el.addEventListener('mouseleave', onLeave);
+    return () => {
+      el.removeEventListener('mousemove', onMove);
+      el.removeEventListener('mouseleave', onLeave);
+    };
   }, []);
 
   return (
@@ -55,7 +106,7 @@ export default function Contact() {
             </p>
 
             <a
-              data-reveal
+              ref={emailRef}
               href={`mailto:${EMAIL}`}
               className="group block w-max max-w-full"
               data-cursor="hover"
@@ -63,13 +114,24 @@ export default function Contact() {
               <span className="font-mono text-[10px] tracking-[0.4em]" style={{ color: 'var(--ember)' }}>
                 {t('contact.emailCta')} ↗
               </span>
-              <span
-                className="font-display mt-2 block break-all transition-colors duration-300 group-hover:text-[var(--ember)]"
+              <div
+                className="font-display mt-2 transition-colors duration-300 group-hover:text-[var(--ember)]"
                 style={{ fontSize: 'clamp(1.6rem, 4.6vw, 4.4rem)', lineHeight: 1, color: 'var(--text)' }}
               >
-                {EMAIL}
-              </span>
-              <span className="mt-3 block h-px w-full origin-left transition-transform duration-500 group-hover:scale-x-100" style={{ background: 'var(--ember)', transform: 'scaleX(0.25)' }} />
+                {EMAIL.split('').map((char, i) => (
+                  <span
+                    key={i}
+                    className="email-char inline-block"
+                    style={{ display: 'inline-block', opacity: 0 }}
+                  >
+                    {char === '@' ? '@' : char}
+                  </span>
+                ))}
+              </div>
+              <span
+                className="mt-3 block h-px w-full origin-left transition-transform duration-500 group-hover:scale-x-100"
+                style={{ background: 'var(--ember)', transform: 'scaleX(0.2)' }}
+              />
             </a>
           </div>
 
@@ -89,10 +151,16 @@ export default function Contact() {
                     className="group flex items-center justify-between py-4 transition-colors duration-300"
                     style={{ borderBottom: '1px solid var(--line)' }}
                   >
-                    <span className="font-body text-[14px] font-semibold transition-colors duration-300 group-hover:text-[var(--ember)]" style={{ color: 'var(--text)' }}>
+                    <span
+                      className="font-body text-[14px] font-semibold transition-colors duration-300 group-hover:text-[var(--ember)]"
+                      style={{ color: 'var(--text)' }}
+                    >
                       {social.name}
                     </span>
-                    <span className="font-mono text-[12px] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" style={{ color: 'var(--ember)' }}>
+                    <span
+                      className="font-mono text-[12px] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                      style={{ color: 'var(--ember)' }}
+                    >
                       ↗
                     </span>
                   </a>
@@ -104,7 +172,10 @@ export default function Contact() {
               <div className="eyebrow mb-3" style={{ color: 'var(--text-dim)' }}>
                 {t('contact.localTime')}
               </div>
-              <div className="font-display flex items-baseline gap-3" style={{ fontSize: '2.2rem', lineHeight: 1, color: 'var(--text)' }}>
+              <div
+                className="font-display flex items-baseline gap-3"
+                style={{ fontSize: '2.2rem', lineHeight: 1, color: 'var(--text)' }}
+              >
                 {time || '--:--:--'}
                 <span className="font-mono text-[10px] tracking-[0.25em]" style={{ color: 'var(--text-faint)' }}>
                   PARIS — UTC+1

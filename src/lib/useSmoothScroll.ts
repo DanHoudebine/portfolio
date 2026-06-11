@@ -1,38 +1,38 @@
 import { useEffect } from 'react';
 import Lenis from 'lenis';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Mount Lenis smooth scroll for the whole document.
- * Returns nothing — usage:  useSmoothScroll();
- *
- * Cooperates with GSAP ScrollTrigger by calling ScrollTrigger.update()
- * on each Lenis tick (if ScrollTrigger is loaded).
+ * Mount Lenis smooth scroll driven by GSAP ticker.
+ * Lenis velocity is broadcast as a CSS variable (--sv) on <html>
+ * for components that want velocity-based transforms.
  */
 export default function useSmoothScroll() {
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.15,
+      duration: 1.2,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      wheelMultiplier: 1,
+      wheelMultiplier: 0.9,
       touchMultiplier: 1.4,
     });
 
-    let raf = 0;
-    const tick = (time: number) => {
-      lenis.raf(time);
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
+    const clampVel = gsap.utils.clamp(-25, 25);
 
-    // Inform GSAP ScrollTrigger of Lenis scroll updates, if loaded
-    type STModule = { update: () => void };
-    type STGlobal = { ScrollTrigger?: STModule };
-    const st = (window as unknown as STGlobal).ScrollTrigger;
-    if (st) lenis.on('scroll', () => st.update());
+    lenis.on('scroll', (e: { velocity: number }) => {
+      ScrollTrigger.update();
+      // Broadcast velocity for scroll-velocity-skew consumers
+      document.documentElement.style.setProperty('--sv', String(clampVel(e.velocity)));
+    });
+
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
-      cancelAnimationFrame(raf);
+      gsap.ticker.remove((time) => lenis.raf(time * 1000));
       lenis.destroy();
     };
   }, []);

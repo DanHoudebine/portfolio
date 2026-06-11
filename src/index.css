@@ -17,6 +17,9 @@
     --ember-soft: #ffb37d;
     --ember-deep: #b34a12;
     --radius: 0px;
+
+    /* Scroll velocity (set by useSmoothScroll, read by skew consumers) */
+    --sv: 0;
   }
 
   html {
@@ -62,7 +65,7 @@
     font-family: 'JetBrains Mono', monospace;
   }
 
-  /* Section eyebrow — "02 / SELECTED WORKS" */
+  /* Section eyebrow */
   .eyebrow {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
@@ -111,27 +114,55 @@
     transform: scaleX(1);
     transform-origin: left;
   }
+
+  /* Perspective card */
+  .card-3d {
+    transform-style: preserve-3d;
+    perspective: 800px;
+  }
 }
 
 @layer utilities {
   /* Infinite marquee */
   @keyframes marquee-x {
     from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+    to   { transform: translateX(-50%); }
   }
   .animate-marquee {
     animation: marquee-x 36s linear infinite;
   }
 
+  /* Availability dot pulse */
   @keyframes pulse-dot {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.25; }
+    50%       { opacity: 0.25; }
   }
   .animate-pulse-dot {
     animation: pulse-dot 2s ease-in-out infinite;
   }
 
+  /* Scroll cue line drop */
+  @keyframes scroll-line {
+    0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+    50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+    100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
+  }
+  .animate-scroll-line {
+    animation: scroll-line 1.8s ease-in-out infinite;
+  }
+
+  /* Subtle float for decorative elements */
+  @keyframes float-y {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-10px); }
+  }
+  .animate-float {
+    animation: float-y 5s ease-in-out infinite;
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .animate-marquee { animation: none; }
+    .animate-marquee,
+    .animate-scroll-line,
+    .animate-float { animation: none; }
   }
 }
