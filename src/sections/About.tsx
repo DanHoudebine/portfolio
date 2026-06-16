@@ -227,7 +227,7 @@ export default function About() {
                   key={cv.href}
                   href={cv.href}
                   download
-                  className="cv-btn font-mono text-[11px] tracking-[0.25em] transition-all duration-300"
+                  className="cv-btn btn-shine font-mono text-[11px] tracking-[0.25em] transition-all duration-300"
                   style={{ padding: '15px 26px', border: '1px solid var(--ember-deep)', color: 'var(--text)', background: 'rgba(255,122,47,0.06)' }}
                   onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--ember)'; e.currentTarget.style.color = '#0a0907'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,122,47,0.06)'; e.currentTarget.style.color = 'var(--text)'; }}

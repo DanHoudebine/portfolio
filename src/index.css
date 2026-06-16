@@ -42,6 +42,37 @@
     background-color: var(--ember);
     color: var(--bg);
   }
+
+  /* Accessibility: visible focus ring for keyboard users only */
+  :focus-visible {
+    outline: 2px solid var(--ember);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+  /* Mouse users don't get the ring (focus, not focus-visible) */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Skip-to-content link — off-screen until focused */
+  .skip-link {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 100;
+    padding: 12px 18px;
+    background: var(--ember);
+    color: #0a0907;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transform: translateY(-150%);
+    transition: transform 0.25s ease-out;
+  }
+  .skip-link:focus {
+    transform: translateY(0);
+  }
 }
 
 @layer components {
@@ -119,6 +150,36 @@
   .card-3d {
     transform-style: preserve-3d;
     perspective: 800px;
+  }
+
+  /* Light-sweep on hover — a diagonal sheen crosses the element once */
+  .btn-shine {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-shine::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+      100deg,
+      transparent,
+      rgba(255, 234, 214, 0.35),
+      transparent
+    );
+    transform: skewX(-18deg);
+    transition: left 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+  .btn-shine:hover::before {
+    left: 130%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn-shine::before { display: none; }
   }
 }
 

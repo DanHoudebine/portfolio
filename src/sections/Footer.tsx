@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import Marquee from '../components/site/Marquee';
+import Magnetic from '../components/site/Magnetic';
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -20,13 +21,15 @@ export default function Footer() {
         <span className="font-mono hidden text-[10px] tracking-[0.2em] md:block" style={{ color: 'var(--text-faint)' }}>
           {t('footer.tagline')} — {t('footer.location')}
         </span>
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="link-line font-mono -my-3 py-3 text-[10px] tracking-[0.3em] transition-colors duration-300 hover:text-[var(--ember)]"
-          style={{ color: 'var(--text-dim)', minHeight: 44 }}
-        >
-          {t('footer.backToTop')} ↑
-        </button>
+        <Magnetic strength={0.45}>
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="link-line font-mono -my-3 py-3 text-[10px] tracking-[0.3em] transition-colors duration-300 hover:text-[var(--ember)]"
+            style={{ color: 'var(--text-dim)', minHeight: 44 }}
+          >
+            <span data-magnetic-text style={{ display: 'inline-block' }}>{t('footer.backToTop')} ↑</span>
+          </button>
+        </Magnetic>
       </div>
     </footer>
   );

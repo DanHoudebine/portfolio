@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import ScrambleText from '../components/site/ScrambleText';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -158,7 +159,7 @@ export default function Hero() {
         <div className="mt-6 flex flex-wrap items-end justify-between gap-6">
           <div>
             <div className="hero-fade font-mono text-[12px] tracking-[0.3em] opacity-0" style={{ color: 'var(--text)' }}>
-              {t('hero.role').toUpperCase()}
+              <ScrambleText text={t('hero.role').toUpperCase()} delay={3000} />
             </div>
             <div
               className="hero-fade font-serif-i mt-2 opacity-0"

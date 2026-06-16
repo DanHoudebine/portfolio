@@ -11,6 +11,9 @@ const resources = {
         skills: 'SKILLS',
         contact: 'CONTACT',
       },
+      a11y: {
+        skip: 'Skip to content',
+      },
       hero: {
         role: 'Environment Artist — 3D',
         kicker: 'PORTFOLIO — 2026',
@@ -121,6 +124,9 @@ const resources = {
         about: 'À PROPOS',
         skills: 'COMPÉTENCES',
         contact: 'CONTACT',
+      },
+      a11y: {
+        skip: 'Aller au contenu',
       },
       hero: {
         role: "Artiste d'Environnement — 3D",

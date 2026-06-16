@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import Header from '../sections/Header';
 import Hero from '../sections/Hero';
 import Work from '../sections/Work';
@@ -9,6 +10,8 @@ import Footer from '../sections/Footer';
 import Preloader from '../components/site/Preloader';
 import Grain from '../components/site/Grain';
 import Marquee from '../components/site/Marquee';
+import ScrollProgress from '../components/site/ScrollProgress';
+import AmbientGlow from '../components/site/AmbientGlow';
 import useSmoothScroll from '../lib/useSmoothScroll';
 
 const TOOLS = [
@@ -25,14 +28,20 @@ const TOOLS = [
 ];
 
 export default function Home() {
+  const { t } = useTranslation();
   useSmoothScroll();
 
   return (
     <>
+      {/* Accessibility: skip straight to content for keyboard / SR users */}
+      <a href="#main" className="skip-link">{t('a11y.skip')}</a>
+
       <Preloader />
+      <ScrollProgress />
+      <AmbientGlow />
       <Grain />
       <Header />
-      <main>
+      <main id="main" className="relative z-10">
         <Hero />
         <Marquee items={TOOLS} />
         <Work />

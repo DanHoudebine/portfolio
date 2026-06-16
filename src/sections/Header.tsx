@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Magnetic from '../components/site/Magnetic';
 
 const NAV = ['work', 'about', 'skills', 'contact'] as const;
 
@@ -60,29 +61,32 @@ export default function Header() {
         {/* Desktop nav */}
         <nav className="hidden items-center gap-8 md:flex">
           {NAV.map((id) => (
-            <button
-              key={id}
-              onClick={() => scrollTo(id)}
-              className="link-line font-mono text-[11px] tracking-[0.25em] transition-colors duration-300 hover:text-[var(--text)]"
-              style={{ color: 'var(--text-dim)' }}
-            >
-              {t(`nav.${id}`)}
-            </button>
+            <Magnetic key={id} strength={0.4}>
+              <button
+                onClick={() => scrollTo(id)}
+                className="link-line font-mono text-[11px] tracking-[0.25em] transition-colors duration-300 hover:text-[var(--text)]"
+                style={{ color: 'var(--text-dim)' }}
+              >
+                <span data-magnetic-text style={{ display: 'inline-block' }}>{t(`nav.${id}`)}</span>
+              </button>
+            </Magnetic>
           ))}
-          <button
-            onClick={toggleLang}
-            className="font-mono text-[11px] tracking-[0.2em] transition-colors duration-300"
-            style={{
-              color: 'var(--text)',
-              border: '1px solid var(--line-strong)',
-              padding: '7px 12px',
-            }}
-            aria-label="Switch language"
-          >
-            <span style={{ color: currentLang === 'en' ? 'var(--ember)' : 'var(--text-faint)' }}>EN</span>
-            <span style={{ color: 'var(--text-faint)' }}> / </span>
-            <span style={{ color: currentLang === 'fr' ? 'var(--ember)' : 'var(--text-faint)' }}>FR</span>
-          </button>
+          <Magnetic strength={0.4}>
+            <button
+              onClick={toggleLang}
+              className="btn-shine font-mono text-[11px] tracking-[0.2em] transition-colors duration-300"
+              style={{
+                color: 'var(--text)',
+                border: '1px solid var(--line-strong)',
+                padding: '7px 12px',
+              }}
+              aria-label="Switch language"
+            >
+              <span style={{ color: currentLang === 'en' ? 'var(--ember)' : 'var(--text-faint)' }}>EN</span>
+              <span style={{ color: 'var(--text-faint)' }}> / </span>
+              <span style={{ color: currentLang === 'fr' ? 'var(--ember)' : 'var(--text-faint)' }}>FR</span>
+            </button>
+          </Magnetic>
         </nav>
 
         {/* Mobile burger — generous padding for a ≥44px touch target */}
