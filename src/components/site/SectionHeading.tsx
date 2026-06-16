@@ -12,8 +12,8 @@ interface SectionHeadingProps {
 }
 
 /**
- * Shared section header with Awwwards-style word-by-word clip reveal.
- * Manages its own GSAP animation — no data-reveal needed.
+ * Section header: word-by-word clip reveal + brief RGB glitch flicker
+ * after the words land. Manages its own GSAP animation.
  */
 export default function SectionHeading({ num, label, titleA, titleB }: SectionHeadingProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -21,33 +21,46 @@ export default function SectionHeading({ num, label, titleA, titleB }: SectionHe
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      el.style.opacity = '1';
-      return;
-    }
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) { el.style.opacity = '1'; return; }
 
     const eyebrow = el.querySelector<HTMLElement>('.sh-eyebrow');
-    const words = el.querySelectorAll<HTMLElement>('.sh-word');
-    const line = el.querySelector<HTMLElement>('.sh-line');
+    const words   = el.querySelectorAll<HTMLElement>('.sh-word');
+    const line    = el.querySelector<HTMLElement>('.sh-line');
 
     const tl = gsap.timeline({
-      scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+      scrollTrigger: { trigger: el, start: 'top 86%', once: true },
     });
 
+    // Line sweep
     tl.fromTo(line,
       { scaleX: 0 },
       { scaleX: 1, duration: 0.6, ease: 'power3.inOut' },
-    )
-      .fromTo(eyebrow,
-        { opacity: 0, x: -16 },
-        { opacity: 1, x: 0, duration: 0.55, ease: 'power3.out' },
-        '-=0.3',
-      )
-      .fromTo(words,
-        { yPercent: 115, rotateZ: 1.5 },
-        { yPercent: 0, rotateZ: 0, duration: 1.05, ease: 'power4.out', stagger: 0.055 },
-        '-=0.25',
-      );
+    );
+    // Eyebrow slide
+    tl.fromTo(eyebrow,
+      { opacity: 0, x: -16 },
+      { opacity: 1, x: 0, duration: 0.55, ease: 'power3.out' },
+      '-=0.3',
+    );
+    // Words rise
+    tl.fromTo(words,
+      { yPercent: 115, rotateZ: 1.5 },
+      { yPercent: 0, rotateZ: 0, duration: 1.05, ease: 'power4.out', stagger: 0.055 },
+      '-=0.25',
+    );
+    // RGB glitch flicker — fires once after the reveal lands
+    tl.to(words, {
+      textShadow: '-3px 0 rgba(255,80,40,0.75), 3px 0 rgba(0,220,255,0.55)',
+      x: 3,
+      duration: 0.04,
+      ease: 'none',
+      stagger: 0.015,
+      repeat: 3,
+      yoyo: true,
+    }, '+=0.05');
+    tl.set(words, { textShadow: 'none', x: 0 });
 
     return () => { tl.scrollTrigger?.kill(); tl.kill(); };
   }, [titleA, titleB]);
@@ -81,7 +94,13 @@ export default function SectionHeading({ num, label, titleA, titleB }: SectionHe
         <span style={{ display: 'inline-block', overflow: 'hidden', verticalAlign: 'bottom' }}>
           <span
             className="sh-word font-serif-i"
-            style={{ display: 'inline-block', color: 'var(--ember)', fontSize: '0.82em', letterSpacing: 0, transform: 'translateY(115%)' }}
+            style={{
+              display: 'inline-block',
+              color: 'var(--ember)',
+              fontSize: '0.82em',
+              letterSpacing: 0,
+              transform: 'translateY(115%)',
+            }}
           >
             {titleB}
           </span>

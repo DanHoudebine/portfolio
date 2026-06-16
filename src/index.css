@@ -18,7 +18,7 @@
     --ember-deep: #b34a12;
     --radius: 0px;
 
-    /* Scroll velocity (set by useSmoothScroll, read by skew consumers) */
+    /* Scroll velocity (set by useSmoothScroll, read by skew/marquee consumers) */
     --sv: 0;
   }
 
@@ -38,27 +38,26 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* Cursor hidden for all elements — restored by Cursor.tsx on coarse-pointer */
+  @media (pointer: fine) {
+    * { cursor: none !important; }
+  }
+
   ::selection {
     background-color: var(--ember);
     color: var(--bg);
   }
 
-  /* Accessibility: visible focus ring for keyboard users only */
   :focus-visible {
     outline: 2px solid var(--ember);
     outline-offset: 3px;
     border-radius: 1px;
   }
-  /* Mouse users don't get the ring (focus, not focus-visible) */
-  :focus:not(:focus-visible) {
-    outline: none;
-  }
+  :focus:not(:focus-visible) { outline: none; }
 
-  /* Skip-to-content link — off-screen until focused */
   .skip-link {
     position: fixed;
-    top: 12px;
-    left: 12px;
+    top: 12px; left: 12px;
     z-index: 100;
     padding: 12px 18px;
     background: var(--ember);
@@ -70,9 +69,7 @@
     transform: translateY(-150%);
     transition: transform 0.25s ease-out;
   }
-  .skip-link:focus {
-    transform: translateY(0);
-  }
+  .skip-link:focus { transform: translateY(0); }
 }
 
 @layer components {
@@ -81,22 +78,14 @@
     font-weight: 400;
     letter-spacing: 0.01em;
   }
-
   .font-serif-i {
     font-family: 'Fraunces', serif;
     font-style: italic;
     font-weight: 400;
   }
+  .font-body { font-family: 'Manrope', sans-serif; }
+  .font-mono  { font-family: 'JetBrains Mono', monospace; }
 
-  .font-body {
-    font-family: 'Manrope', sans-serif;
-  }
-
-  .font-mono {
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  /* Section eyebrow */
   .eyebrow {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
@@ -105,7 +94,6 @@
     color: var(--ember);
   }
 
-  /* Monumental display heading */
   .display-xl {
     font-family: 'Bebas Neue', sans-serif;
     font-size: clamp(3.4rem, 9.5vw, 8.5rem);
@@ -114,28 +102,21 @@
     color: var(--text);
   }
 
-  /* Hollow / outlined type */
   .text-hollow {
     color: transparent;
     -webkit-text-stroke: 1px rgba(236, 230, 218, 0.28);
   }
-
   .text-hollow-ember {
     color: transparent;
     -webkit-text-stroke: 1px rgba(255, 122, 47, 0.55);
   }
 
-  /* Animated underline link */
-  .link-line {
-    position: relative;
-  }
+  .link-line { position: relative; }
   .link-line::after {
     content: '';
     position: absolute;
-    left: 0;
-    bottom: -3px;
-    width: 100%;
-    height: 1px;
+    left: 0; bottom: -3px;
+    width: 100%; height: 1px;
     background: var(--ember);
     transform: scaleX(0);
     transform-origin: right;
@@ -146,13 +127,12 @@
     transform-origin: left;
   }
 
-  /* Perspective card */
   .card-3d {
     transform-style: preserve-3d;
     perspective: 800px;
   }
 
-  /* Light-sweep on hover — a diagonal sheen crosses the element once */
+  /* Diagonal light-sweep on hover */
   .btn-shine {
     position: relative;
     overflow: hidden;
@@ -160,70 +140,124 @@
   .btn-shine::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: -120%;
-    width: 60%;
-    height: 100%;
-    background: linear-gradient(
-      100deg,
-      transparent,
-      rgba(255, 234, 214, 0.35),
-      transparent
-    );
+    top: 0; left: -120%;
+    width: 60%; height: 100%;
+    background: linear-gradient(100deg, transparent, rgba(255, 234, 214, 0.35), transparent);
     transform: skewX(-18deg);
     transition: left 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     pointer-events: none;
   }
-  .btn-shine:hover::before {
-    left: 130%;
+  .btn-shine:hover::before { left: 130%; }
+
+  /* RGB split glitch — used on headings entering view */
+  .text-glitch {
+    position: relative;
+    display: inline-block;
+  }
+  .text-glitch::before,
+  .text-glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .text-glitch::before {
+    color: rgba(255, 80, 40, 0.75);
+    clip-path: inset(25% 0 50% 0);
+  }
+  .text-glitch::after {
+    color: rgba(0, 220, 255, 0.55);
+    clip-path: inset(55% 0 20% 0);
+  }
+  .text-glitch.glitch-active::before {
+    animation: glitch-before 0.45s steps(1) forwards;
+  }
+  .text-glitch.glitch-active::after {
+    animation: glitch-after 0.45s steps(1) forwards;
   }
 
   @media (prefers-reduced-motion: reduce) {
     .btn-shine::before { display: none; }
+    .text-glitch.glitch-active::before,
+    .text-glitch.glitch-active::after { animation: none; }
   }
 }
 
 @layer utilities {
-  /* Infinite marquee */
+  /* Infinite marquee (CSS fallback — GSAP takes over when JS loads) */
   @keyframes marquee-x {
     from { transform: translateX(0); }
     to   { transform: translateX(-50%); }
   }
-  .animate-marquee {
-    animation: marquee-x 36s linear infinite;
-  }
+  .animate-marquee { animation: marquee-x 36s linear infinite; }
 
   /* Availability dot pulse */
   @keyframes pulse-dot {
     0%, 100% { opacity: 1; }
     50%       { opacity: 0.25; }
   }
-  .animate-pulse-dot {
-    animation: pulse-dot 2s ease-in-out infinite;
-  }
+  .animate-pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
 
   /* Scroll cue line drop */
   @keyframes scroll-line {
-    0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
-    50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+    0%   { transform: scaleY(0); transform-origin: top;    opacity: 1; }
+    50%  { transform: scaleY(1); transform-origin: top;    opacity: 1; }
     100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
   }
-  .animate-scroll-line {
-    animation: scroll-line 1.8s ease-in-out infinite;
-  }
+  .animate-scroll-line { animation: scroll-line 1.8s ease-in-out infinite; }
 
   /* Subtle float for decorative elements */
   @keyframes float-y {
     0%, 100% { transform: translateY(0); }
     50%       { transform: translateY(-10px); }
   }
-  .animate-float {
-    animation: float-y 5s ease-in-out infinite;
+  .animate-float { animation: float-y 5s ease-in-out infinite; }
+
+  /* RGB split — before pseudo */
+  @keyframes glitch-before {
+    0%  { opacity: 0; transform: none; }
+    10% { opacity: 1; transform: translateX(-4px); clip-path: inset(15% 0 60% 0); }
+    20% { transform: translateX(4px);  clip-path: inset(55% 0 10% 0); }
+    30% { transform: translateX(-2px); clip-path: inset(30% 0 40% 0); }
+    40% { transform: translateX(3px);  clip-path: inset(70% 0 5%  0); }
+    50% { transform: translateX(-3px); clip-path: inset(5%  0 70% 0); }
+    80% { opacity: 1; }
+    100%{ opacity: 0; transform: none; }
+  }
+
+  /* RGB split — after pseudo */
+  @keyframes glitch-after {
+    0%  { opacity: 0; transform: none; }
+    10% { opacity: 1; transform: translateX(4px);  clip-path: inset(60% 0 15% 0); }
+    20% { transform: translateX(-4px); clip-path: inset(10% 0 55% 0); }
+    30% { transform: translateX(2px);  clip-path: inset(40% 0 30% 0); }
+    40% { transform: translateX(-3px); clip-path: inset(5%  0 70% 0); }
+    50% { transform: translateX(3px);  clip-path: inset(70% 0 5%  0); }
+    80% { opacity: 1; }
+    100%{ opacity: 0; transform: none; }
+  }
+
+  /* Horizontal scan-line sweep (used in preloader) */
+  @keyframes scan {
+    0%   { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+  }
+  .animate-scan { animation: scan 2.4s linear infinite; }
+
+  /* Counter digit flip */
+  @keyframes digit-flip {
+    0%   { transform: translateY(0); opacity: 1; }
+    45%  { transform: translateY(-100%); opacity: 0; }
+    46%  { transform: translateY(100%); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .animate-marquee,
     .animate-scroll-line,
-    .animate-float { animation: none; }
+    .animate-float,
+    .animate-scan { animation: none; }
   }
 }

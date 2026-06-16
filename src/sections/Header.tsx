@@ -66,6 +66,7 @@ export default function Header() {
                 onClick={() => scrollTo(id)}
                 className="link-line font-mono text-[11px] tracking-[0.25em] transition-colors duration-300 hover:text-[var(--text)]"
                 style={{ color: 'var(--text-dim)' }}
+                data-cursor="hover"
               >
                 <span data-magnetic-text style={{ display: 'inline-block' }}>{t(`nav.${id}`)}</span>
               </button>

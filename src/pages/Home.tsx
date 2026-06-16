@@ -7,6 +7,7 @@ import Skills from '../sections/Skills';
 import Contact from '../sections/Contact';
 import Footer from '../sections/Footer';
 
+import Cursor from '../components/site/Cursor';
 import Preloader from '../components/site/Preloader';
 import Grain from '../components/site/Grain';
 import Marquee from '../components/site/Marquee';
@@ -33,14 +34,15 @@ export default function Home() {
 
   return (
     <>
-      {/* Accessibility: skip straight to content for keyboard / SR users */}
       <a href="#main" className="skip-link">{t('a11y.skip')}</a>
 
+      <Cursor />
       <Preloader />
       <ScrollProgress />
       <AmbientGlow />
       <Grain />
       <Header />
+
       <main id="main" className="relative z-10">
         <Hero />
         <Marquee items={TOOLS} />

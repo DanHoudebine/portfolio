@@ -26,6 +26,7 @@ export default function Footer() {
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="link-line font-mono -my-3 py-3 text-[10px] tracking-[0.3em] transition-colors duration-300 hover:text-[var(--ember)]"
             style={{ color: 'var(--text-dim)', minHeight: 44 }}
+            data-cursor="hover"
           >
             <span data-magnetic-text style={{ display: 'inline-block' }}>{t('footer.backToTop')} ↑</span>
           </button>

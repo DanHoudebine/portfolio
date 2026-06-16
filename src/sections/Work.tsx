@@ -11,31 +11,30 @@ import { projects, projectSrc, type Project } from '../data/projects';
 gsap.registerPlugin(ScrollTrigger);
 
 const featured = projects.filter((p) => p.featured);
-const archive = projects.filter((p) => !p.featured);
+const archive  = projects.filter((p) => !p.featured);
 const globalIndex = (p: Project) => projects.indexOf(p);
 
 export default function Work() {
   const { t } = useTranslation();
-  const sectionRef = useRef<HTMLElement>(null);
+  const sectionRef  = useRef<HTMLElement>(null);
   const hSectionRef = useRef<HTMLDivElement>(null);
-  const hTrackRef = useRef<HTMLDivElement>(null);
-  const [lightbox, setLightbox] = useState(-1);
+  const hTrackRef   = useRef<HTMLDivElement>(null);
+  const archiveRef  = useRef<HTMLDivElement>(null);
+  const [lightbox, setLightbox]     = useState(-1);
   const [activeSlide, setActiveSlide] = useState(0);
 
   useReveal(sectionRef);
 
-  // Desktop horizontal scroll
+  // Desktop horizontal scroll with pin
   useEffect(() => {
     const hSection = hSectionRef.current;
-    const hTrack = hTrackRef.current;
+    const hTrack   = hTrackRef.current;
     if (!hSection || !hTrack) return;
 
     const mm = gsap.matchMedia();
-
     mm.add('(min-width: 1024px)', () => {
       const getTravel = () => hTrack.scrollWidth - window.innerWidth;
 
-      // Animate the track horizontally while the section is pinned
       const tween = gsap.to(hTrack, {
         x: () => -getTravel(),
         ease: 'none',
@@ -47,29 +46,23 @@ export default function Work() {
           scrub: 1,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            setActiveSlide(Math.round(self.progress * featured.length));
-          },
+          onUpdate: (self) => setActiveSlide(Math.round(self.progress * featured.length)),
         },
       });
 
-      // Parallax inside each slide (moves image within its container)
+      // Parallax inside each slide
       hTrack.querySelectorAll<HTMLElement>('.slide-img').forEach((img) => {
-        gsap.fromTo(
-          img,
-          { xPercent: -12 },
-          {
-            xPercent: 12,
-            ease: 'none',
-            scrollTrigger: {
-              containerAnimation: tween,
-              trigger: img.closest('.h-slide'),
-              start: 'left right',
-              end: 'right left',
-              scrub: true,
-            },
+        gsap.fromTo(img, { xPercent: -12 }, {
+          xPercent: 12,
+          ease: 'none',
+          scrollTrigger: {
+            containerAnimation: tween,
+            trigger: img.closest('.h-slide'),
+            start: 'left right',
+            end: 'right left',
+            scrub: true,
           },
-        );
+        });
       });
     });
 
@@ -81,35 +74,69 @@ export default function Work() {
     const section = sectionRef.current;
     if (!section) return;
     const mm = gsap.matchMedia();
-
     mm.add('(max-width: 1023px)', () => {
       const ctx = gsap.context(() => {
         section.querySelectorAll<HTMLElement>('.feature-img').forEach((img) => {
           gsap.fromTo(img, { yPercent: -8 }, {
-            yPercent: 8,
-            ease: 'none',
+            yPercent: 8, ease: 'none',
             scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true },
           });
         });
       }, section);
       return () => ctx.revert();
     });
-
     return () => mm.revert();
+  }, []);
+
+  // 3D tilt on archive cards
+  useEffect(() => {
+    const container = archiveRef.current;
+    if (!container) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+
+    const cards = Array.from(container.querySelectorAll<HTMLElement>('.archive-card'));
+    const cleanup: (() => void)[] = [];
+
+    cards.forEach((card) => {
+      const imgWrap = card.querySelector<HTMLElement>('.archive-img-wrap');
+      if (!imgWrap) return;
+
+      const rx = gsap.quickTo(imgWrap, 'rotateX', { duration: 0.5, ease: 'power2.out' });
+      const ry = gsap.quickTo(imgWrap, 'rotateY', { duration: 0.5, ease: 'power2.out' });
+
+      const onMove = (e: MouseEvent) => {
+        const rect = imgWrap.getBoundingClientRect();
+        const dx = (e.clientX - rect.left) / rect.width  - 0.5;
+        const dy = (e.clientY - rect.top)  / rect.height - 0.5;
+        rx(-dy * 10);
+        ry(dx * 10);
+      };
+      const onLeave = () => { rx(0); ry(0); };
+
+      card.addEventListener('mousemove', onMove);
+      card.addEventListener('mouseleave', onLeave);
+      cleanup.push(() => {
+        card.removeEventListener('mousemove', onMove);
+        card.removeEventListener('mouseleave', onLeave);
+      });
+    });
+
+    return () => cleanup.forEach(fn => fn());
   }, []);
 
   return (
     <section id="work" ref={sectionRef} style={{ background: 'var(--bg)' }}>
 
-      {/* ——————————————————————————————————————————
-          DESKTOP: horizontal-scroll cinematic reel
-      —————————————————————————————————————————— */}
+      {/* ——————————————————————————————
+          DESKTOP: horizontal cinematic reel
+      —————————————————————————————— */}
       <div
         ref={hSectionRef}
         className="hidden lg:block"
         style={{ height: '100svh', background: 'var(--bg)' }}
+        data-cursor="drag"
       >
-        {/* Track */}
         <div style={{ height: '100%', overflow: 'hidden' }}>
           <div
             ref={hTrackRef}
@@ -121,20 +148,16 @@ export default function Work() {
               className="h-slide relative flex h-full shrink-0 flex-col items-start justify-end"
               style={{ width: '100vw', padding: 'clamp(48px, 7vw, 88px) clamp(40px, 5vw, 72px)' }}
             >
-              {/* Giant hollow "W" */}
               <span
                 className="font-display text-hollow pointer-events-none absolute right-16 top-1/2 -translate-y-1/2 select-none"
-                style={{ fontSize: 'clamp(18rem, 32vw, 28rem)', lineHeight: 1, opacity: 0.07 }}
+                style={{ fontSize: 'clamp(18rem, 32vw, 28rem)', lineHeight: 1, opacity: 0.06 }}
               >
                 W
               </span>
-
               <div className="relative z-10 max-w-[600px]">
                 <SectionHeading
-                  num="01"
-                  label={t('work.label')}
-                  titleA={t('work.titleA')}
-                  titleB={t('work.titleB')}
+                  num="01" label={t('work.label')}
+                  titleA={t('work.titleA')} titleB={t('work.titleB')}
                 />
                 <p className="font-body mb-8 max-w-[420px] text-[15px] leading-relaxed" style={{ color: 'var(--text-dim)' }}>
                   {t('work.intro')}
@@ -148,8 +171,6 @@ export default function Work() {
                   </span>
                 </div>
               </div>
-
-              {/* Scroll hint */}
               <div className="relative z-10 mt-10 flex items-center gap-5">
                 <span className="font-mono text-[10px] tracking-[0.35em]" style={{ color: 'var(--text-dim)' }}>
                   DRAG →
@@ -165,9 +186,8 @@ export default function Work() {
                 className="h-slide group relative flex h-full shrink-0 cursor-pointer items-end overflow-hidden"
                 style={{ width: '100vw' }}
                 onClick={() => setLightbox(globalIndex(project))}
-                data-cursor="hover"
+                data-cursor="view"
               >
-                {/* Full-bleed image */}
                 <img
                   src={projectSrc(project)}
                   alt={project.title}
@@ -176,19 +196,16 @@ export default function Work() {
                   style={{ inset: '-12%', width: '124%', height: '124%', objectFit: 'cover', filter: 'saturate(0.88)' }}
                   draggable={false}
                 />
-
-                {/* Gradient overlay */}
+                {/* Gradient */}
                 <div
                   className="pointer-events-none absolute inset-0 transition-opacity duration-700 group-hover:opacity-90"
                   style={{ background: 'linear-gradient(to top, rgba(10,9,7,0.97) 0%, rgba(10,9,7,0.45) 38%, rgba(10,9,7,0.08) 68%, rgba(10,9,7,0.45) 100%)' }}
                 />
-
-                {/* Hover ember wash */}
+                {/* Ember wash on hover */}
                 <div
                   className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
-                  style={{ background: 'radial-gradient(ellipse at 30% 60%, rgba(255,122,47,0.07), transparent 65%)' }}
+                  style={{ background: 'radial-gradient(ellipse at 30% 60%, rgba(255,122,47,0.09), transparent 65%)' }}
                 />
-
                 {/* Top bar */}
                 <div className="absolute left-0 right-0 top-0 z-10 flex items-center justify-between p-8">
                   <span
@@ -201,15 +218,13 @@ export default function Work() {
                     {String(i + 1).padStart(2, '0')} / {String(featured.length).padStart(2, '0')}
                   </span>
                 </div>
-
                 {/* Giant background number */}
                 <span
                   className="font-display text-hollow pointer-events-none absolute right-10 top-1/2 -translate-y-1/2 select-none"
-                  style={{ fontSize: 'clamp(16rem, 28vw, 24rem)', lineHeight: 1, opacity: 0.1 }}
+                  style={{ fontSize: 'clamp(16rem, 28vw, 24rem)', lineHeight: 1, opacity: 0.09 }}
                 >
                   {String(i + 1).padStart(2, '0')}
                 </span>
-
                 {/* Bottom content */}
                 <div className="relative z-10 w-full p-8 pb-14">
                   <div className="font-mono mb-3 text-[10px] tracking-[0.28em]" style={{ color: 'var(--ember)' }}>
@@ -237,13 +252,16 @@ export default function Work() {
         </div>
 
         {/* Slide progress pills */}
-        <div className="pointer-events-none absolute right-8 top-1/2 z-30 flex -translate-y-1/2 flex-col gap-[6px]" style={{ transform: 'translateY(-50%)' }}>
+        <div
+          className="pointer-events-none absolute right-8 top-1/2 z-30 flex flex-col gap-[6px]"
+          style={{ transform: 'translateY(-50%)' }}
+        >
           {featured.map((_, i) => (
             <div
               key={i}
               style={{
                 width: 2,
-                height: activeSlide === i + 1 ? 36 : 14,
+                height: activeSlide === i + 1 ? 38 : 12,
                 background: activeSlide === i + 1 ? 'var(--ember)' : 'rgba(236,230,218,0.18)',
                 transition: 'height 0.45s cubic-bezier(0.16,1,0.3,1), background 0.45s ease',
                 borderRadius: 1,
@@ -253,16 +271,12 @@ export default function Work() {
         </div>
       </div>
 
-      {/* ——————————————————————————————————
-          MOBILE: vertical editorial layout
-      —————————————————————————————————— */}
-      <div
-        className="block lg:hidden"
-        style={{ padding: 'clamp(90px, 12vw, 160px) clamp(20px, 4vw, 48px)' }}
-      >
+      {/* ——————————————————————————
+          MOBILE: vertical editorial
+      —————————————————————————— */}
+      <div className="block lg:hidden" style={{ padding: 'clamp(90px, 12vw, 160px) clamp(20px, 4vw, 48px)' }}>
         <div className="mx-auto max-w-[1500px]">
           <SectionHeading num="01" label={t('work.label')} titleA={t('work.titleA')} titleB={t('work.titleB')} />
-
           <div data-reveal className="mb-16 flex flex-wrap items-end justify-between gap-8">
             <p className="font-body max-w-[520px] text-[15px] leading-relaxed" style={{ color: 'var(--text-dim)' }}>
               {t('work.intro')}
@@ -282,8 +296,8 @@ export default function Work() {
               <article
                 key={project.img}
                 data-reveal
-                className={`group grid cursor-pointer grid-cols-1 items-end gap-6 lg:grid-cols-12`}
-                data-cursor="hover"
+                className="group grid cursor-pointer grid-cols-1 items-end gap-6 lg:grid-cols-12"
+                data-cursor="view"
                 onClick={() => setLightbox(globalIndex(project))}
               >
                 <div
@@ -350,18 +364,23 @@ export default function Work() {
             <span className="h-px flex-1" style={{ background: 'var(--line)' }} />
           </div>
 
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div ref={archiveRef} className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {archive.map((project) => (
               <article
                 key={project.img}
                 data-reveal
-                data-cursor="hover"
-                className="group cursor-pointer"
+                data-cursor="view"
+                className="archive-card group cursor-pointer"
                 onClick={() => setLightbox(globalIndex(project))}
               >
                 <div
-                  className="relative overflow-hidden"
-                  style={{ aspectRatio: '16/10', border: '1px solid var(--line)' }}
+                  className="archive-img-wrap relative overflow-hidden"
+                  style={{
+                    aspectRatio: '16/10',
+                    border: '1px solid var(--line)',
+                    transformStyle: 'preserve-3d',
+                    perspective: 600,
+                  }}
                 >
                   <DistortImage
                     src={projectSrc(project)}
@@ -371,6 +390,11 @@ export default function Work() {
                   <div
                     className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 opacity-80"
                     style={{ background: 'linear-gradient(to top, rgba(10,9,7,0.85), transparent)' }}
+                  />
+                  {/* Hover overlay */}
+                  <div
+                    className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                    style={{ background: 'rgba(255,122,47,0.05)', border: '1px solid rgba(255,122,47,0.3)', boxSizing: 'border-box' }}
                   />
                 </div>
                 <div className="mt-3 flex items-start justify-between gap-4">
