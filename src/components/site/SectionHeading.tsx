@@ -73,7 +73,7 @@ export default function SectionHeading({ num, label, titleA, titleB }: SectionHe
         <span className="eyebrow">{num}</span>
         <span
           className="sh-line h-px w-10 origin-left"
-          style={{ background: 'var(--ember)', transform: 'scaleX(0)' }}
+          style={{ background: 'var(--cyan)', transform: 'scaleX(0)' }}
         />
         <span className="sh-eyebrow eyebrow" style={{ color: 'var(--text-dim)', opacity: 0 }}>
           {label}

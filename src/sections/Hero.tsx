@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import WebGLHero from '../components/site/WebGLHero';
 import ScrambleText from '../components/site/ScrambleText';
 import ParticleCanvas from '../components/site/ParticleCanvas';
 
@@ -10,122 +11,89 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Hero() {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const base = import.meta.env.BASE_URL;
 
-  useEffect(() => {
-    videoRef.current?.play().catch(() => {});
-  }, []);
-
-  // Core intro + scroll animations
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const introDelay = reduced ? 0 : 2.4;
+    const delay   = reduced ? 0 : 2.2;
 
     const ctx = gsap.context(() => {
-      // Letterbox curtain open
-      gsap.fromTo('.hero-bar-top',
-        { scaleY: 5 },
-        { scaleY: 1, duration: 1.6, ease: 'power4.inOut', delay: introDelay * 0.75 },
+      /* ── intro ── */
+      gsap.fromTo('.h-bar-t', { scaleY: 6 }, { scaleY: 1, duration: 1.6, ease: 'power4.inOut', delay: delay * 0.7 });
+      gsap.fromTo('.h-bar-b', { scaleY: 6 }, { scaleY: 1, duration: 1.6, ease: 'power4.inOut', delay: delay * 0.7 });
+
+      gsap.fromTo('.h-rise',
+        { yPercent: 110, skewY: 4 },
+        { yPercent: 0, skewY: 0, duration: 1.25, ease: 'power4.out', stagger: 0.1, delay },
       );
-      gsap.fromTo('.hero-bar-bottom',
-        { scaleY: 5 },
-        { scaleY: 1, duration: 1.6, ease: 'power4.inOut', delay: introDelay * 0.75 },
+      gsap.fromTo('.h-fade',
+        { opacity: 0, y: 18 },
+        { opacity: 1, y: 0,  duration: 0.95, ease: 'power2.out', stagger: 0.08, delay: delay + 0.5 },
       );
 
-      // Title lines rise with slight skew
-      gsap.fromTo('.hero-rise',
-        { yPercent: 115, skewY: 5 },
-        { yPercent: 0, skewY: 0, duration: 1.3, ease: 'power4.out', stagger: 0.13, delay: introDelay },
-      );
-      gsap.fromTo('.hero-fade',
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 1, ease: 'power2.out', stagger: 0.09, delay: introDelay + 0.55 },
-      );
-
-      // Scroll: video sinks deeper
-      gsap.to('.hero-video-wrap', {
-        yPercent: 28,
+      /* ── on scroll ── */
+      gsap.to('.h-shader', {
+        yPercent: 30, scale: 1.06,
         ease: 'none',
         scrollTrigger: { trigger: section, start: 'top top', end: 'bottom top', scrub: 1.5 },
       });
-      // Scroll: content drifts up + fades
-      gsap.to('.hero-content', {
-        yPercent: -20, opacity: 0,
+      gsap.to('.h-content', {
+        yPercent: -22, opacity: 0,
         ease: 'none',
-        scrollTrigger: { trigger: section, start: 'top top', end: '70% top', scrub: 1.5 },
+        scrollTrigger: { trigger: section, start: 'top top', end: '65% top', scrub: 1.5 },
       });
-      // Scroll: particles fade earlier
-      gsap.to('.hero-particles', {
+      gsap.to('.h-particles', {
         opacity: 0,
         ease: 'none',
         scrollTrigger: { trigger: section, start: 'top top', end: '40% top', scrub: 1 },
       });
     }, section);
 
-    // Velocity skew — outside context for clean RAF cleanup
+    /* velocity skew */
     let rafSkew = 0;
-    let rafSpeed = 0;
-
     if (!reduced) {
-      const skewSet = gsap.quickTo('.hero-content', 'skewY', { duration: 0.9, ease: 'power3.out' });
-      const clampSkew = gsap.utils.clamp(-4, 4);
-      const tickSkew = () => {
-        const vel = parseFloat(document.documentElement.style.getPropertyValue('--sv') || '0');
-        skewSet(clampSkew(vel * -0.15));
-        rafSkew = requestAnimationFrame(tickSkew);
+      const skewQ = gsap.quickTo('.h-content', 'skewY', { duration: 0.9, ease: 'power3.out' });
+      const clamp = gsap.utils.clamp(-4.5, 4.5);
+      const tick  = () => {
+        const v = parseFloat(document.documentElement.style.getPropertyValue('--sv') || '0');
+        skewQ(clamp(v * -0.16));
+        rafSkew = requestAnimationFrame(tick);
       };
-      rafSkew = requestAnimationFrame(tickSkew);
-
-      // Video playback rate tracks scroll speed (range 0.65x → 1.5x)
-      const v = videoRef.current;
-      if (v) {
-        let currentRate = 1;
-        const tickSpeed = () => {
-          const vel = Math.abs(parseFloat(document.documentElement.style.getPropertyValue('--sv') || '0'));
-          const target = 0.65 + Math.min(vel * 0.055, 0.85);
-          currentRate += (target - currentRate) * 0.06;
-          v.playbackRate = currentRate;
-          rafSpeed = requestAnimationFrame(tickSpeed);
-        };
-        rafSpeed = requestAnimationFrame(tickSpeed);
-      }
+      rafSkew = requestAnimationFrame(tick);
     }
 
-    return () => {
-      ctx.revert();
-      cancelAnimationFrame(rafSkew);
-      cancelAnimationFrame(rafSpeed);
-    };
+    return () => { ctx.revert(); cancelAnimationFrame(rafSkew); };
   }, []);
 
-  // 5-layer mouse parallax — desktop only
+  /* 6-layer mouse parallax */
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    const deepQ   = gsap.quickTo('.hero-video-wrap', 'x',   { duration: 2.2, ease: 'power2.out' });
-    const deepQY  = gsap.quickTo('.hero-video-wrap', 'y',   { duration: 2.2, ease: 'power2.out' });
-    const vigQ    = gsap.quickTo('.hero-vignette',   'x',   { duration: 2.8, ease: 'power2.out' });
-    const vigQY   = gsap.quickTo('.hero-vignette',   'y',   { duration: 2.8, ease: 'power2.out' });
-    const partQ   = gsap.quickTo('.hero-particles',  'x',   { duration: 1.8, ease: 'power2.out' });
-    const partQY  = gsap.quickTo('.hero-particles',  'y',   { duration: 1.8, ease: 'power2.out' });
-    const contQ   = gsap.quickTo('.hero-content',    'x',   { duration: 3.5, ease: 'power2.out' });
-    const contQY  = gsap.quickTo('.hero-content',    'y',   { duration: 3.5, ease: 'power2.out' });
-    const barQ    = gsap.quickTo('.hero-bars',       'x',   { duration: 4.2, ease: 'power1.out' });
+    const qShX  = gsap.quickTo('.h-shader',    'x', { duration: 2.4, ease: 'power2.out' });
+    const qShY  = gsap.quickTo('.h-shader',    'y', { duration: 2.4, ease: 'power2.out' });
+    const qPaX  = gsap.quickTo('.h-particles', 'x', { duration: 1.8, ease: 'power2.out' });
+    const qPaY  = gsap.quickTo('.h-particles', 'y', { duration: 1.8, ease: 'power2.out' });
+    const qViX  = gsap.quickTo('.h-vignette',  'x', { duration: 3.0, ease: 'power2.out' });
+    const qViY  = gsap.quickTo('.h-vignette',  'y', { duration: 3.0, ease: 'power2.out' });
+    const qCoX  = gsap.quickTo('.h-content',   'x', { duration: 3.8, ease: 'power2.out' });
+    const qCoY  = gsap.quickTo('.h-content',   'y', { duration: 3.8, ease: 'power2.out' });
+    const qIdX  = gsap.quickTo('.h-coord',     'x', { duration: 4.5, ease: 'power1.out' });
+    const qIdY  = gsap.quickTo('.h-coord',     'y', { duration: 4.5, ease: 'power1.out' });
+    const qBrX  = gsap.quickTo('.h-bars',      'x', { duration: 5.0, ease: 'power1.out' });
 
     const onMove = (e: MouseEvent) => {
       const nx = (e.clientX / window.innerWidth  - 0.5) * 2;
       const ny = (e.clientY / window.innerHeight - 0.5) * 2;
-      deepQ(nx * 24);   deepQY(ny * 15);   // Layer 1 — video (deepest)
-      vigQ(nx * -15);   vigQY(ny * -9);    // Layer 2 — vignette (opposite)
-      partQ(nx * -10);  partQY(ny * -6);   // Layer 3 — particles (opposite, lighter)
-      contQ(nx * 9);    contQY(ny * 5);    // Layer 4 — content
-      barQ(nx * 4);                        // Layer 5 — bars (subtlest)
+      qShX(nx * 28);  qShY(ny * 18);   /* layer 1 — shader deepest  */
+      qPaX(nx * -12); qPaY(ny * -8);   /* layer 2 — particles opp.  */
+      qViX(nx * -16); qViY(ny * -10);  /* layer 3 — vignette opp.   */
+      qCoX(nx * 10);  qCoY(ny * 6);    /* layer 4 — content         */
+      qIdX(nx * 6);   qIdY(ny * 4);    /* layer 5 — coordinates tag */
+      qBrX(nx * 3);                    /* layer 6 — bars            */
     };
 
     section.addEventListener('mousemove', onMove);
@@ -139,102 +107,102 @@ export default function Hero() {
       className="relative h-[100svh] overflow-hidden"
       data-cursor="drag"
     >
-      {/* Layer 1 — extended video (inset -8% gives parallax headroom) */}
-      <div className="hero-video-wrap absolute" style={{ inset: '-8%', zIndex: 0 }}>
-        <video
-          ref={videoRef}
-          autoPlay loop muted playsInline preload="auto"
-          className="h-full w-full object-cover"
-        >
-          <source src={`${base}portfolio-reel-mobile.mp4`} type="video/mp4" media="(max-width: 767px)" />
-          <source src={`${base}portfolio-reel.mp4`}        type="video/mp4" />
-        </video>
-        {/* Cinematic grade */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'linear-gradient(to top, rgba(10,9,7,0.97) 0%, rgba(10,9,7,0.26) 34%, rgba(10,9,7,0.12) 58%, rgba(10,9,7,0.76) 100%)',
-          }}
-        />
+      {/* L1 — WebGL plasma shader */}
+      <div className="h-shader absolute" style={{ inset: '-10%', zIndex: 0 }}>
+        <WebGLHero />
       </div>
 
-      {/* Layer 2 — ember particles (moves opposite to video on mouse) */}
-      <div className="hero-particles absolute" style={{ inset: '-8%', zIndex: 2 }}>
+      {/* L2 — ember particles */}
+      <div className="h-particles absolute" style={{ inset: '-8%', zIndex: 2 }}>
         <ParticleCanvas />
       </div>
 
-      {/* Layer 3 — radial vignette (moves opposite direction) */}
+      {/* L3 — radial vignette (moves opposite) */}
       <div
-        className="hero-vignette pointer-events-none absolute"
+        className="h-vignette pointer-events-none absolute"
         style={{
           inset: '-8%', zIndex: 3,
-          background: 'radial-gradient(ellipse at center, transparent 32%, rgba(10,9,7,0.68) 100%)',
+          background: 'radial-gradient(ellipse at center, transparent 28%, rgba(8,13,26,0.78) 100%)',
         }}
       />
 
-      {/* Layer 5 — letterbox bars (subtlest parallax) */}
-      <div
-        className="hero-bars pointer-events-none absolute inset-0"
-        style={{ zIndex: 10 }}
-      >
-        <div
-          className="hero-bar-top absolute left-0 top-0 w-full origin-top"
-          style={{ height: 'clamp(28px, 4vh, 44px)', background: 'var(--bg)' }}
-        />
-        <div
-          className="hero-bar-bottom absolute bottom-0 left-0 w-full origin-bottom"
-          style={{ height: 'clamp(28px, 4vh, 44px)', background: 'var(--bg)' }}
-        />
+      {/* L6 — letterbox bars */}
+      <div className="h-bars pointer-events-none absolute inset-0" style={{ zIndex: 10 }}>
+        <div className="h-bar-t absolute left-0 top-0 w-full origin-top"
+          style={{ height: 'clamp(24px, 3.5vh, 40px)', background: 'var(--bg)' }} />
+        <div className="h-bar-b absolute bottom-0 left-0 w-full origin-bottom"
+          style={{ height: 'clamp(24px, 3.5vh, 40px)', background: 'var(--bg)' }} />
       </div>
 
-      {/* Layer 4 — content */}
+      {/* Coordinate tag (top-right) — L5 */}
       <div
-        className="hero-content relative z-20 flex h-full flex-col justify-end"
-        style={{ padding: '0 clamp(20px, 4vw, 48px) clamp(72px, 11vh, 120px)' }}
+        className="h-coord h-fade pointer-events-none absolute right-0 top-0 z-20 flex items-end gap-6 opacity-0"
+        style={{ padding: 'clamp(44px, 7vh, 80px) clamp(20px, 4vw, 48px) 0 0' }}
       >
-        {/* Kicker */}
-        <div className="hero-fade mb-4 flex items-center gap-4 opacity-0">
+        <span className="font-mono text-[9px] tracking-[0.4em]" style={{ color: 'var(--text-faint)' }}>
+          48°52′N 2°21′E
+        </span>
+        <span
+          className="font-display text-hollow-cyan select-none"
+          style={{ fontSize: 'clamp(4rem, 10vw, 9rem)', lineHeight: 0.85 }}
+        >
+          001
+        </span>
+      </div>
+
+      {/* L4 — main content */}
+      <div
+        className="h-content relative z-20 flex h-full flex-col justify-end"
+        style={{ padding: '0 clamp(20px, 4vw, 48px) clamp(68px, 10vh, 110px)' }}
+      >
+        {/* kicker */}
+        <div className="h-fade mb-5 flex items-center gap-4 opacity-0">
           <span className="eyebrow">{t('hero.kicker')}</span>
-          <span className="h-px w-12" style={{ background: 'var(--ember)' }} />
-          <span className="eyebrow" style={{ color: 'var(--text-dim)' }}>{t('hero.reel')}</span>
+          <span className="h-px w-16" style={{ background: 'var(--cyan)' }} />
+          <span className="eyebrow" style={{ color: 'var(--text-faint)' }}>{t('hero.reel')}</span>
         </div>
 
-        {/* Monumental name */}
+        {/* monumental name */}
         <h1
           className="font-display"
-          style={{ fontSize: 'clamp(4.2rem, 15.5vw, 14.5rem)', lineHeight: 0.85, color: 'var(--text)' }}
+          style={{
+            fontSize: 'clamp(4.5rem, 16vw, 15rem)',
+            lineHeight: 0.82,
+            color: 'var(--text)',
+            letterSpacing: '0.01em',
+          }}
         >
           <span className="block overflow-hidden">
-            <span className="hero-rise block" style={{ transform: 'translateY(115%)' }}>DAN</span>
+            <span className="h-rise block" style={{ transform: 'translateY(110%)' }}>DAN</span>
           </span>
           <span className="block overflow-hidden">
-            <span className="hero-rise block" style={{ transform: 'translateY(115%)' }}>
+            <span className="h-rise block" style={{ transform: 'translateY(110%)' }}>
               HOUDEBINE<span style={{ color: 'var(--ember)' }}>.</span>
             </span>
           </span>
         </h1>
 
-        {/* Role + tagline */}
-        <div className="mt-6 flex flex-wrap items-end justify-between gap-6">
+        {/* role row */}
+        <div className="mt-7 flex flex-wrap items-end justify-between gap-6">
           <div>
-            <div className="hero-fade font-mono text-[12px] tracking-[0.3em] opacity-0" style={{ color: 'var(--text)' }}>
-              <ScrambleText text={t('hero.role').toUpperCase()} delay={3000} />
+            <div
+              className="h-fade font-mono text-[11px] tracking-[0.35em] opacity-0"
+              style={{ color: 'var(--cyan)' }}
+            >
+              <ScrambleText text={t('hero.role').toUpperCase()} delay={2800} />
             </div>
             <div
-              className="hero-fade font-serif-i mt-2 opacity-0"
-              style={{ fontSize: 'clamp(1.2rem, 2.6vw, 1.8rem)', color: 'var(--ember-soft)' }}
+              className="h-fade font-serif-i mt-2 opacity-0"
+              style={{ fontSize: 'clamp(1.1rem, 2.4vw, 1.7rem)', color: 'var(--ember-soft)' }}
             >
               {t('hero.tagline')}
             </div>
           </div>
 
-          <div className="hero-fade flex flex-col items-start gap-2 opacity-0 sm:items-end">
+          <div className="h-fade flex flex-col items-start gap-2 opacity-0 sm:items-end">
             <div className="flex items-center gap-2">
-              <span
-                className="animate-pulse-dot inline-block"
-                style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--ember)' }}
-              />
+              <span className="animate-pulse-dot inline-block"
+                style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--cyan)' }} />
               <span className="font-mono text-[10px] tracking-[0.3em]" style={{ color: 'var(--text-dim)' }}>
                 {t('hero.status')}
               </span>
@@ -246,18 +214,16 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll cue */}
+      {/* scroll cue */}
       <div
-        className="hero-fade absolute bottom-0 left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-2 opacity-0 md:flex"
-        style={{ paddingBottom: 'clamp(34px, 5vh, 52px)' }}
+        className="h-fade absolute bottom-0 left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-2 opacity-0 md:flex"
+        style={{ paddingBottom: 'clamp(30px, 5vh, 48px)' }}
       >
-        <span className="font-mono text-[9px] tracking-[0.4em]" style={{ color: 'var(--text-dim)' }}>
+        <span className="font-mono text-[9px] tracking-[0.4em]" style={{ color: 'var(--text-faint)' }}>
           {t('hero.scroll')}
         </span>
-        <span
-          className="block h-8 w-px animate-scroll-line"
-          style={{ background: 'linear-gradient(to bottom, var(--ember), transparent)' }}
-        />
+        <span className="block h-8 w-px animate-scroll-line"
+          style={{ background: 'linear-gradient(to bottom, var(--cyan), transparent)' }} />
       </div>
     </section>
   );

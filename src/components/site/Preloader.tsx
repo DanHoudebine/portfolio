@@ -43,7 +43,7 @@ export default function Preloader() {
         const n = Math.round(state.v);
         counter.textContent = String(n).padStart(3, '0');
         // Color shift: white → ember at 100
-        counter.style.color = n >= 99 ? 'var(--ember)' : 'var(--text)';
+        counter.style.color = n >= 99 ? 'var(--cyan)' : 'var(--text)';
       },
     });
 
@@ -77,7 +77,7 @@ export default function Preloader() {
         className="pointer-events-none absolute left-0 right-0"
         style={{
           height: 2,
-          background: 'linear-gradient(to right, transparent, rgba(255,122,47,0.4), transparent)',
+          background: 'linear-gradient(to right, transparent, rgba(0,229,255,0.55), transparent)',
           transform: 'translateY(-10%)',
           zIndex: 2,
         }}
@@ -87,7 +87,7 @@ export default function Preloader() {
       <div
         ref={overlayRef}
         className="pointer-events-none absolute inset-0"
-        style={{ background: 'rgba(255,122,47,0.2)', opacity: 0, zIndex: 3 }}
+        style={{ background: 'rgba(0,229,255,0.15)', opacity: 0, zIndex: 3 }}
       />
 
       {/* Horizontal grid lines */}

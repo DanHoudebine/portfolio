@@ -16,273 +16,215 @@ const globalIndex = (p: Project) => projects.indexOf(p);
 
 export default function Work() {
   const { t } = useTranslation();
-  const sectionRef  = useRef<HTMLElement>(null);
-  const hSectionRef = useRef<HTMLDivElement>(null);
-  const hTrackRef   = useRef<HTMLDivElement>(null);
-  const archiveRef  = useRef<HTMLDivElement>(null);
-  const [lightbox, setLightbox]     = useState(-1);
-  const [activeSlide, setActiveSlide] = useState(0);
+  const sectionRef   = useRef<HTMLElement>(null);
+  const archiveRef   = useRef<HTMLDivElement>(null);
+  const [lightbox, setLightbox] = useState(-1);
 
   useReveal(sectionRef);
 
-  // Desktop horizontal scroll with pin
+  /* ── full-screen pinned project panels on desktop ── */
   useEffect(() => {
-    const hSection = hSectionRef.current;
-    const hTrack   = hTrackRef.current;
-    if (!hSection || !hTrack) return;
-
     const mm = gsap.matchMedia();
+
     mm.add('(min-width: 1024px)', () => {
-      const getTravel = () => hTrack.scrollWidth - window.innerWidth;
+      const panels = gsap.utils.toArray<HTMLElement>('.work-panel');
+      const imgs   = gsap.utils.toArray<HTMLElement>('.work-panel-img');
 
-      const tween = gsap.to(hTrack, {
-        x: () => -getTravel(),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: hSection,
-          start: 'top top',
-          end: () => `+=${getTravel()}`,
-          pin: true,
-          scrub: 1,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => setActiveSlide(Math.round(self.progress * featured.length)),
-        },
-      });
+      panels.forEach((panel, i) => {
+        const img = imgs[i];
+        if (!img) return;
+        const fromLeft = i % 2 === 0;
 
-      // Parallax inside each slide
-      hTrack.querySelectorAll<HTMLElement>('.slide-img').forEach((img) => {
-        gsap.fromTo(img, { xPercent: -12 }, {
-          xPercent: 12,
-          ease: 'none',
-          scrollTrigger: {
-            containerAnimation: tween,
-            trigger: img.closest('.h-slide'),
-            start: 'left right',
-            end: 'right left',
-            scrub: true,
+        /* image clip-path wipe: alternates entering from left / right */
+        ScrollTrigger.create({
+          trigger: panel,
+          start: 'top 80%',
+          once: true,
+          onEnter: () => {
+            gsap.fromTo(img,
+              { clipPath: fromLeft ? 'inset(0 100% 0 0)' : 'inset(0 0 0 100%)' },
+              { clipPath: 'inset(0 0% 0 0%)', duration: 1.1, ease: 'power4.inOut' },
+            );
+            gsap.fromTo(img, { scale: 1.14 }, { scale: 1, duration: 1.3, ease: 'power2.out' });
           },
         });
+
+        /* image parallax on scroll */
+        gsap.fromTo(img, { yPercent: -6 }, {
+          yPercent: 6,
+          ease: 'none',
+          scrollTrigger: { trigger: panel, start: 'top bottom', end: 'bottom top', scrub: true },
+        });
       });
     });
 
     return () => mm.revert();
   }, []);
 
-  // Mobile vertical parallax
+  /* ── mobile vertical parallax ── */
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
     const mm = gsap.matchMedia();
     mm.add('(max-width: 1023px)', () => {
-      const ctx = gsap.context(() => {
-        section.querySelectorAll<HTMLElement>('.feature-img').forEach((img) => {
-          gsap.fromTo(img, { yPercent: -8 }, {
-            yPercent: 8, ease: 'none',
-            scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true },
-          });
+      sectionRef.current?.querySelectorAll<HTMLElement>('.feature-img-mob').forEach((img) => {
+        gsap.fromTo(img, { yPercent: -8 }, {
+          yPercent: 8, ease: 'none',
+          scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true },
         });
-      }, section);
-      return () => ctx.revert();
+      });
     });
     return () => mm.revert();
   }, []);
 
-  // 3D tilt on archive cards
+  /* ── 3D tilt on archive cards ── */
   useEffect(() => {
-    const container = archiveRef.current;
-    if (!container) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    if (window.matchMedia('(pointer: coarse)').matches) return;
+    const el = archiveRef.current;
+    if (!el || window.matchMedia('(pointer: coarse)').matches) return;
+    const fns: (() => void)[] = [];
 
-    const cards = Array.from(container.querySelectorAll<HTMLElement>('.archive-card'));
-    const cleanup: (() => void)[] = [];
-
-    cards.forEach((card) => {
-      const imgWrap = card.querySelector<HTMLElement>('.archive-img-wrap');
-      if (!imgWrap) return;
-
-      const rx = gsap.quickTo(imgWrap, 'rotateX', { duration: 0.5, ease: 'power2.out' });
-      const ry = gsap.quickTo(imgWrap, 'rotateY', { duration: 0.5, ease: 'power2.out' });
-
-      const onMove = (e: MouseEvent) => {
-        const rect = imgWrap.getBoundingClientRect();
-        const dx = (e.clientX - rect.left) / rect.width  - 0.5;
-        const dy = (e.clientY - rect.top)  / rect.height - 0.5;
-        rx(-dy * 10);
-        ry(dx * 10);
+    el.querySelectorAll<HTMLElement>('.archive-card').forEach((card) => {
+      const wrap = card.querySelector<HTMLElement>('.archive-img-wrap');
+      if (!wrap) return;
+      const rx = gsap.quickTo(wrap, 'rotateX', { duration: 0.5, ease: 'power2.out' });
+      const ry = gsap.quickTo(wrap, 'rotateY', { duration: 0.5, ease: 'power2.out' });
+      const onM  = (e: MouseEvent) => {
+        const r = wrap.getBoundingClientRect();
+        rx(-((e.clientY - r.top)  / r.height - 0.5) * 12);
+        ry( ((e.clientX - r.left) / r.width  - 0.5) * 12);
       };
-      const onLeave = () => { rx(0); ry(0); };
-
-      card.addEventListener('mousemove', onMove);
-      card.addEventListener('mouseleave', onLeave);
-      cleanup.push(() => {
-        card.removeEventListener('mousemove', onMove);
-        card.removeEventListener('mouseleave', onLeave);
-      });
+      const onL  = () => { rx(0); ry(0); };
+      card.addEventListener('mousemove', onM);
+      card.addEventListener('mouseleave', onL);
+      fns.push(() => { card.removeEventListener('mousemove', onM); card.removeEventListener('mouseleave', onL); });
     });
-
-    return () => cleanup.forEach(fn => fn());
+    return () => fns.forEach(fn => fn());
   }, []);
 
   return (
     <section id="work" ref={sectionRef} style={{ background: 'var(--bg)' }}>
 
-      {/* ——————————————————————————————
-          DESKTOP: horizontal cinematic reel
-      —————————————————————————————— */}
-      <div
-        ref={hSectionRef}
-        className="hidden lg:block"
-        style={{ height: '100svh', background: 'var(--bg)' }}
-        data-cursor="drag"
-      >
-        <div style={{ height: '100%', overflow: 'hidden' }}>
-          <div
-            ref={hTrackRef}
-            className="flex h-full"
-            style={{ width: 'max-content', willChange: 'transform' }}
-          >
-            {/* ——— Intro slide ——— */}
-            <div
-              className="h-slide relative flex h-full shrink-0 flex-col items-start justify-end"
-              style={{ width: '100vw', padding: 'clamp(48px, 7vw, 88px) clamp(40px, 5vw, 72px)' }}
-            >
-              <span
-                className="font-display text-hollow pointer-events-none absolute right-16 top-1/2 -translate-y-1/2 select-none"
-                style={{ fontSize: 'clamp(18rem, 32vw, 28rem)', lineHeight: 1, opacity: 0.06 }}
-              >
-                W
-              </span>
-              <div className="relative z-10 max-w-[600px]">
-                <SectionHeading
-                  num="01" label={t('work.label')}
-                  titleA={t('work.titleA')} titleB={t('work.titleB')}
-                />
-                <p className="font-body mb-8 max-w-[420px] text-[15px] leading-relaxed" style={{ color: 'var(--text-dim)' }}>
-                  {t('work.intro')}
-                </p>
-                <div className="flex items-baseline gap-3">
-                  <span className="font-display" style={{ fontSize: 'clamp(3rem, 6vw, 5rem)', lineHeight: 1, color: 'var(--ember)' }}>
-                    {projects.length}
-                  </span>
-                  <span className="font-mono text-[10px] tracking-[0.35em]" style={{ color: 'var(--text-faint)' }}>
-                    {t('work.counter')}
-                  </span>
-                </div>
-              </div>
-              <div className="relative z-10 mt-10 flex items-center gap-5">
-                <span className="font-mono text-[10px] tracking-[0.35em]" style={{ color: 'var(--text-dim)' }}>
-                  DRAG →
+      {/* ═══════════════════════════════════════════
+          DESKTOP — full-screen editorial panels
+      ═══════════════════════════════════════════ */}
+      <div className="hidden lg:block">
+        {/* intro header */}
+        <div style={{ padding: 'clamp(90px, 12vw, 160px) clamp(40px, 5vw, 72px) clamp(60px, 8vw, 100px)' }}>
+          <div className="mx-auto max-w-[1500px]">
+            <SectionHeading num="01" label={t('work.label')} titleA={t('work.titleA')} titleB={t('work.titleB')} />
+            <div className="flex items-end justify-between gap-8">
+              <p className="font-body max-w-[480px] text-[15px] leading-relaxed" style={{ color: 'var(--text-dim)' }}>
+                {t('work.intro')}
+              </p>
+              <div className="flex items-baseline gap-3 shrink-0">
+                <span className="font-display" style={{ fontSize: 'clamp(3rem, 6vw, 5rem)', color: 'var(--cyan)', lineHeight: 1 }}>
+                  {projects.length}
                 </span>
-                <span className="h-px w-20 origin-left" style={{ background: 'linear-gradient(to right, var(--ember), transparent)' }} />
+                <span className="font-mono text-[10px] tracking-[0.35em]" style={{ color: 'var(--text-faint)' }}>
+                  {t('work.counter')}
+                </span>
               </div>
             </div>
+          </div>
+        </div>
 
-            {/* ——— Project slides ——— */}
-            {featured.map((project, i) => (
+        {/* project panels — full-width alternating */}
+        {featured.map((project, i) => {
+          const imgLeft = i % 2 === 0;
+          return (
+            <div
+              key={project.img}
+              className="work-panel group relative overflow-hidden"
+              style={{
+                minHeight: '90vh',
+                display: 'grid',
+                gridTemplateColumns: imgLeft ? '58% 42%' : '42% 58%',
+                borderTop: '1px solid var(--line)',
+              }}
+              data-cursor="view"
+              onClick={() => setLightbox(globalIndex(project))}
+            >
+              {/* image block */}
               <div
-                key={project.img}
-                className="h-slide group relative flex h-full shrink-0 cursor-pointer items-end overflow-hidden"
-                style={{ width: '100vw' }}
-                onClick={() => setLightbox(globalIndex(project))}
-                data-cursor="view"
+                className={`relative overflow-hidden ${imgLeft ? 'order-1' : 'order-2'}`}
+                style={{ minHeight: '90vh' }}
               >
                 <img
                   src={projectSrc(project)}
                   alt={project.title}
                   loading={i === 0 ? 'eager' : 'lazy'}
-                  className="slide-img pointer-events-none absolute"
-                  style={{ inset: '-12%', width: '124%', height: '124%', objectFit: 'cover', filter: 'saturate(0.88)' }}
+                  className="work-panel-img absolute inset-0 h-full w-full object-cover"
+                  style={{ clipPath: i % 2 === 0 ? 'inset(0 100% 0 0)' : 'inset(0 0 0 100%)', filter: 'saturate(0.85)' }}
                   draggable={false}
                 />
-                {/* Gradient */}
-                <div
-                  className="pointer-events-none absolute inset-0 transition-opacity duration-700 group-hover:opacity-90"
-                  style={{ background: 'linear-gradient(to top, rgba(10,9,7,0.97) 0%, rgba(10,9,7,0.45) 38%, rgba(10,9,7,0.08) 68%, rgba(10,9,7,0.45) 100%)' }}
-                />
-                {/* Ember wash on hover */}
+                {/* hover tint */}
                 <div
                   className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
-                  style={{ background: 'radial-gradient(ellipse at 30% 60%, rgba(255,122,47,0.09), transparent 65%)' }}
+                  style={{ background: 'radial-gradient(ellipse at center, rgba(0,229,255,0.06), transparent 70%)' }}
                 />
-                {/* Top bar */}
-                <div className="absolute left-0 right-0 top-0 z-10 flex items-center justify-between p-8">
-                  <span
-                    className="font-mono text-[10px] tracking-[0.3em]"
-                    style={{ color: 'var(--text-dim)', border: '1px solid var(--line)', padding: '6px 12px', background: 'rgba(10,9,7,0.55)', backdropFilter: 'blur(4px)' }}
-                  >
-                    ENV_{String(i + 1).padStart(2, '0')}
-                  </span>
-                  <span className="font-mono text-[10px] tracking-[0.3em]" style={{ color: 'var(--text-faint)' }}>
-                    {String(i + 1).padStart(2, '0')} / {String(featured.length).padStart(2, '0')}
-                  </span>
-                </div>
-                {/* Giant background number */}
+              </div>
+
+              {/* info block */}
+              <div
+                className={`relative flex flex-col justify-center ${imgLeft ? 'order-2' : 'order-1'}`}
+                style={{
+                  padding: 'clamp(48px, 7vw, 96px) clamp(32px, 4vw, 64px)',
+                  background: i % 2 === 0 ? 'var(--bg)' : 'var(--bg-panel)',
+                  borderLeft: imgLeft ? '1px solid var(--line)' : 'none',
+                  borderRight: imgLeft ? 'none' : '1px solid var(--line)',
+                }}
+              >
+                {/* background number */}
                 <span
-                  className="font-display text-hollow pointer-events-none absolute right-10 top-1/2 -translate-y-1/2 select-none"
-                  style={{ fontSize: 'clamp(16rem, 28vw, 24rem)', lineHeight: 1, opacity: 0.09 }}
+                  className="font-display text-hollow-cyan pointer-events-none absolute select-none"
+                  style={{
+                    fontSize: 'clamp(10rem, 18vw, 16rem)', lineHeight: 1,
+                    opacity: 0.06,
+                    bottom: '-0.1em', right: imgLeft ? '0.05em' : 'auto', left: imgLeft ? 'auto' : '0.05em',
+                  }}
                 >
                   {String(i + 1).padStart(2, '0')}
                 </span>
-                {/* Bottom content */}
-                <div className="relative z-10 w-full p-8 pb-14">
-                  <div className="font-mono mb-3 text-[10px] tracking-[0.28em]" style={{ color: 'var(--ember)' }}>
-                    {project.tags}
+
+                <div className="relative z-10">
+                  <div className="font-mono mb-2 text-[9px] tracking-[0.45em]" style={{ color: 'var(--cyan)' }}>
+                    ENV_{String(i + 1).padStart(2, '0')} / {project.tags}
                   </div>
                   <h3
-                    className="font-display transition-colors duration-500 group-hover:text-[var(--ember-soft)]"
-                    style={{ fontSize: 'clamp(2.2rem, 4.8vw, 4.4rem)', lineHeight: 0.9, color: 'var(--text)', maxWidth: '75%' }}
+                    className="font-display transition-colors duration-400 group-hover:text-[var(--ember-soft)]"
+                    style={{ fontSize: 'clamp(2rem, 3.8vw, 3.8rem)', lineHeight: 0.92, color: 'var(--text)', maxWidth: '90%' }}
                   >
                     {project.title}
                   </h3>
-                  <div className="mt-4 flex items-center gap-6">
+                  <div className="mt-6 flex items-center gap-6">
                     <span className="font-mono text-[11px]" style={{ color: 'var(--text-faint)' }}>{project.year}</span>
                     <span
-                      className="font-mono translate-y-1 text-[10px] tracking-[0.3em] opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100"
-                      style={{ color: 'var(--ember)', border: '1px solid rgba(255,122,47,0.5)', padding: '8px 18px' }}
+                      className="btn-shine font-mono translate-y-2 text-[10px] tracking-[0.3em] opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100"
+                      style={{
+                        color: 'var(--cyan)', border: '1px solid rgba(0,229,255,0.35)',
+                        padding: '9px 20px',
+                      }}
                     >
                       {t('work.viewProject')} ↗
                     </span>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Slide progress pills */}
-        <div
-          className="pointer-events-none absolute right-8 top-1/2 z-30 flex flex-col gap-[6px]"
-          style={{ transform: 'translateY(-50%)' }}
-        >
-          {featured.map((_, i) => (
-            <div
-              key={i}
-              style={{
-                width: 2,
-                height: activeSlide === i + 1 ? 38 : 12,
-                background: activeSlide === i + 1 ? 'var(--ember)' : 'rgba(236,230,218,0.18)',
-                transition: 'height 0.45s cubic-bezier(0.16,1,0.3,1), background 0.45s ease',
-                borderRadius: 1,
-              }}
-            />
-          ))}
-        </div>
+            </div>
+          );
+        })}
       </div>
 
-      {/* ——————————————————————————
-          MOBILE: vertical editorial
-      —————————————————————————— */}
+      {/* ═══════════════════════════════════════════
+          MOBILE — stacked editorial
+      ═══════════════════════════════════════════ */}
       <div className="block lg:hidden" style={{ padding: 'clamp(90px, 12vw, 160px) clamp(20px, 4vw, 48px)' }}>
         <div className="mx-auto max-w-[1500px]">
           <SectionHeading num="01" label={t('work.label')} titleA={t('work.titleA')} titleB={t('work.titleB')} />
-          <div data-reveal className="mb-16 flex flex-wrap items-end justify-between gap-8">
+          <div data-reveal className="mb-14 flex flex-wrap items-end justify-between gap-6">
             <p className="font-body max-w-[520px] text-[15px] leading-relaxed" style={{ color: 'var(--text-dim)' }}>
               {t('work.intro')}
             </p>
             <div className="flex items-baseline gap-3">
-              <span className="font-display" style={{ fontSize: 'clamp(3rem, 6vw, 5rem)', lineHeight: 1, color: 'var(--ember)' }}>
+              <span className="font-display" style={{ fontSize: '4rem', color: 'var(--cyan)', lineHeight: 1 }}>
                 {projects.length}
               </span>
               <span className="font-mono text-[10px] tracking-[0.35em]" style={{ color: 'var(--text-faint)' }}>
@@ -290,62 +232,40 @@ export default function Work() {
               </span>
             </div>
           </div>
-
-          <div className="flex flex-col" style={{ gap: 'clamp(70px, 9vw, 130px)' }}>
+          <div className="flex flex-col" style={{ gap: 'clamp(64px, 8vw, 120px)' }}>
             {featured.map((project, i) => (
               <article
                 key={project.img}
                 data-reveal
-                className="group grid cursor-pointer grid-cols-1 items-end gap-6 lg:grid-cols-12"
                 data-cursor="view"
+                className="group cursor-pointer"
                 onClick={() => setLightbox(globalIndex(project))}
               >
-                <div
-                  className="relative overflow-hidden lg:col-span-8"
-                  style={{ aspectRatio: '16/9', border: '1px solid var(--line)' }}
-                >
+                <div className="relative overflow-hidden" style={{ aspectRatio: '16/9', border: '1px solid var(--line)' }}>
                   <img
                     src={projectSrc(project)}
                     alt={project.title}
                     loading={i === 0 ? 'eager' : 'lazy'}
-                    className="feature-img absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-                    style={{ scale: '1.18' }}
+                    className="feature-img-mob absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                     draggable={false}
                   />
-                  <div
-                    className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                    style={{ background: 'rgba(10,9,7,0.35)' }}
-                  >
-                    <span
-                      className="font-mono text-[11px] tracking-[0.4em]"
-                      style={{ color: 'var(--text)', border: '1px solid var(--ember)', padding: '12px 22px', background: 'rgba(10,9,7,0.55)' }}
-                    >
+                  <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 flex items-center justify-center"
+                    style={{ background: 'rgba(8,13,26,0.4)' }}>
+                    <span className="font-mono text-[10px] tracking-[0.4em]"
+                      style={{ color: 'var(--cyan)', border: '1px solid rgba(0,229,255,0.4)', padding: '11px 20px', background: 'rgba(8,13,26,0.6)' }}>
                       {t('work.viewProject')} ↗
                     </span>
                   </div>
-                  <span
-                    className="font-mono absolute left-4 top-4 text-[10px] tracking-[0.3em]"
-                    style={{ color: 'var(--text)', background: 'rgba(10,9,7,0.6)', padding: '6px 10px', border: '1px solid var(--line)' }}
-                  >
-                    ENV_{String(i + 1).padStart(2, '0')}
-                  </span>
                 </div>
-                <div className="lg:col-span-4">
-                  <div className="font-display text-hollow select-none" style={{ fontSize: 'clamp(3.4rem, 7vw, 6rem)', lineHeight: 0.9 }}>
-                    {String(i + 1).padStart(2, '0')}
+                <div className="mt-4">
+                  <div className="font-mono text-[9px] tracking-[0.4em]" style={{ color: 'var(--cyan)' }}>
+                    ENV_{String(i + 1).padStart(2, '0')} · {project.tags}
                   </div>
-                  <h3
-                    className="font-display mt-3 transition-colors duration-300 group-hover:text-[var(--ember)]"
-                    style={{ fontSize: 'clamp(1.7rem, 3vw, 2.5rem)', lineHeight: 0.95, color: 'var(--text)' }}
-                  >
+                  <h3 className="font-display mt-2 transition-colors duration-300 group-hover:text-[var(--ember-soft)]"
+                    style={{ fontSize: 'clamp(1.6rem, 4vw, 2.6rem)', lineHeight: 0.95, color: 'var(--text)' }}>
                     {project.title}
                   </h3>
-                  <div className="font-mono mt-3 text-[10px] tracking-[0.25em]" style={{ color: 'var(--ember)' }}>
-                    {project.tags}
-                  </div>
-                  <div className="font-mono mt-1 text-[11px]" style={{ color: 'var(--text-faint)' }}>
-                    {project.year}
-                  </div>
+                  <span className="font-mono text-[11px]" style={{ color: 'var(--text-faint)' }}>{project.year}</span>
                 </div>
               </article>
             ))}
@@ -353,18 +273,17 @@ export default function Work() {
         </div>
       </div>
 
-      {/* ——————————————————————————
-          ARCHIVE grid (all sizes)
-      —————————————————————————— */}
+      {/* ═══════════════════════════════════════════
+          ARCHIVE — 3-column grid
+      ═══════════════════════════════════════════ */}
       <div style={{ padding: '0 clamp(20px, 4vw, 48px) clamp(90px, 12vw, 160px)' }}>
-        <div className="mx-auto mt-28 max-w-[1500px]">
+        <div ref={archiveRef} className="mx-auto mt-24 max-w-[1500px]">
           <div data-reveal className="mb-10 flex items-center gap-4">
             <span className="eyebrow">+</span>
-            <span className="eyebrow" style={{ color: 'var(--text-dim)' }}>{t('work.archiveLabel')}</span>
+            <span className="eyebrow" style={{ color: 'var(--text-faint)' }}>{t('work.archiveLabel')}</span>
             <span className="h-px flex-1" style={{ background: 'var(--line)' }} />
           </div>
-
-          <div ref={archiveRef} className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {archive.map((project) => (
               <article
                 key={project.img}
@@ -375,41 +294,29 @@ export default function Work() {
               >
                 <div
                   className="archive-img-wrap relative overflow-hidden"
-                  style={{
-                    aspectRatio: '16/10',
-                    border: '1px solid var(--line)',
-                    transformStyle: 'preserve-3d',
-                    perspective: 600,
-                  }}
+                  style={{ aspectRatio: '16/10', border: '1px solid var(--line)', transformStyle: 'preserve-3d', perspective: 600 }}
                 >
                   <DistortImage
                     src={projectSrc(project)}
                     alt={project.title}
-                    className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+                    className="absolute inset-0 transition-transform duration-700 group-hover:scale-[1.05]"
                   />
-                  <div
-                    className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 opacity-80"
-                    style={{ background: 'linear-gradient(to top, rgba(10,9,7,0.85), transparent)' }}
-                  />
-                  {/* Hover overlay */}
-                  <div
-                    className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                    style={{ background: 'rgba(255,122,47,0.05)', border: '1px solid rgba(255,122,47,0.3)', boxSizing: 'border-box' }}
-                  />
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3"
+                    style={{ background: 'linear-gradient(to top, rgba(8,13,26,0.9), transparent)' }} />
+                  <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-400 group-hover:opacity-100"
+                    style={{ border: '1px solid rgba(0,229,255,0.25)', boxSizing: 'border-box' }} />
                 </div>
-                <div className="mt-3 flex items-start justify-between gap-4">
+                <div className="mt-3 flex items-start justify-between gap-3">
                   <div>
-                    <h3
-                      className="font-body text-[14px] font-semibold transition-colors duration-300 group-hover:text-[var(--ember)]"
-                      style={{ color: 'var(--text)' }}
-                    >
+                    <h3 className="font-body text-[13px] font-semibold transition-colors duration-300 group-hover:text-[var(--cyan)]"
+                      style={{ color: 'var(--text)' }}>
                       {project.title}
                     </h3>
-                    <div className="font-mono mt-1 text-[10px] tracking-[0.2em]" style={{ color: 'var(--text-dim)' }}>
+                    <div className="font-mono mt-1 text-[9px] tracking-[0.22em]" style={{ color: 'var(--text-dim)' }}>
                       {project.tags}
                     </div>
                   </div>
-                  <span className="font-mono shrink-0 text-[11px]" style={{ color: 'var(--text-dim)' }}>
+                  <span className="font-mono shrink-0 text-[10px]" style={{ color: 'var(--text-faint)' }}>
                     {project.year}
                   </span>
                 </div>
