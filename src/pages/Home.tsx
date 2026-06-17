@@ -15,17 +15,28 @@ import ScrollProgress from '../components/site/ScrollProgress';
 import AmbientGlow from '../components/site/AmbientGlow';
 import useSmoothScroll from '../lib/useSmoothScroll';
 
+/* Band 1 — Hero → Work: tool stack, LTR, small */
 const TOOLS = [
-  'UNREAL ENGINE 5',
-  'SUBSTANCE 3D',
-  'BLENDER',
-  'ZBRUSH',
-  '3DS MAX',
-  'MEGASCANS',
-  'REALITYCAPTURE',
-  'MARMOSET',
-  'UNITY HDRP',
-  'HOUDINI',
+  'UNREAL ENGINE 5', 'SUBSTANCE 3D', 'BLENDER', 'ZBRUSH',
+  '3DS MAX', 'MEGASCANS', 'REALITYCAPTURE', 'MARMOSET', 'UNITY HDRP', 'HOUDINI',
+];
+
+/* Band 2 — Work → About: discipline words, RTL, big */
+const DISCIPLINES = [
+  'ENVIRONMENT ART', 'WORLD BUILDING', 'REAL-TIME', 'LIGHTING',
+  'PHOTOGRAMMETRY', 'LEVEL ART', 'ATMOSPHERE',
+];
+
+/* Band 3 — About → Skills: stat phrases, LTR, small, cyan accent */
+const STATS = [
+  '6+ YEARS PRODUCTION', '15 WORLDS BUILT', 'BEST GAME AWARD', 'UE5 TRAINER',
+  'PARIS · FRANCE', 'AVAILABLE FOR WORK',
+];
+
+/* Band 4 — Skills → Contact: software list, RTL, small */
+const SOFTWARE = [
+  'UE5 · LUMEN · NANITE', 'SUBSTANCE 3D PAINTER', 'BLENDER · ZBRUSH',
+  '3DS MAX', 'REALITYCAPTURE', 'MARMOSET TOOLBAG', 'HOUDINI FX',
 ];
 
 export default function Home() {
@@ -45,10 +56,25 @@ export default function Home() {
 
       <main id="main" className="relative z-10">
         <Hero />
-        <Marquee items={TOOLS} />
+
+        {/* Band 1 — tools, LTR */}
+        <Marquee items={TOOLS} size="small" direction="ltr" accentColor="var(--ember)" />
+
         <Work />
+
+        {/* Band 2 — disciplines, RTL, big */}
+        <Marquee items={DISCIPLINES} size="big" direction="rtl" accentColor="var(--cyan)" />
+
         <About />
+
+        {/* Band 3 — stats, LTR, small, cyan accent */}
+        <Marquee items={STATS} size="small" direction="ltr" accentColor="var(--cyan)" />
+
         <Skills />
+
+        {/* Band 4 — software, RTL, small */}
+        <Marquee items={SOFTWARE} size="small" direction="rtl" accentColor="var(--ember)" />
+
         <Contact />
       </main>
       <Footer />
