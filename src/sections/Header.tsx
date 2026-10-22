@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Magnetic from '../components/site/Magnetic';
 
-const NAV = ['work', 'renders', 'about', 'skills', 'contact'] as const;
+const NAV = ['work', 'about', 'skills', 'contact'] as const;
 
 export default function Header() {
   const { t, i18n } = useTranslation();
@@ -39,7 +38,7 @@ export default function Header() {
         className="fixed left-0 top-0 z-[60] flex w-full items-center justify-between transition-all duration-500"
         style={{
           padding: scrolled ? '14px clamp(20px, 4vw, 48px)' : '24px clamp(20px, 4vw, 48px)',
-          background: scrolled ? 'rgba(8, 13, 26, 0.88)' : 'transparent',
+          background: scrolled ? 'rgba(10, 9, 7, 0.82)' : 'transparent',
           backdropFilter: scrolled ? 'blur(12px)' : 'none',
           WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
           borderBottom: scrolled ? '1px solid var(--line)' : '1px solid transparent',
@@ -61,33 +60,29 @@ export default function Header() {
         {/* Desktop nav */}
         <nav className="hidden items-center gap-8 md:flex">
           {NAV.map((id) => (
-            <Magnetic key={id} strength={0.4}>
-              <button
-                onClick={() => scrollTo(id)}
-                className="link-line font-mono text-[11px] tracking-[0.25em] transition-colors duration-300 hover:text-[var(--text)]"
-                style={{ color: 'var(--text-dim)' }}
-                data-cursor="hover"
-              >
-                <span data-magnetic-text style={{ display: 'inline-block' }}>{t(`nav.${id}`)}</span>
-              </button>
-            </Magnetic>
-          ))}
-          <Magnetic strength={0.4}>
             <button
-              onClick={toggleLang}
-              className="btn-shine font-mono text-[11px] tracking-[0.2em] transition-colors duration-300"
-              style={{
-                color: 'var(--text)',
-                border: '1px solid var(--line-strong)',
-                padding: '7px 12px',
-              }}
-              aria-label="Switch language"
+              key={id}
+              onClick={() => scrollTo(id)}
+              className="link-line font-mono text-[11px] tracking-[0.25em] transition-colors duration-300 hover:text-[var(--text)]"
+              style={{ color: 'var(--text-dim)' }}
             >
-              <span style={{ color: currentLang === 'en' ? 'var(--cyan)' : 'var(--text-faint)' }}>EN</span>
-              <span style={{ color: 'var(--text-faint)' }}> / </span>
-              <span style={{ color: currentLang === 'fr' ? 'var(--cyan)' : 'var(--text-faint)' }}>FR</span>
+              {t(`nav.${id}`)}
             </button>
-          </Magnetic>
+          ))}
+          <button
+            onClick={toggleLang}
+            className="font-mono text-[11px] tracking-[0.2em] transition-colors duration-300"
+            style={{
+              color: 'var(--text)',
+              border: '1px solid var(--line-strong)',
+              padding: '7px 12px',
+            }}
+            aria-label="Switch language"
+          >
+            <span style={{ color: currentLang === 'en' ? 'var(--ember)' : 'var(--text-faint)' }}>EN</span>
+            <span style={{ color: 'var(--text-faint)' }}> / </span>
+            <span style={{ color: currentLang === 'fr' ? 'var(--ember)' : 'var(--text-faint)' }}>FR</span>
+          </button>
         </nav>
 
         {/* Mobile burger — generous padding for a ≥44px touch target */}
@@ -118,7 +113,7 @@ export default function Header() {
       <div
         className="fixed inset-0 z-[55] flex flex-col justify-center transition-opacity duration-500 md:hidden"
         style={{
-          background: 'rgba(8, 13, 26, 0.97)',
+          background: 'rgba(10, 9, 7, 0.97)',
           backdropFilter: 'blur(10px)',
           opacity: menuOpen ? 1 : 0,
           pointerEvents: menuOpen ? 'auto' : 'none',
