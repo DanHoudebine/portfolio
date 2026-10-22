@@ -1,6 +1,7 @@
 import Header from '../sections/Header';
 import Hero from '../sections/Hero';
 import Work from '../sections/Work';
+import Renders from '../sections/Renders';
 import About from '../sections/About';
 import Skills from '../sections/Skills';
 import Contact from '../sections/Contact';
@@ -36,6 +37,7 @@ export default function Home() {
         <Hero />
         <Marquee items={TOOLS} />
         <Work />
+        <Renders />
         <About />
         <Skills />
         <Contact />

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const NAV = ['work', 'about', 'skills', 'contact'] as const;
+const NAV = ['work', 'renders', 'about', 'skills', 'contact'] as const;
 
 export default function Header() {
   const { t, i18n } = useTranslation();
