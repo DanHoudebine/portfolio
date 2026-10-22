@@ -7,6 +7,7 @@ const resources = {
     translation: {
       nav: {
         work: 'WORK',
+        renders: 'RENDERS',
         about: 'ABOUT',
         skills: 'SKILLS',
         contact: 'CONTACT',
@@ -33,6 +34,14 @@ const resources = {
           'Real-time environments crafted in Unreal Engine 5 — atmosphere, lighting and micro-detail layered until raw geometry becomes a living place.',
         viewProject: 'OPEN',
         counter: 'PROJECTS',
+      },
+      renders: {
+        label: 'PRODUCT VISUALIZATION',
+        titleA: 'REALISTIC',
+        titleB: 'renders',
+        intro:
+          'Photoreal product & packaging visualization — studio lighting, material accuracy and composition, outside the game-art pipeline.',
+        counter: 'RENDERS',
       },
       about: {
         label: 'ABOUT',
@@ -121,6 +130,7 @@ const resources = {
     translation: {
       nav: {
         work: 'TRAVAUX',
+        renders: 'RENDUS',
         about: 'À PROPOS',
         skills: 'COMPÉTENCES',
         contact: 'CONTACT',
@@ -147,6 +157,14 @@ const resources = {
           "Environnements temps réel façonnés sous Unreal Engine 5 — atmosphère, lumière et micro-détail superposés jusqu'à ce que la géométrie brute devienne un lieu vivant.",
         viewProject: 'OUVRIR',
         counter: 'PROJETS',
+      },
+      renders: {
+        label: 'VISUALISATION PRODUIT',
+        titleA: 'RENDUS',
+        titleB: 'réalistes',
+        intro:
+          'Visualisation produit & packaging photoréaliste — éclairage studio, justesse des matériaux et composition, hors pipeline jeu vidéo.',
+        counter: 'RENDUS',
       },
       about: {
         label: 'À PROPOS',

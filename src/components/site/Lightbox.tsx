@@ -1,11 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import { projects, projectSrc } from '../../data/projects';
+import { projects, projectSrc, type Project } from '../../data/projects';
+
+interface LightboxItem { title: string; tags: string; year: string }
 
 interface LightboxProps {
   index: number; // -1 = closed
   onClose: () => void;
   onNavigate: (next: number) => void;
+  /** defaults to the game-art projects; pass a category's own list to keep navigation within it */
+  items?: readonly LightboxItem[];
+  srcOf?: (item: LightboxItem) => string;
 }
 
 /**
@@ -13,9 +18,13 @@ interface LightboxProps {
  * sweeps across the screen; navigation slides the image in from the
  * travel direction. Esc to close, ←/→ to move between pieces.
  */
-export default function Lightbox({ index, onClose, onNavigate }: LightboxProps) {
+export default function Lightbox({
+  index, onClose, onNavigate,
+  items = projects,
+  srcOf = (i) => projectSrc(i as Project),
+}: LightboxProps) {
   const open = index >= 0;
-  const count = projects.length;
+  const count = items.length;
 
   const [display, setDisplay] = useState(-1);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -119,7 +128,7 @@ export default function Lightbox({ index, onClose, onNavigate }: LightboxProps) 
   }, [open, onClose, prev, next]);
 
   if (display < 0) return null;
-  const project = projects[display];
+  const project = items[display];
 
   return (
     <div
@@ -161,7 +170,7 @@ export default function Lightbox({ index, onClose, onNavigate }: LightboxProps) 
         >
           <img
             ref={imgRef}
-            src={projectSrc(project)}
+            src={srcOf(project)}
             alt={project.title}
             className="lb-img max-h-full max-w-full object-contain"
             style={{ boxShadow: '0 30px 90px rgba(0,0,0,0.7)' }}

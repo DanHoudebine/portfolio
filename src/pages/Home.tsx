@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import Header from '../sections/Header';
 import Hero from '../sections/Hero';
 import Work from '../sections/Work';
+import Renders from '../sections/Renders';
 import About from '../sections/About';
 import Skills from '../sections/Skills';
 import Contact from '../sections/Contact';
@@ -61,6 +62,7 @@ export default function Home() {
         <Marquee items={TOOLS} size="small" direction="ltr" accentColor="var(--ember)" />
 
         <Work />
+        <Renders />
 
         {/* Band 2 — disciplines, RTL, big */}
         <Marquee items={DISCIPLINES} size="big" direction="rtl" accentColor="var(--cyan)" />
