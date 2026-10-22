@@ -28,3 +28,8 @@ dist-ssr
 
 # local Claude Code settings
 .claude/settings.local.json
+
+# AI skill bundles / caches (not part of the site)
+.claude/skills/
+**/__pycache__/
+*.pyc
