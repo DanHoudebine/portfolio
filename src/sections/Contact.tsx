@@ -13,6 +13,7 @@ const SOCIALS = [
   { name: 'ArtStation', href: 'https://www.artstation.com/danhoudebine' },
   { name: 'LinkedIn', href: 'https://www.linkedin.com/in/danhoudebine' },
   { name: 'GitHub', href: 'https://github.com/DanHoudebine' },
+  { name: 'Fab', href: 'https://www.fab.com/sellers/Dan%20HOUDEBINE' },
 ];
 
 export default function Contact() {
