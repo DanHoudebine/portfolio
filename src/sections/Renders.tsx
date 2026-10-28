@@ -85,6 +85,23 @@ export default function Renders() {
             </article>
           ))}
         </div>
+
+        {/* Credit — Destours XXO bottle shape */}
+        <p
+          data-reveal
+          className="font-mono mt-10 text-[10px] leading-relaxed tracking-[0.2em]"
+          style={{ color: 'var(--text-faint)' }}
+        >
+          {t('renders.creditPrefix')}{' '}
+          <a
+            href="https://poulpebordeaux.com/"
+            target="_blank" rel="noopener noreferrer"
+            className="transition-colors duration-300 hover:text-[var(--ember)]"
+            style={{ color: 'var(--text-dim)', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+          >
+            PHILIPPE BOUVET · POULPE BORDEAUX
+          </a>
+        </p>
       </div>
 
       <Lightbox

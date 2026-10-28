@@ -39,6 +39,7 @@ const resources = {
         intro:
           'Photoreal product & packaging visualization — studio lighting, material accuracy and composition, outside the game-art pipeline.',
         counter: 'RENDERS',
+        creditPrefix: 'DESTOURS XXO BOTTLE SHAPE DESIGNED BY',
       },
       about: {
         label: 'ABOUT',
@@ -159,6 +160,7 @@ const resources = {
         intro:
           'Visualisation produit & packaging photoréaliste — éclairage studio, justesse des matériaux et composition, hors pipeline jeu vidéo.',
         counter: 'RENDUS',
+        creditPrefix: 'FORME DU FLACON DESTOURS XXO CONÇUE PAR',
       },
       about: {
         label: 'À PROPOS',
