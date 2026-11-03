@@ -38,6 +38,24 @@ jobs:
       - name: Build
         run: npm run build
 
+      # Compress render images in the build output only (repo keeps originals).
+      # Caps the long edge to 1800px, strips metadata, re-encodes. Keeps each
+      # file's format/name so src/content/renders.json references stay valid.
+      - name: Optimize render images
+        run: |
+          sudo apt-get update && sudo apt-get install -y --no-install-recommends imagemagick pngquant
+          shopt -s nullglob nocaseglob
+          for f in dist/renders/*.png dist/renders/*.jpg dist/renders/*.jpeg; do
+            [ -f "$f" ] || continue
+            before=$(stat -c%s "$f")
+            mogrify -resize '1800x1800>' -strip "$f"
+            case "$f" in
+              *.png) pngquant --force --skip-if-larger --quality=70-92 --output "$f" "$f" || true ;;
+              *)     mogrify -quality 85 "$f" ;;
+            esac
+            printf '  %s: %s -> %s bytes\n' "$(basename "$f")" "$before" "$(stat -c%s "$f")"
+          done
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
