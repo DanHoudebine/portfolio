@@ -50,15 +50,22 @@ export default {
       const payload = ok
         ? { token: data.access_token, provider: 'github' }
         : { error: data.error_description || 'OAuth failed' };
-      const msg = `authorization:github:${ok ? 'success' : 'error'}:${JSON.stringify(payload)}`;
+      const content = `authorization:github:${ok ? 'success' : 'error'}:${JSON.stringify(payload)}`;
 
-      // Hand the token back to the Decap window that opened this popup, then close.
+      // Decap handshake: announce "authorizing:github", wait for the opener's
+      // reply, THEN send the token back to its origin. Sending too early (before
+      // the handshake) makes Decap ignore the token and stay on the login screen.
       const html = `<!doctype html><html><body><script>
         (function () {
-          function post(){ window.opener && window.opener.postMessage(${JSON.stringify(msg)}, '*'); }
-          window.addEventListener('message', function(){ post(); }, { once: true });
-          post();
-          setTimeout(function(){ window.close(); }, 400);
+          var content = ${JSON.stringify(content)};
+          function receive(e) {
+            if (!e || !e.data || String(e.data).indexOf('authorizing:github') !== 0) return;
+            window.opener.postMessage(content, e.origin);
+            window.removeEventListener('message', receive, false);
+            setTimeout(function(){ window.close(); }, 300);
+          }
+          window.addEventListener('message', receive, false);
+          window.opener && window.opener.postMessage('authorizing:github', '*');
         })();
       </script>Authentification terminée, vous pouvez fermer cette fenêtre.</body></html>`;
       return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
