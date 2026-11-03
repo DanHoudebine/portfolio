@@ -1,12 +1,52 @@
 {
   "items": [
-    { "image": "renders/render1.png", "title": "Destours XXO — Ambiance",         "tags": "BLENDER · CYCLES · STUDIO LIGHTING", "year": "2025" },
-    { "image": "renders/render2.png", "title": "Destours XXO — Ambiance ¾",       "tags": "BLENDER · CYCLES · STUDIO LIGHTING", "year": "2025" },
-    { "image": "renders/render3.png", "title": "Destours XXO — Ambiance Plongée", "tags": "BLENDER · CYCLES · STUDIO LIGHTING", "year": "2025" },
-    { "image": "renders/render4.png", "title": "Destours XXO — Packshot",         "tags": "BLENDER · CYCLES · PRODUCT VIZ",     "year": "2025" },
-    { "image": "renders/render5.png", "title": "Destours XXO — Packshot ¾",       "tags": "BLENDER · CYCLES · PRODUCT VIZ",     "year": "2025" },
-    { "image": "renders/render6.jpg", "title": "Sauvelande VSOP — Hero",          "tags": "BLENDER · CYCLES · STUDIO LIGHTING", "year": "2025" },
-    { "image": "renders/render7.jpg", "title": "Sauvelande VSOP — Macro",         "tags": "BLENDER · CYCLES · MACRO",           "year": "2025" },
-    { "image": "renders/render8.png", "title": "Sauvelande VSOP — Packshot",      "tags": "BLENDER · CYCLES · PRODUCT VIZ",     "year": "2025" }
+    {
+      "image": "renders/render1.png",
+      "title": "Destours XXO — Ambiance",
+      "tags": "BLENDER · CYCLES · STUDIO LIGHTING",
+      "year": "2025"
+    },
+    {
+      "image": "renders/render2.png",
+      "title": "Destours XXO — Ambiance ¾",
+      "tags": "BLENDER · CYCLES · STUDIO LIGHTING",
+      "year": "2025"
+    },
+    {
+      "image": "renders/render3.png",
+      "title": "Destours XXO — Ambiance Plongée",
+      "tags": "BLENDER · CYCLES · STUDIO LIGHTING",
+      "year": "2025"
+    },
+    {
+      "image": "renders/render4.png",
+      "title": "Destours XXO — Packshot",
+      "tags": "BLENDER · CYCLES · PRODUCT VIZ",
+      "year": "2025"
+    },
+    {
+      "image": "renders/render5.png",
+      "title": "Destours XXO — Packshot ¾",
+      "tags": "BLENDER · CYCLES · PRODUCT VIZ",
+      "year": "2025"
+    },
+    {
+      "image": "renders/sauvelande_vsop_01_hero_pierre.png",
+      "title": "Sauvelande VSOP — Hero",
+      "tags": "BLENDER · CYCLES · STUDIO LIGHTING",
+      "year": "2025"
+    },
+    {
+      "image": "renders/render7.jpg",
+      "title": "Sauvelande VSOP — Macro",
+      "tags": "BLENDER · CYCLES · MACRO",
+      "year": "2025"
+    },
+    {
+      "image": "renders/render8.png",
+      "title": "Sauvelande VSOP — Packshot",
+      "tags": "BLENDER · CYCLES · PRODUCT VIZ",
+      "year": "2025"
+    }
   ]
 }
