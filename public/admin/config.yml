@@ -2,8 +2,8 @@ backend:
   name: github
   repo: DanHoudebine/portfolio
   branch: main
-  # OAuth token-exchange endpoint (Cloudflare Worker). Fill in after deploying it:
-  base_url: https://REPLACE_WITH_YOUR_WORKER.workers.dev
+  # OAuth token-exchange endpoint (Cloudflare Worker):
+  base_url: https://decap-oauth.danhoudebine.workers.dev
 
 # Uploaded images land here in the repo…
 media_folder: "public/renders"
