@@ -1,0 +1,32 @@
+backend:
+  name: github
+  repo: DanHoudebine/portfolio
+  branch: main
+  # OAuth token-exchange endpoint (Cloudflare Worker). Fill in after deploying it:
+  base_url: https://REPLACE_WITH_YOUR_WORKER.workers.dev
+
+# Uploaded images land here in the repo…
+media_folder: "public/renders"
+# …and are referenced from the site at this prefix (matches renders.json "image" values).
+public_folder: "renders"
+
+locale: fr
+
+collections:
+  - name: renders
+    label: "Rendus produit"
+    files:
+      - name: list
+        label: "Rendus produit"
+        file: "src/content/renders.json"
+        description: "Ajoute, retire ou réordonne les rendus. Chaque changement est publié automatiquement."
+        fields:
+          - name: items
+            label: "Rendus"
+            label_singular: "Rendu"
+            widget: list
+            fields:
+              - { name: image, label: "Image", widget: image }
+              - { name: title, label: "Titre", widget: string }
+              - { name: tags,  label: "Tech (séparées par · )", widget: string, default: "BLENDER · CYCLES · PRODUCT VIZ" }
+              - { name: year,  label: "Année", widget: string, default: "2025" }
