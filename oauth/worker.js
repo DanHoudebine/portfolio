@@ -47,25 +47,38 @@ export default {
       const data = await tokenRes.json();
 
       const ok = Boolean(data.access_token);
-      const payload = ok
-        ? { token: data.access_token, provider: 'github' }
-        : { error: data.error_description || 'OAuth failed' };
-      const content = `authorization:github:${ok ? 'success' : 'error'}:${JSON.stringify(payload)}`;
+      // If GitHub refused the exchange, show the reason instead of closing silently.
+      if (!ok) {
+        const reason = data.error_description || data.error || 'OAuth exchange failed';
+        return new Response(
+          `<!doctype html><meta charset="utf-8"><body style="font-family:sans-serif;padding:2rem">
+           <h2>Échec de connexion</h2><p>GitHub a renvoyé : <b>${reason}</b></p>
+           <p>Vérifie le callback de l'app OAuth et les secrets du worker.</p></body>`,
+          { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } },
+        );
+      }
 
-      // Decap handshake: announce "authorizing:github", wait for the opener's
-      // reply, THEN send the token back to its origin. Sending too early (before
-      // the handshake) makes Decap ignore the token and stay on the login screen.
+      const content = `authorization:github:success:${JSON.stringify({ token: data.access_token, provider: 'github' })}`;
+
+      // Decap handshake: announce "authorizing:github", then hand the token to the
+      // opener when it echoes back. Fallbacks (broadcast + delayed) cover Decap
+      // builds that validate origins differently.
       const html = `<!doctype html><html><body><script>
         (function () {
           var content = ${JSON.stringify(content)};
-          function receive(e) {
+          var sent = false;
+          function send(target){ try { window.opener && window.opener.postMessage(content, target); } catch (e) {} }
+          function receive(e){
             if (!e || !e.data || String(e.data).indexOf('authorizing:github') !== 0) return;
-            window.opener.postMessage(content, e.origin);
+            sent = true;
+            send(e.origin);
             window.removeEventListener('message', receive, false);
             setTimeout(function(){ window.close(); }, 300);
           }
           window.addEventListener('message', receive, false);
+          send('*');
           window.opener && window.opener.postMessage('authorizing:github', '*');
+          setTimeout(function(){ if (!sent) { send('*'); window.close(); } }, 1500);
         })();
       </script>Authentification terminée, vous pouvez fermer cette fenêtre.</body></html>`;
       return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
