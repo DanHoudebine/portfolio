@@ -83,6 +83,30 @@
       "title": "Inchcairn 12 — Packshot Étui",
       "tags": "BLENDER · CYCLES · PRODUCT VIZ",
       "year": "2025"
+    },
+    {
+      "image": "renders/ak47_01_hero.png",
+      "title": "AK-47 — Hero",
+      "tags": "BLENDER · CYCLES · HARD SURFACE",
+      "year": "2026"
+    },
+    {
+      "image": "renders/ak47_02_profil.png",
+      "title": "AK-47 — Profil",
+      "tags": "BLENDER · CYCLES · HARD SURFACE",
+      "year": "2026"
+    },
+    {
+      "image": "renders/ak47_03_macro.png",
+      "title": "AK-47 — Macro",
+      "tags": "BLENDER · CYCLES · MACRO",
+      "year": "2026"
+    },
+    {
+      "image": "renders/ak47_04_cote.png",
+      "title": "AK-47 — Côté",
+      "tags": "BLENDER · CYCLES · HARD SURFACE",
+      "year": "2026"
     }
   ]
 }
