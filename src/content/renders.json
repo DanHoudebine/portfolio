@@ -47,6 +47,42 @@
       "title": "Sauvelande VSOP — Packshot",
       "tags": "BLENDER · CYCLES · PRODUCT VIZ",
       "year": "2025"
+    },
+    {
+      "image": "renders/inchcairn12_hero.png",
+      "title": "Inchcairn 12 — Hero",
+      "tags": "BLENDER · CYCLES · STUDIO LIGHTING",
+      "year": "2025"
+    },
+    {
+      "image": "renders/inchcairn_peated_hero.png",
+      "title": "Inchcairn Peated — Cask Strength",
+      "tags": "BLENDER · CYCLES · STUDIO LIGHTING",
+      "year": "2025"
+    },
+    {
+      "image": "renders/inchcairn12_macro.png",
+      "title": "Inchcairn 12 — Macro",
+      "tags": "BLENDER · CYCLES · MACRO",
+      "year": "2025"
+    },
+    {
+      "image": "renders/inchcairn12_pack.png",
+      "title": "Inchcairn 12 — Étui & Bouteille",
+      "tags": "BLENDER · CYCLES · STUDIO LIGHTING",
+      "year": "2025"
+    },
+    {
+      "image": "renders/inchcairn12_cutout_front.png",
+      "title": "Inchcairn 12 — Packshot",
+      "tags": "BLENDER · CYCLES · PRODUCT VIZ",
+      "year": "2025"
+    },
+    {
+      "image": "renders/inchcairn12_cutout_pack.png",
+      "title": "Inchcairn 12 — Packshot Étui",
+      "tags": "BLENDER · CYCLES · PRODUCT VIZ",
+      "year": "2025"
     }
   ]
 }
